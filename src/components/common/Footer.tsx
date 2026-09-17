@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Heart, Compass, ShieldCheck } from 'lucide-react';
+import { Sparkles, Heart, ShieldCheck } from 'lucide-react';
 
 interface FooterProps {
   onSelectTab: (tab: string) => void;

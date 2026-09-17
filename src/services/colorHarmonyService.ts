@@ -1,4 +1,4 @@
-import { ColorHarmonyReport, ColorOption } from '../types/outfit';
+import { ColorHarmonyReport } from '../types/outfit';
 import { COLORS } from '../data/colors';
 
 export function calculateColorHarmony(

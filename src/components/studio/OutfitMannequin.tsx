@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Garment, ColorOption, StyleGenZ } from '../../types/outfit';
 import { Sparkles, Eye, Image as ImageIcon } from 'lucide-react';
 
@@ -7,20 +7,27 @@ interface OutfitMannequinProps {
   color: ColorOption;
   style: StyleGenZ;
   accessoryIds: string[];
+  gender?: 'female' | 'male';
+  onToggleGender?: (gender: 'female' | 'male') => void;
 }
 
 export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
   garment,
   color,
   style,
-  accessoryIds
+  accessoryIds,
+  gender = 'female',
+  onToggleGender
 }) => {
   const [viewMode, setViewMode] = useState<'avatar' | 'photo'>('avatar');
   const [photoError, setPhotoError] = useState(false);
 
-  useEffect(() => {
-    setPhotoError(false);
-  }, [garment.id]);
+  const currentGender = gender;
+  const isMale = currentGender === 'male';
+
+  const handleGenderChange = (newGender: 'female' | 'male') => {
+    if (onToggleGender) onToggleGender(newGender);
+  };
 
   // Checks for specific accessories
   const hasKhanDong = accessoryIds.includes('khan-dong');
@@ -54,30 +61,60 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
         <div className="absolute inset-0 subtle-grid opacity-30" />
       </div>
 
-      {/* View Switcher Button Pill */}
-      <div className="absolute top-4 right-4 z-20 flex bg-white/90 backdrop-blur-md rounded-full p-1 border border-stone-200 shadow-sm text-xs font-medium">
-        <button
-          onClick={() => setViewMode('avatar')}
-          className={`flex items-center gap-1.5 px-3 py-1 rounded-full transition-all ${
-            viewMode === 'avatar'
-              ? 'bg-heritage-charcoal text-white shadow-sm'
-              : 'text-stone-600 hover:text-stone-900'
-          }`}
-        >
-          <Eye className="w-3.5 h-3.5" />
-          <span>Layered Silhouette</span>
-        </button>
-        <button
-          onClick={() => setViewMode('photo')}
-          className={`flex items-center gap-1.5 px-3 py-1 rounded-full transition-all ${
-            viewMode === 'photo'
-              ? 'bg-heritage-charcoal text-white shadow-sm'
-              : 'text-stone-600 hover:text-stone-900'
-          }`}
-        >
-          <ImageIcon className="w-3.5 h-3.5" />
-          <span>Ảnh Mẫu</span>
-        </button>
+      {/* Top Controls: Gender Switcher & View Switcher */}
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 flex-wrap justify-end">
+        {/* Gender Toggle Pill */}
+        <div className="flex bg-white/95 backdrop-blur-md rounded-full p-1 border border-stone-200 shadow-sm text-xs font-semibold">
+          <button
+            onClick={() => handleGenderChange('female')}
+            className={`px-2.5 py-1 rounded-full transition-all flex items-center gap-1 text-[11px] ${
+              !isMale
+                ? 'bg-rose-600 text-white shadow-xs'
+                : 'text-stone-600 hover:text-stone-900'
+            }`}
+            title="Xem trên vóc dáng Nữ"
+          >
+            <span>Nữ ♀</span>
+          </button>
+          <button
+            onClick={() => handleGenderChange('male')}
+            className={`px-2.5 py-1 rounded-full transition-all flex items-center gap-1 text-[11px] ${
+              isMale
+                ? 'bg-sky-700 text-white shadow-xs'
+                : 'text-stone-600 hover:text-stone-900'
+            }`}
+            title="Xem trên vóc dáng Nam"
+          >
+            <span>Nam ♂</span>
+          </button>
+        </div>
+
+        {/* View Switcher Button Pill */}
+        <div className="flex bg-white/90 backdrop-blur-md rounded-full p-1 border border-stone-200 shadow-sm text-xs font-medium">
+          <button
+            onClick={() => setViewMode('avatar')}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-full transition-all ${
+              viewMode === 'avatar'
+                ? 'bg-heritage-charcoal text-white shadow-sm'
+                : 'text-stone-600 hover:text-stone-900'
+            }`}
+          >
+            <Eye className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Layered Silhouette</span>
+            <span className="sm:hidden">SVG</span>
+          </button>
+          <button
+            onClick={() => setViewMode('photo')}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-full transition-all ${
+              viewMode === 'photo'
+                ? 'bg-heritage-charcoal text-white shadow-sm'
+                : 'text-stone-600 hover:text-stone-900'
+            }`}
+          >
+            <ImageIcon className="w-3.5 h-3.5" />
+            <span>Ảnh Mẫu</span>
+          </button>
+        </div>
       </div>
 
       {/* Style badge floating tag */}
@@ -335,12 +372,12 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
             )}
 
             {/* Mannequin Neck & Collar */}
-            <path d="M152 75 L152 98 L168 98 L168 75 Z" fill="#E7D8C9" />
+            <path d={isMale ? "M150 74 L150 98 L170 98 L170 74 Z" : "M152 75 L152 98 L168 98 L168 75 Z"} fill="#E7D8C9" />
 
             {/* Traditional Stand Collar (Lập Lĩnh) */}
             {garment.id !== 'ao-ba-ba' && (
               <path
-                d="M148 88 Q160 92 172 88 L171 98 Q160 102 149 98 Z"
+                d={isMale ? "M146 87 Q160 92 174 87 L173 98 Q160 103 147 98 Z" : "M148 88 Q160 92 172 88 L171 98 Q160 102 149 98 Z"}
                 fill="url(#garmentGrad)"
                 stroke="#DFB058"
                 strokeWidth="0.8"
@@ -348,23 +385,48 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
             )}
 
             {/* Mannequin Head / Face Silhouette */}
-            <ellipse cx="160" cy="58" rx="19" ry="24" fill="#F1E4D6" />
+            <ellipse cx="160" cy="58" rx={isMale ? 20 : 19} ry={isMale ? 25 : 24} fill="#F1E4D6" />
 
-            {/* Hair bun / Sleek Hair */}
-            <path
-              d="M141 52 Q160 34 179 52 Q183 68 178 72 Q160 76 142 72 Q137 68 141 52 Z"
-              fill="#18181B"
-            />
-            {/* Top knot */}
-            <circle cx="160" cy="35" r="9" fill="#18181B" />
+            {/* Hair rendering based on gender */}
+            {!isMale ? (
+              <>
+                {/* Female Hair bun / Sleek Hair */}
+                <path
+                  d="M141 52 Q160 34 179 52 Q183 68 178 72 Q160 76 142 72 Q137 68 141 52 Z"
+                  fill="#18181B"
+                />
+                {/* Top knot */}
+                <circle cx="160" cy="35" r="9" fill="#18181B" />
+              </>
+            ) : (
+              <>
+                {/* Male Stylish Textured Haircut */}
+                <path
+                  d="M139 56 Q141 33 160 32 Q179 33 181 56 Q175 46 160 46 Q145 46 139 56 Z"
+                  fill="#18181B"
+                />
+                <path
+                  d="M138 52 C138 38 147 30 160 30 C173 30 182 38 182 52 C178 46 172 44 162 44 C152 44 145 46 138 52 Z"
+                  fill="#27272A"
+                />
+                {/* Neat Sideburns */}
+                <path d="M140 52 L142 63 L145 55 Z" fill="#18181B" />
+                <path d="M180 52 L178 63 L175 55 Z" fill="#18181B" />
+              </>
+            )}
 
             {/* --- HEADWEAR ACCESSORIES --- */}
             {hasKhanDong && (
-              /* Traditional Folded Turban (Khăn Đóng) */
+              /* Traditional Folded Turban (Khăn Đóng / Khăn Xếp) */
               <g id="khan-dong-accessory">
-                <ellipse cx="160" cy="46" rx="23" ry="12" fill="#182747" stroke="#DFB058" strokeWidth="1" />
-                <path d="M137 46 Q160 38 183 46" stroke="#2A3F6D" strokeWidth="2.5" fill="none" />
-                <path d="M138 43 Q160 35 182 43" stroke="#DFB058" strokeWidth="1" fill="none" />
+                <ellipse cx="160" cy={isMale ? 44 : 46} rx={isMale ? 24 : 23} ry={isMale ? 13 : 12} fill="#182747" stroke="#DFB058" strokeWidth="1" />
+                <path d={isMale ? "M136 44 Q160 35 184 44" : "M137 46 Q160 38 183 46"} stroke="#2A3F6D" strokeWidth="2.5" fill="none" />
+                {isMale ? (
+                  /* Nếp chữ Nhân nam tính đặc trưng của khăn đóng nam thời Nguyễn */
+                  <path d="M154 40 L160 45 L166 40" stroke="#DFB058" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                ) : (
+                  <path d="M138 43 Q160 35 182 43" stroke="#DFB058" strokeWidth="1" fill="none" />
+                )}
               </g>
             )}
 
@@ -482,7 +544,7 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
               Lookbook Editorial
             </p>
             <p className="font-serif text-lg font-bold drop-shadow-md">
-              {garment.name} × {style.name}
+              {garment.name} × {style.name} • {isMale ? 'Nam' : 'Nữ'}
             </p>
           </div>
         </div>

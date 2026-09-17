@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ACCESSORIES } from '../../data/accessories';
-import { Accessory } from '../../types/outfit';
 import {
   Crown,
   SunMedium,

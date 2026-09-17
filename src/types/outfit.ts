@@ -64,6 +64,19 @@ export interface StyleGenZ {
   badgeColor: string;
 }
 
+export interface WeatherCondition {
+  id: string;
+  name: string;
+  temperature: string;
+  season: string;
+  region: string;
+  icon: string;
+  vibe: string;
+  fabricAdvice: string;
+  recommendedGarments: string[];
+  recommendedAccessories: string[];
+}
+
 export interface Outfit {
   id: string;
   name: string;
@@ -72,6 +85,8 @@ export interface Outfit {
   colorId: string;
   accessoryIds: string[];
   styleId: string;
+  gender?: 'female' | 'male';
+  weatherId?: string;
   notes?: string;
   createdAt: string;
   isFavorite?: boolean;

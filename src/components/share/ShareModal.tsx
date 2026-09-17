@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Outfit, Garment, ColorOption } from '../../types/outfit';
-import { X, Copy, Check, Download, Share2, Sparkles } from 'lucide-react';
+import { Garment, ColorOption } from '../../types/outfit';
+import { X, Copy, Check, Download, Sparkles } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 
 interface ShareModalProps {

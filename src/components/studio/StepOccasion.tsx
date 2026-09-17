@@ -1,12 +1,37 @@
 import React from 'react';
 import { OCCASIONS } from '../../data/occasions';
-import { Occasion } from '../../types/outfit';
-import { Sparkles, PartyPopper, GraduationCap, Camera, Award, HeartHandshake, Globe, Coffee, Check } from 'lucide-react';
+import { WEATHER_CONDITIONS } from '../../data/weather';
+import { Occasion, WeatherCondition } from '../../types/outfit';
+import {
+  Sparkles,
+  PartyPopper,
+  GraduationCap,
+  Camera,
+  Award,
+  HeartHandshake,
+  Globe,
+  Coffee,
+  Check,
+  Sun,
+  CloudSun,
+  CloudRain,
+  Wind,
+  Compass
+} from 'lucide-react';
 
 interface StepOccasionProps {
   selectedId: string;
   onSelect: (occasion: Occasion) => void;
+  selectedWeatherId?: string;
+  onSelectWeather?: (weather: WeatherCondition) => void;
 }
+
+const WEATHER_ICONS: Record<string, React.ReactNode> = {
+  CloudSun: <CloudSun className="w-4 h-4 text-amber-500" />,
+  Sun: <Sun className="w-4 h-4 text-orange-500" />,
+  CloudRain: <CloudRain className="w-4 h-4 text-sky-500" />,
+  Wind: <Wind className="w-4 h-4 text-emerald-500" />
+};
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   Sparkles: <Sparkles className="w-5 h-5" />,
@@ -19,9 +44,63 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   Coffee: <Coffee className="w-5 h-5" />
 };
 
-export const StepOccasion: React.FC<StepOccasionProps> = ({ selectedId, onSelect }) => {
+export const StepOccasion: React.FC<StepOccasionProps> = ({
+  selectedId,
+  onSelect,
+  selectedWeatherId,
+  onSelectWeather
+}) => {
+  const activeWeather = WEATHER_CONDITIONS.find((w) => w.id === selectedWeatherId) || WEATHER_CONDITIONS[0];
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* Weather / Climate Selector Banner */}
+      <div className="bg-gradient-to-r from-amber-50/80 via-rose-50/50 to-stone-50 p-4 rounded-2xl border border-heritage-border/80 space-y-3">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            <span className="w-6 h-6 rounded-lg bg-heritage-gold/20 flex items-center justify-center text-heritage-charcoal">
+              <Compass className="w-3.5 h-3.5" />
+            </span>
+            <span className="text-xs font-bold uppercase tracking-wider text-stone-700 font-mono">
+              Thời Tiết & Vùng Miền Hôm Nay
+            </span>
+          </div>
+          <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white text-stone-600 border border-stone-200 shadow-xs">
+            {activeWeather.region} • {activeWeather.temperature}
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {WEATHER_CONDITIONS.map((w) => {
+            const isSelected = (selectedWeatherId || WEATHER_CONDITIONS[0].id) === w.id;
+            return (
+              <button
+                key={w.id}
+                type="button"
+                onClick={() => onSelectWeather && onSelectWeather(w)}
+                className={`p-2.5 rounded-xl border text-left transition-all flex items-center gap-2 ${
+                  isSelected
+                    ? 'bg-white border-heritage-gold text-stone-900 shadow-sm ring-1 ring-heritage-gold'
+                    : 'bg-white/60 hover:bg-white border-stone-200/80 text-stone-600'
+                }`}
+              >
+                <div className="shrink-0">{WEATHER_ICONS[w.icon] || <CloudSun className="w-4 h-4" />}</div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs font-bold truncate leading-tight">{w.name}</div>
+                  <div className="text-[10px] text-stone-400 truncate">{w.temperature}</div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Fabric & Styling Tip for Weather */}
+        <p className="text-[11px] text-stone-600 bg-white/70 p-2.5 rounded-xl border border-stone-200/50 leading-relaxed flex items-center gap-2">
+          <span className="font-bold text-heritage-red shrink-0">✦ Gợi ý chất liệu:</span>
+          <span className="truncate">{activeWeather.fabricAdvice}</span>
+        </p>
+      </div>
+
       <div>
         <h3 className="text-xl font-serif font-bold text-stone-900">Bối cảnh & Dịp xuất hiện</h3>
         <p className="text-xs text-stone-500 mt-1">

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Garment, Occasion, ColorOption, StyleGenZ, Outfit } from '../types/outfit';
+import { Garment, Occasion, ColorOption, StyleGenZ, Outfit, WeatherCondition } from '../types/outfit';
 import { GARMENTS } from '../data/garments';
 import { OCCASIONS } from '../data/occasions';
 import { COLORS } from '../data/colors';
 import { ACCESSORIES } from '../data/accessories';
 import { STYLES } from '../data/styles';
+import { WEATHER_CONDITIONS } from '../data/weather';
 import { StepOccasion } from '../components/studio/StepOccasion';
 import { StepGarment } from '../components/studio/StepGarment';
 import { StepColor } from '../components/studio/StepColor';
@@ -14,7 +15,7 @@ import { OutfitPreviewCard } from '../components/studio/OutfitPreviewCard';
 import { ShareModal } from '../components/share/ShareModal';
 import { StorageService } from '../services/storageService';
 import { useToast } from '../context/ToastContext';
-import { Sparkles, Dices, ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { Sparkles, Dices, ArrowLeft, ArrowRight, Check, Compass } from 'lucide-react';
 
 interface StudioPageProps {
   initialGarmentId?: string;
@@ -22,7 +23,9 @@ interface StudioPageProps {
   initialStyleId?: string;
   initialColorId?: string;
   initialAccessoryIds?: string[];
-  onNavigate: (tab: string) => void;
+  initialGender?: 'female' | 'male';
+  initialWeatherId?: string;
+  onNavigate: (_tab: string) => void;
   onRefreshCompareCount: () => void;
 }
 
@@ -32,7 +35,9 @@ export const StudioPage: React.FC<StudioPageProps> = ({
   initialStyleId,
   initialColorId,
   initialAccessoryIds,
-  onNavigate,
+  initialGender,
+  initialWeatherId,
+  onNavigate: _onNavigate,
   onRefreshCompareCount
 }) => {
   const { showToast } = useToast();
@@ -41,6 +46,10 @@ export const StudioPage: React.FC<StudioPageProps> = ({
   const [currentStep, setCurrentStep] = useState<number>(1);
 
   // Styling state
+  const [selectedGender, setSelectedGender] = useState<'female' | 'male'>(initialGender || 'female');
+  const [selectedWeather, setSelectedWeather] = useState<WeatherCondition>(
+    WEATHER_CONDITIONS.find((w) => w.id === initialWeatherId) || WEATHER_CONDITIONS[0]
+  );
   const [selectedOccasion, setSelectedOccasion] = useState<Occasion>(
     OCCASIONS.find((o) => o.id === initialOccasionId) || OCCASIONS[0]
   );
@@ -62,8 +71,8 @@ export const StudioPage: React.FC<StudioPageProps> = ({
     return StorageService.getSavedOutfits().map((o) => o.id);
   });
 
-  // Dynamic Outfit Name
-  const outfitName = `${selectedGarment.name} ${selectedColor.name} × ${
+  // Dynamic Outfit Name with gender tag
+  const outfitName = `${selectedGarment.name} ${selectedColor.name} (${selectedGender === 'male' ? 'Nam' : 'Nữ'}) × ${
     selectedAccessoryIds.includes('sneaker-chunky')
       ? 'Sneaker Trắng'
       : selectedAccessoryIds.includes('boots-da')
@@ -115,7 +124,29 @@ export const StudioPage: React.FC<StudioPageProps> = ({
     showToast({
       type: 'info',
       title: 'Stylist AI gợi ý Look mới!',
-      message: `${randomGarment.name} ${randomColor.name} theo phong cách ${randomStyle.name}`
+      message: `${randomGarment.name} ${randomColor.name} (${selectedGender === 'male' ? 'Nam' : 'Nữ'}) theo phong cách ${randomStyle.name}`
+    });
+  };
+
+  // Smart weather stylist recommendation
+  const handleWeatherRecommend = () => {
+    const suitableGarments = GARMENTS.filter((g) => selectedWeather.recommendedGarments.includes(g.id));
+    const newGarment = suitableGarments.length > 0
+      ? suitableGarments[Math.floor(Math.random() * suitableGarments.length)]
+      : GARMENTS[0];
+
+    const suitableAccs = ACCESSORIES.filter((a) => selectedWeather.recommendedAccessories.includes(a.id)).map((a) => a.id);
+    const chosenAccs = suitableAccs.length > 0 ? suitableAccs.slice(0, 3) : ['sneaker-chunky', 'kieng-bac'];
+    const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+
+    setSelectedGarment(newGarment);
+    setSelectedColor(randomColor);
+    setSelectedAccessoryIds(chosenAccs);
+
+    showToast({
+      type: 'info',
+      title: `Stylist thời tiết: ${selectedWeather.name}`,
+      message: `${newGarment.name} tối ưu cho nhiệt độ ${selectedWeather.temperature} (${selectedWeather.region}).`
     });
   };
 
@@ -129,6 +160,8 @@ export const StudioPage: React.FC<StudioPageProps> = ({
       colorId: selectedColor.id,
       accessoryIds: selectedAccessoryIds,
       styleId: selectedStyle.id,
+      gender: selectedGender,
+      weatherId: selectedWeather.id,
       createdAt: new Date().toISOString(),
       isFavorite: true
     };
@@ -153,6 +186,8 @@ export const StudioPage: React.FC<StudioPageProps> = ({
       colorId: selectedColor.id,
       accessoryIds: selectedAccessoryIds,
       styleId: selectedStyle.id,
+      gender: selectedGender,
+      weatherId: selectedWeather.id,
       createdAt: new Date().toISOString()
     };
 
@@ -198,10 +233,19 @@ export const StudioPage: React.FC<StudioPageProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+          <button
+            onClick={handleWeatherRecommend}
+            className="px-3.5 py-2 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold border border-amber-300/80 shadow-xs flex items-center gap-1.5 transition-all"
+            title="Tự động gợi ý bản phối phù hợp với thời tiết đã chọn"
+          >
+            <Compass className="w-3.5 h-3.5 text-amber-700" />
+            <span>Stylist Thời Tiết</span>
+          </button>
+
           <button
             onClick={handleRandomize}
-            className="px-4 py-2.5 rounded-full bg-white hover:bg-stone-50 text-stone-800 text-xs font-bold border border-stone-300 shadow-xs flex items-center gap-2 transition-all"
+            className="px-3.5 py-2 rounded-full bg-white hover:bg-stone-50 text-stone-800 text-xs font-bold border border-stone-300 shadow-xs flex items-center gap-1.5 transition-all"
           >
             <Dices className="w-4 h-4 text-heritage-red" />
             <span>Phối ngẫu nhiên (AI)</span>
@@ -266,6 +310,10 @@ export const StudioPage: React.FC<StudioPageProps> = ({
                   selectedId={selectedOccasion.id}
                   onSelect={(occ) => {
                     setSelectedOccasion(occ);
+                  }}
+                  selectedWeatherId={selectedWeather.id}
+                  onSelectWeather={(w) => {
+                    setSelectedWeather(w);
                   }}
                 />
               )}
@@ -349,6 +397,9 @@ export const StudioPage: React.FC<StudioPageProps> = ({
             occasion={selectedOccasion}
             style={selectedStyle}
             accessoryIds={selectedAccessoryIds}
+            gender={selectedGender}
+            onToggleGender={setSelectedGender}
+            weather={selectedWeather}
             outfitName={outfitName}
             onSaveOutfit={handleSaveOutfit}
             onAddToCompare={handleAddToCompare}

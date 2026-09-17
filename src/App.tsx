@@ -23,6 +23,8 @@ export function App() {
     styleId?: string;
     colorId?: string;
     accessoryIds?: string[];
+    gender?: 'female' | 'male';
+    weatherId?: string;
   }>({});
 
   const refreshCompareCount = () => {
@@ -46,7 +48,8 @@ export function App() {
       occasionId: look.occasionId,
       styleId: look.styleId,
       colorId: look.colorId,
-      accessoryIds: look.accessoryIds
+      accessoryIds: look.accessoryIds,
+      gender: 'female'
     });
     setCurrentTab('studio');
   };
@@ -57,7 +60,9 @@ export function App() {
       occasionId: outfit.occasionId,
       styleId: outfit.styleId,
       colorId: outfit.colorId,
-      accessoryIds: outfit.accessoryIds
+      accessoryIds: outfit.accessoryIds,
+      gender: outfit.gender,
+      weatherId: outfit.weatherId
     });
     setCurrentTab('studio');
   };
@@ -93,6 +98,8 @@ export function App() {
             initialStyleId={studioInitialParams.styleId}
             initialColorId={studioInitialParams.colorId}
             initialAccessoryIds={studioInitialParams.accessoryIds}
+            initialGender={studioInitialParams.gender}
+            initialWeatherId={studioInitialParams.weatherId}
             onNavigate={handleNavigate}
             onRefreshCompareCount={refreshCompareCount}
           />

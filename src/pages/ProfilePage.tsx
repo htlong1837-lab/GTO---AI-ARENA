@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { UserProfile, Outfit } from '../types/outfit';
 import { GARMENTS } from '../data/garments';
 import { COLORS } from '../data/colors';
@@ -43,10 +43,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   const [importJsonText, setImportJsonText] = useState('');
   const [importError, setImportError] = useState<string | null>(null);
 
-
-  useEffect(() => {
-    setProfile(StorageService.getProfile());
-  }, []);
 
   const handleSaveProfile = () => {
     if (!editName.trim()) {
@@ -303,9 +299,22 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                             {garment?.name}
                           </span>
                         </div>
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${style?.badgeColor}`}>
-                          {style?.name}
-                        </span>
+                        <div className="flex items-center gap-1.5">
+                          {outfit.gender && (
+                            <span
+                              className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${
+                                outfit.gender === 'male'
+                                  ? 'bg-sky-50 text-sky-700 border-sky-200'
+                                  : 'bg-rose-50 text-rose-700 border-rose-200'
+                              }`}
+                            >
+                              {outfit.gender === 'male' ? 'Nam ♂' : 'Nữ ♀'}
+                            </span>
+                          )}
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${style?.badgeColor}`}>
+                            {style?.name}
+                          </span>
+                        </div>
                       </div>
 
                       <h3 className="font-serif font-bold text-base text-stone-900 line-clamp-2 leading-snug">

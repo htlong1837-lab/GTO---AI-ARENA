@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Sparkles, Scale, Compass, BookOpen, User, Menu, X, PlusCircle } from 'lucide-react';
-import { Outfit } from '../../types/outfit';
 
 interface HeaderProps {
   currentTab: string;

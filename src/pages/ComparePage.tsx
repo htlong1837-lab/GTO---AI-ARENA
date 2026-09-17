@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Outfit } from '../types/outfit';
 import { GARMENTS } from '../data/garments';
 import { OCCASIONS } from '../data/occasions';
 import { COLORS } from '../data/colors';
 import { ACCESSORIES } from '../data/accessories';
 import { STYLES } from '../data/styles';
+import { WEATHER_CONDITIONS } from '../data/weather';
 import { StorageService } from '../services/storageService';
 import { calculateColorHarmony } from '../services/colorHarmonyService';
 import { useToast } from '../context/ToastContext';
@@ -23,10 +24,6 @@ export const ComparePage: React.FC<ComparePageProps> = ({
 }) => {
   const { showToast } = useToast();
   const [compareList, setCompareList] = useState<Outfit[]>(() => StorageService.getCompareList());
-
-  useEffect(() => {
-    setCompareList(StorageService.getCompareList());
-  }, []);
 
   const handleRemove = (outfitId: string) => {
     const updated = StorageService.removeFromCompare(outfitId);
@@ -184,6 +181,30 @@ export const ComparePage: React.FC<ComparePageProps> = ({
                     <td key={outfit.id} className="py-4 px-4">
                       <div className="font-bold text-stone-900">{occasion?.name}</div>
                       <div className="text-[11px] text-stone-500 mt-0.5">{occasion?.tag}</div>
+                    </td>
+                  );
+                })}
+              </tr>
+
+              {/* Row 5: Nhân vật & Khí hậu */}
+              <tr>
+                <td className="py-4 px-4 font-bold text-stone-700 bg-stone-50/50">Nhân vật & Khí hậu</td>
+                {compareList.map((outfit) => {
+                  const weather = WEATHER_CONDITIONS.find((w) => w.id === outfit.weatherId);
+                  return (
+                    <td key={outfit.id} className="py-4 px-4">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span
+                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                            outfit.gender === 'male' ? 'bg-sky-100 text-sky-800' : 'bg-rose-100 text-rose-800'
+                          }`}
+                        >
+                          {outfit.gender === 'male' ? 'Nam ♂' : 'Nữ ♀'}
+                        </span>
+                        <span className="px-2 py-0.5 rounded text-[10px] bg-amber-50 text-amber-800 font-medium">
+                          {weather ? weather.name : 'Mọi mùa'}
+                        </span>
+                      </div>
                     </td>
                   );
                 })}

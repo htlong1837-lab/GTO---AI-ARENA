@@ -9,8 +9,6 @@ export function evaluateCulturalOutfit(
   const hasModernSneaker = accessoryIds.includes('sneaker-chunky');
   const hasCyberGlasses = accessoryIds.includes('kinh-mat-y2k');
   const hasBoots = accessoryIds.includes('boots-da');
-  const hasTraditionalHeadwear = accessoryIds.includes('khan-dong') || accessoryIds.includes('non-quai-thao');
-  const hasTraditionalJewelry = accessoryIds.includes('kieng-bac') || accessoryIds.includes('tram-cai-toc');
 
   // Case 1: Nhật Bình (Regal attire) with high street / rebellious styles
   if (garmentId === 'nhat-binh') {
