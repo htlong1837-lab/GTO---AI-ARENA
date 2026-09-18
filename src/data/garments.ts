@@ -24,6 +24,12 @@ export const GARMENTS: Garment[] = [
     silhouette: 'flowing',
     image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80',
     defaultColorId: 'do-son',
+    formalityTier: 'modern_national',
+    inviolableFeatures: [
+      'Hai tà áo dài thướt tha xẻ eo đặc trưng',
+      'Mặc kèm quần dài suông (tránh mặc thiếu hạ y)',
+      'Cổ áo kín đáo giữ nét thanh tân'
+    ],
     historyDetails: {
       origin: 'Kế thừa từ áo ngũ thân lập lĩnh thời chúa Nguyễn Phúc Khoát (1744) và phong trào cách tân mỹ thuật Đông Dương thập niên 1930.',
       significance: 'Đại diện cho bản sắc văn hóa Việt Nam trên trường quốc tế, gắn liền với hình ảnh người phụ nữ và giới trí thức trẻ.',
@@ -54,6 +60,12 @@ export const GARMENTS: Garment[] = [
     silhouette: 'layered',
     image: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80',
     defaultColorId: 'xanh-cham',
+    formalityTier: 'folk_traditional',
+    inviolableFeatures: [
+      'Bốn thân áo tượng trưng tứ thân phụ mẫu',
+      'Yếm lót che ngực kín đáo mộc mạc',
+      'Dải thắt lưng buộc nơ biểu trưng nghĩa tình vợ chồng'
+    ],
     historyDetails: {
       origin: 'Trang phục phổ biến của người dân lao động và các liền chị vùng Kinh Bắc từ thời nhà Lý, Trần đến đầu thế kỷ 20.',
       significance: 'Tượng trưng cho sự tần tảo, duyên dáng và gắn kết gia đình truyền thống làng quê Việt.',
@@ -84,6 +96,12 @@ export const GARMENTS: Garment[] = [
     silhouette: 'structured',
     image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80',
     defaultColorId: 'vang-hoang-cuc',
+    formalityTier: 'scholarly_formal',
+    inviolableFeatures: [
+      'Cổ đứng lập lĩnh ôm khít cổ nghiêm trang',
+      'Hàng 5 cúc tượng trưng cho Ngũ Thường (Nhân, Lễ, Nghĩa, Trí, Tín)',
+      'Vạt con bên trong che chắn kín đáo trước ngực'
+    ],
     historyDetails: {
       origin: 'Năm 1744, Chúa Nguyễn Phúc Khoát ban hành cải cách trang phục Đàng Trong, sau đó vua Minh Mạng chuẩn hóa thành quốc phục toàn cõi.',
       significance: 'Chuẩn mực văn hóa nam giới và nữ giới thời Nguyễn, đề cao phong thái đĩnh đạc, mực thước.',
@@ -114,6 +132,12 @@ export const GARMENTS: Garment[] = [
     silhouette: 'regal',
     image: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80',
     defaultColorId: 'do-son',
+    formalityTier: 'court_regal',
+    inviolableFeatures: [
+      'Dải cổ đối khâm hình chữ nhật trước ngực (tuyệt đối không cắt ngắn hay làm biến dạng)',
+      'Dải hoa văn thêu chỉ kim tuyến / ngũ sắc hoàng cung',
+      'Phẩm phục tôn nghiêm hoàng thất triều Nguyễn, không phối hở hang'
+    ],
     historyDetails: {
       origin: 'Chế độ triều phục và thường phục hoàng tộc triều Nguyễn, phân định cấp bậc qua màu sắc (Hoàng hậu dùng vàng, Công chúa dùng đỏ, phi tần dùng lam/tím).',
       significance: 'Đỉnh cao của nghệ thuật thêu tay cung đình Huế và biểu tượng quyền lực quý phái của phụ nữ hoàng gia.',
@@ -144,6 +168,12 @@ export const GARMENTS: Garment[] = [
     silhouette: 'casual',
     image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80',
     defaultColorId: 'den-tuyen',
+    formalityTier: 'folk_traditional',
+    inviolableFeatures: [
+      'Xẻ tà hai bên hông tạo dáng cử động phóng khoáng sông nước',
+      'Hàng cúc dọc thân trước ngay ngắn',
+      'Túi áo vuông dân dã'
+    ],
     historyDetails: {
       origin: 'Xuất hiện vào thế kỷ 19 ở Nam Bộ, có thể chịu ảnh hưởng từ giao lưu thương mại văn hóa Mã Lai - Nam Đảo nhưng đã được Việt hóa triệt để.',
       significance: 'Biểu tượng của tinh thần quật khởi và nét đẹp bình dị của người dân miền Tây sông nước.',

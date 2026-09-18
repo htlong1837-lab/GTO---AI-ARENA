@@ -48,7 +48,7 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
 
   // Calculate live harmony and cultural evaluation
   const harmony = calculateColorHarmony(color.id, style.id, accessoryIds);
-  const advice = evaluateCulturalOutfit(garment.id, style.id, occasion.id, accessoryIds);
+  const advice = evaluateCulturalOutfit(garment.id, style.id, occasion.id, accessoryIds, color.id);
 
   const selectedAccessories = ACCESSORIES.filter((a) => accessoryIds.includes(a.id));
 
@@ -256,13 +256,21 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
 
       // Bottom Cultural Certification
       ctx.textAlign = 'center';
-      ctx.fillStyle = '#9B1D20';
+      ctx.fillStyle = advice.status === 'taboo' ? '#DC2626' : advice.status === 'caution' ? '#D97706' : '#059669';
       ctx.font = 'bold 11px sans-serif';
-      ctx.fillText('✦ BẢO CHỨNG DI SẢN • VIỆT PHỤC REMIX 2026 ✦', 375, 915);
+      const statusLabel =
+        advice.status === 'respectful'
+          ? 'CHUẨN MỰC DI SẢN'
+          : advice.status === 'innovative'
+          ? 'GIAO THOA SÁNG TẠO'
+          : advice.status === 'caution'
+          ? 'LƯU Ý HOÀN CẢNH'
+          : 'CẢNH BÁO SAI LỆCH';
+      ctx.fillText(`✦ CHỨNG CHỈ DI SẢN: ${statusLabel} (${advice.heritageScore}%) ✦`, 375, 915);
 
       ctx.fillStyle = '#9CA3AF';
       ctx.font = '10px monospace';
-      ctx.fillText(`Thời tiết: ${weather ? weather.name + ' (' + weather.temperature + ')' : 'Mọi mùa'} • Mã Look: ${lookCode}`, 375, 940);
+      ctx.fillText(`Ngũ hành: ${color.element} • Thời tiết: ${weather ? weather.name + ' (' + weather.temperature + ')' : 'Mọi mùa'} • Mã Look: ${lookCode}`, 375, 940);
 
       setTimeout(() => {
         const dataUrl = canvas.toDataURL('image/png');
@@ -373,7 +381,7 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
       )}
 
       {/* Live Color Harmony Analysis */}
-      <ColorHarmonyCard harmony={harmony} />
+      <ColorHarmonyCard harmony={harmony} color={color} />
 
       {/* Intelligent Cultural Advisory / Warning */}
       <CulturalWarningCard advice={advice} />

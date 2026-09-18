@@ -71,6 +71,45 @@ export const CULTURAL_ARTICLES: CulturalArticle[] = [
     ]
   },
   {
+    id: 'hieu-dung-ao-ba-ba',
+    title: 'Áo Bà Ba: Hồn Sông Nước Nam Bộ & Tinh Thần Hào Sảng',
+    garmentId: 'ao-ba-ba',
+    category: 'knowledge',
+    readingTime: '4 phút',
+    summary: 'Biểu tượng của nét đẹp bình dị, quật cường và hào sảng của con người đồng bằng sông Cửu Long qua bao thăng trầm thời cuộc.',
+    content: [
+      {
+        heading: 'Cội nguồn & Đặc trưng cấu trúc',
+        body: 'Xuất hiện vào thế kỷ 19 ở Nam Bộ, chiếc áo bà ba được tinh giản tối đa để phù hợp với khí hậu nhiệt đới và đời sống xuồng ghe: thân ngắn ngang hông, xẻ tà hai bên, cổ tròn hoặc tim, cài cúc giữa.'
+      },
+      {
+        heading: 'Khăn rằn & Nón lá Nam Bộ',
+        body: 'Bộ ba "Áo bà ba - Khăn rằn - Nón lá" đã đi vào thi ca như biểu tượng của người phụ nữ miền Tây: vừa chịu thương chịu khó, vừa hiên ngang trong kháng chiến giữ làng.'
+      },
+      {
+        heading: 'Gen Z Remix gợi ý',
+        body: 'Phối áo bà ba bằng chất liệu lụa bóng hoặc đũi dệt thô cùng quần tây ống rộng cạp cao, đi cùng dép cói hoặc sneaker trắng. Khăn rằn quấn chéo như khăn quàng cổ thời trang.'
+      }
+    ]
+  },
+  {
+    id: 'thuyet-ngu-sac-co-truyen',
+    title: 'Thuyết Ngũ Sắc: Triết Lý Màu Sắc Trong Y Quan Việt Cổ',
+    category: 'knowledge',
+    readingTime: '5 phút',
+    summary: 'Người xưa không chỉ chọn màu theo sở thích cá nhân mà vận dụng học thuyết Ngũ Hành để hòa hợp giữa con người, vũ trụ và đạo lý làm người.',
+    content: [
+      {
+        heading: 'Ngũ sắc tương ứng Ngũ hành',
+        body: 'Màu Đỏ (Hỏa - phương Nam), Vàng (Thổ - trung tâm), Xanh lục (Mộc - phương Đông), Trắng (Kim - phương Tây), Đen/Chàm (Thủy - phương Bắc). Sự luân chuyển ngũ sắc thể hiện càn khôn sinh sôi nảy nở.'
+      },
+      {
+        heading: 'Chính sắc vs Gian sắc',
+        body: 'Chính sắc (màu nguyên bản thuần khiết) thường dùng trong lễ tế, cung đình và sự kiện tôn nghiêm. Gian sắc (màu pha trộn, hòa sắc như tím, hồng phấn, xanh mây) biểu trưng cho đời sống dân gian thi vị và uyển chuyển.'
+      }
+    ]
+  },
+  {
     id: 'quy-tac-remix-van-minh',
     title: '4 Quy Tắc Vàng Khi Gen Z Phối Việt Phục',
     category: 'guide',
@@ -91,7 +130,7 @@ export const CULTURAL_ARTICLES: CulturalArticle[] = [
       },
       {
         heading: '4. Hiểu câu chuyện đằng sau trang phục',
-        body: 'Mặc đẹp nhất là khi bạn có thể tự tin kể cho bạn bè trong nước và quốc tế nghe về nguồn gốc tà áo mình đang khoác trên vai.'
+        body: 'Mặc đẹp nhất là khi bạn có thể tự tin kể cho bạn bè trong nước và quốc tế nghe về nguồn gốc tà áo mình đang khoác trên vai (Tham khảo tài liệu nghiên cứu: Ngàn Năm Áo Mũ - Trần Quang Đức, Đại Nam Thực Lục).'
       }
     ]
   }

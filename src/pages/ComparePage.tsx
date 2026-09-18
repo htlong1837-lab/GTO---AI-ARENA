@@ -8,6 +8,7 @@ import { STYLES } from '../data/styles';
 import { WEATHER_CONDITIONS } from '../data/weather';
 import { StorageService } from '../services/storageService';
 import { calculateColorHarmony } from '../services/colorHarmonyService';
+import { evaluateCulturalOutfit } from '../services/culturalAdviceService';
 import { useToast } from '../context/ToastContext';
 import { Scale, Sparkles, Plus, X } from 'lucide-react';
 
@@ -227,6 +228,38 @@ export const ComparePage: React.FC<ComparePageProps> = ({
                           </span>
                         ))}
                       </div>
+                    </td>
+                  );
+                })}
+              </tr>
+
+              {/* Row: Đánh giá Di sản & Văn hóa */}
+              <tr>
+                <td className="py-4 px-4 font-bold text-stone-700 bg-stone-50/50">Độ chuẩn Di sản</td>
+                {compareList.map((outfit) => {
+                  const advice = evaluateCulturalOutfit(outfit.garmentId, outfit.styleId, outfit.occasionId, outfit.accessoryIds, outfit.colorId);
+                  const isTaboo = advice.status === 'taboo';
+                  const isCaution = advice.status === 'caution';
+                  const isInnovative = advice.status === 'innovative';
+                  return (
+                    <td key={outfit.id} className="py-4 px-4">
+                      <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                            isTaboo
+                              ? 'bg-rose-100 text-rose-800 border border-rose-300'
+                              : isCaution
+                              ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                              : isInnovative
+                              ? 'bg-purple-100 text-purple-800 border border-purple-300'
+                              : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                          }`}
+                        >
+                          {isTaboo ? 'Cảnh báo sai lệch' : isCaution ? 'Cần lưu ý' : isInnovative ? 'Giao thoa Gen Z' : 'Chuẩn mực'}
+                        </span>
+                        <span className="text-xs font-extrabold font-mono text-stone-800">{advice.heritageScore}%</span>
+                      </div>
+                      <p className="text-[11px] text-stone-600 line-clamp-2 leading-relaxed">{advice.title}</p>
                     </td>
                   );
                 })}

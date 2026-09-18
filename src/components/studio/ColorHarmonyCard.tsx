@@ -1,12 +1,30 @@
 import React from 'react';
-import { ColorHarmonyReport } from '../../types/outfit';
-import { Palette, CheckCircle, Flame } from 'lucide-react';
+import { ColorHarmonyReport, ColorOption } from '../../types/outfit';
+import { Palette, CheckCircle, Flame, Compass } from 'lucide-react';
 
 interface ColorHarmonyCardProps {
   harmony: ColorHarmonyReport;
+  color?: ColorOption;
 }
 
-export const ColorHarmonyCard: React.FC<ColorHarmonyCardProps> = ({ harmony }) => {
+export const ColorHarmonyCard: React.FC<ColorHarmonyCardProps> = ({ harmony, color }) => {
+  const getElementBadgeStyle = (element?: string) => {
+    switch (element) {
+      case 'Hỏa':
+        return 'bg-rose-100 text-rose-900 border-rose-200';
+      case 'Thổ':
+        return 'bg-amber-100 text-amber-900 border-amber-200';
+      case 'Kim':
+        return 'bg-stone-100 text-stone-800 border-stone-300';
+      case 'Thủy':
+        return 'bg-sky-100 text-sky-900 border-sky-200';
+      case 'Mộc':
+        return 'bg-emerald-100 text-emerald-900 border-emerald-200';
+      default:
+        return 'bg-stone-100 text-stone-700 border-stone-200';
+    }
+  };
+
   return (
     <div className="bg-white/90 backdrop-blur-md rounded-2xl p-5 border border-heritage-border/80 shadow-sm">
       <div className="flex items-center justify-between mb-3">
@@ -42,6 +60,20 @@ export const ColorHarmonyCard: React.FC<ColorHarmonyCardProps> = ({ harmony }) =
           />
         </div>
       </div>
+
+      {/* Ngũ Hành & Cổ sắc metadata */}
+      {color && (
+        <div className="mb-3 p-2.5 rounded-xl bg-stone-50 border border-stone-200/70 text-xs flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5">
+            <Compass className="w-3.5 h-3.5 text-heritage-gold shrink-0" />
+            <span className="text-stone-600">Quy chuẩn cổ sắc:</span>
+            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getElementBadgeStyle(color.element)}`}>
+              Hành {color.element} • {color.colorType === 'chinh_sac' ? 'Chính sắc Cung đình' : 'Gian sắc Dân gian'}
+            </span>
+          </div>
+          <span className="text-[10px] text-stone-500 italic hidden sm:inline">{color.vietnameseName}</span>
+        </div>
+      )}
 
       {/* Color Palette Swatches */}
       <div className="grid grid-cols-3 gap-2.5 pt-2 border-t border-stone-100">

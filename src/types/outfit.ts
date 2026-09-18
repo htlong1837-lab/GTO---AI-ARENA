@@ -1,5 +1,9 @@
 export type Region = 'Bắc Bộ' | 'Trung Bộ' | 'Nam Bộ' | 'Toàn quốc';
 
+export type FormalityTier = 'court_regal' | 'scholarly_formal' | 'folk_traditional' | 'modern_national';
+
+export type NguHanhElement = 'Kim' | 'Mộc' | 'Thủy' | 'Hỏa' | 'Thổ';
+
 export interface Garment {
   id: string;
   name: string;
@@ -13,6 +17,8 @@ export interface Garment {
   silhouette: 'flowing' | 'layered' | 'structured' | 'regal' | 'casual';
   image: string;
   defaultColorId: string;
+  formalityTier: FormalityTier;
+  inviolableFeatures: string[];
   historyDetails: {
     origin: string;
     significance: string;
@@ -42,6 +48,9 @@ export interface ColorOption {
   mood: string;
   culturalMeaning: string;
   category: 'heritage' | 'royal' | 'pastel' | 'modern';
+  element: NguHanhElement;
+  colorType: 'chinh_sac' | 'gian_sac';
+  elementMeaning: string;
 }
 
 export interface Accessory {
@@ -104,12 +113,22 @@ export interface ColorHarmonyReport {
   contrastScore: number;
 }
 
+export type CulturalStatus = 'respectful' | 'innovative' | 'caution' | 'taboo';
+
 export interface CulturalAdvice {
-  status: 'respectful' | 'innovative' | 'caution';
+  status: CulturalStatus;
   title: string;
   description: string;
   traditionalFeatures: string[];
   modernTwistNotes: string[];
+  heritageScore: number; // 0 to 100
+  tabooAlert?: string; // Cảnh báo vi phạm nghiêm trọng
+  nguHanhNote?: string; // Phân tích ngũ hành
+  boundaryGuide?: {
+    doList: string[];
+    dontList: string[];
+  };
+  sourceCitation?: string; // Thư tịch / Căn cứ lịch sử
 }
 
 export interface CuratedLook {

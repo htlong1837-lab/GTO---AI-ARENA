@@ -11,7 +11,10 @@ export const COLORS: ColorOption[] = [
     accentHex: '#182747',
     mood: 'Quyền quý, may mắn, rạng rỡ và nhiệt huyết thanh xuân',
     culturalMeaning: 'Màu của hỷ sự, may mắn cát tường và quyền uy quý phái của cung đình Việt Nam.',
-    category: 'royal'
+    category: 'royal',
+    element: 'Hỏa',
+    colorType: 'chinh_sac',
+    elementMeaning: 'Hành Hỏa phương Nam, biểu trưng cho sinh khí, nhiệt huyết, lễ nghi quang minh và hỷ sự.'
   },
   {
     id: 'vang-hoang-cuc',
@@ -23,7 +26,10 @@ export const COLORS: ColorOption[] = [
     accentHex: '#1D6246',
     mood: 'Ấm áp, đài các, phú quý và tươi sáng như ánh nắng phương Nam',
     culturalMeaning: 'Màu của đất mẹ phì nhiêu, sự vương giả và trí tuệ thâm trầm theo quan niệm ngũ hành Thổ.',
-    category: 'royal'
+    category: 'royal',
+    element: 'Thổ',
+    colorType: 'chinh_sac',
+    elementMeaning: 'Hành Thổ vị trí trung cung, biểu trưng cho cội nguồn đất mẹ bao dung, vương giả và sự vững chãi.'
   },
   {
     id: 'xanh-cham',
@@ -35,7 +41,10 @@ export const COLORS: ColorOption[] = [
     accentHex: '#CA4F76',
     mood: 'Thâm trầm, bí ẩn, tri thức và chiều sâu nội tâm',
     culturalMeaning: 'Màu nhuộm truyền thống từ cây chàm, gắn với đời sống lao động cần cù và nét mộc mạc bền bỉ.',
-    category: 'heritage'
+    category: 'heritage',
+    element: 'Thủy',
+    colorType: 'gian_sac',
+    elementMeaning: 'Hành Thủy phương Bắc, biểu trưng cho sự thâm sâu, bền bỉ và tri thức nội tâm của người xưa.'
   },
   {
     id: 'trang-lua-nga',
@@ -47,7 +56,10 @@ export const COLORS: ColorOption[] = [
     accentHex: '#182747',
     mood: 'Thanh khiết, tối giản, tao nhã và thanh tân học đường',
     culturalMeaning: 'Tượng trưng cho sự tinh khôi, trong sáng của tà áo dài nữ sinh Việt Nam qua bao thế hệ.',
-    category: 'heritage'
+    category: 'heritage',
+    element: 'Kim',
+    colorType: 'chinh_sac',
+    elementMeaning: 'Hành Kim phương Tây, biểu trưng cho đức tính chính trực, thanh khiết và vẹn nguyên sơ tâm.'
   },
   {
     id: 'den-tuyen',
@@ -59,7 +71,10 @@ export const COLORS: ColorOption[] = [
     accentHex: '#FF4757',
     mood: 'Bí ẩn, uy nghiêm, cá tính và sắc sảo chuẩn thời trang cao cấp',
     culturalMeaning: 'Màu của mực tàu trên giấy điệp, tượng trưng cho nét bút Nho sinh đĩnh đạc và phong thái đĩnh đạc.',
-    category: 'modern'
+    category: 'modern',
+    element: 'Thủy',
+    colorType: 'chinh_sac',
+    elementMeaning: 'Hành Thủy cổ truyền (Huyền sắc), tượng trưng cho sự huyền vi, uy nghiêm đĩnh đạc của bậc sĩ phu.'
   },
   {
     id: 'hong-canh-sen',
@@ -71,7 +86,10 @@ export const COLORS: ColorOption[] = [
     accentHex: '#F4EFE6',
     mood: 'Ngọt ngào, duyên dáng, lãng mạn và yểu điệu',
     culturalMeaning: 'Sắc hồng của hoa sen - quốc hoa biểu trưng cho vẻ đẹp thuần khiết "gần bùn mà chẳng hôi tanh mùi bùn".',
-    category: 'pastel'
+    category: 'pastel',
+    element: 'Hỏa',
+    colorType: 'gian_sac',
+    elementMeaning: 'Gian sắc phối thuộc Hỏa, biểu trưng cho sự nhu hòa, duyên dáng thanh tao của người thiếu nữ.'
   },
   {
     id: 'tim-hue',
@@ -83,7 +101,10 @@ export const COLORS: ColorOption[] = [
     accentHex: '#F4EFE6',
     mood: 'Mơ màng, e ấp, thủy chung và hoài niệm cổ kính',
     culturalMeaning: 'Màu sắc đặc trưng của xứ Huế mộng mơ, gắn liền với hình bóng thiếu nữ bên dòng Hương giang.',
-    category: 'heritage'
+    category: 'heritage',
+    element: 'Hỏa',
+    colorType: 'gian_sac',
+    elementMeaning: 'Gian sắc phối giữa xanh chàm và đỏ tía, biểu trưng cho lòng thủy chung son sắt và chất trữ tình Cố đô.'
   },
   {
     id: 'xanh-ngoc-luc',
@@ -95,7 +116,10 @@ export const COLORS: ColorOption[] = [
     accentHex: '#CA4F76',
     mood: 'Tươi mới, mát mẻ, tái sinh và sang trọng quý tộc',
     culturalMeaning: 'Màu của đá ngọc bích, biểu tượng cho tính khiêm hòa, cốt cách quân tử và vẻ đẹp trường tồn.',
-    category: 'royal'
+    category: 'royal',
+    element: 'Mộc',
+    colorType: 'chinh_sac',
+    elementMeaning: 'Hành Mộc phương Đông, tượng trưng cho mùa xuân, đức nhân, sự sinh sôi nảy nở và tính khiêm cung.'
   },
   {
     id: 'pastel-thanh-thien',
@@ -107,6 +131,9 @@ export const COLORS: ColorOption[] = [
     accentHex: '#CA4F76',
     mood: 'Dịu dàng, hiện đại, bay bổng và đậm chất Gen Z aesthetic',
     culturalMeaning: 'Biến thể cách tân hiện đại lấy cảm hứng từ mây trời cao nguyên và men gốm hoa lam thời Lý - Trần.',
-    category: 'pastel'
+    category: 'pastel',
+    element: 'Mộc',
+    colorType: 'gian_sac',
+    elementMeaning: 'Gian sắc hòa sắc thanh tân, kế thừa mỹ cảm đồ gốm hoa lam thời Lý - Trần kết hợp phong cách đương đại.'
   }
 ];
