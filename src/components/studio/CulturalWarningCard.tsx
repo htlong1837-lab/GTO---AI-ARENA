@@ -10,32 +10,31 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
   const isTaboo = advice.status === 'taboo';
   const isCaution = advice.status === 'caution';
   const isInnovative = advice.status === 'innovative';
-  const isRespectful = advice.status === 'respectful';
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return 'text-emerald-700 bg-emerald-100 border-emerald-300';
-    if (score >= 75) return 'text-purple-700 bg-purple-100 border-purple-300';
-    if (score >= 60) return 'text-amber-700 bg-amber-100 border-amber-300';
-    return 'text-rose-700 bg-rose-100 border-rose-300';
+    if (score >= 90) return 'text-emerald-700 bg-emerald-100/80 border-emerald-300';
+    if (score >= 75) return 'text-purple-700 bg-purple-100/80 border-purple-300';
+    if (score >= 60) return 'text-amber-700 bg-amber-100/80 border-amber-300';
+    return 'text-rose-700 bg-rose-100/80 border-rose-300';
   };
 
   const getProgressBarColor = (score: number) => {
-    if (score >= 90) return 'bg-emerald-600';
-    if (score >= 75) return 'bg-purple-600';
+    if (score >= 90) return 'bg-emerald-500';
+    if (score >= 75) return 'bg-purple-500';
     if (score >= 60) return 'bg-amber-500';
-    return 'bg-rose-600';
+    return 'bg-rose-500';
   };
 
   return (
     <div
       className={`rounded-2xl p-5 border transition-all ${
         isTaboo
-          ? 'bg-rose-50/95 border-rose-300 shadow-sm text-rose-950'
+          ? 'bg-rose-50 border-rose-200 text-rose-950 shadow-xs'
           : isCaution
-          ? 'bg-amber-50/90 border-amber-300/80 text-amber-950'
+          ? 'bg-amber-50 border-amber-200 text-amber-950 shadow-xs'
           : isInnovative
-          ? 'bg-purple-50/90 border-purple-200 text-purple-950'
-          : 'bg-emerald-50/85 border-emerald-200 text-emerald-950'
+          ? 'bg-purple-50 border-purple-200 text-purple-950 shadow-xs'
+          : 'bg-emerald-50 border-emerald-200 text-emerald-950 shadow-xs'
       }`}
     >
       {/* Top Header: Badge, Title & Heritage Score */}
@@ -46,7 +45,7 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
               isTaboo
                 ? 'bg-rose-600 text-white'
                 : isCaution
-                ? 'bg-amber-500 text-white'
+                ? 'bg-amber-500 text-stone-950'
                 : isInnovative
                 ? 'bg-purple-600 text-white'
                 : 'bg-emerald-600 text-white'
@@ -65,14 +64,14 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <span
-                className={`text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-2xs ${
+                className={`text-[9px] font-serif font-bold uppercase tracking-[0.15em] px-2.5 py-0.5 rounded-full shadow-xs ${
                   isTaboo
                     ? 'bg-rose-600 text-white'
                     : isCaution
-                    ? 'bg-amber-200 text-amber-900'
+                    ? 'bg-amber-400 text-stone-950'
                     : isInnovative
-                    ? 'bg-purple-200 text-purple-900'
-                    : 'bg-emerald-200 text-emerald-900'
+                    ? 'bg-purple-500 text-white'
+                    : 'bg-emerald-500 text-stone-950'
                 }`}
               >
                 {isTaboo
@@ -84,7 +83,7 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
                   : 'Chuẩn mực di sản (Heritage Preserved)'}
               </span>
             </div>
-            <h4 className="font-bold text-sm sm:text-base leading-snug mt-1">{advice.title}</h4>
+            <h4 className="font-serif font-bold text-base leading-snug mt-1 text-stone-900">{advice.title}</h4>
           </div>
         </div>
 
@@ -100,7 +99,7 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
       </div>
 
       {/* Heritage Score Bar */}
-      <div className="w-full bg-black/10 rounded-full h-1.5 mb-3 overflow-hidden">
+      <div className="w-full bg-stone-200/80 rounded-full h-1.5 mb-3 overflow-hidden">
         <div
           className={`h-full transition-all duration-700 rounded-full ${getProgressBarColor(advice.heritageScore)}`}
           style={{ width: `${advice.heritageScore}%` }}
@@ -108,11 +107,11 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
       </div>
 
       {/* Description */}
-      <p className="text-xs leading-relaxed opacity-90">{advice.description}</p>
+      <p className="text-xs leading-relaxed text-stone-700 font-light">{advice.description}</p>
 
       {/* Taboo Violation Alert Callout (If taboo) */}
       {advice.tabooAlert && (
-        <div className="mt-3 p-3 rounded-xl bg-rose-100/90 border border-rose-300/80 text-rose-900 text-xs">
+        <div className="mt-3 p-3 rounded-xl bg-rose-100 border border-rose-300 text-rose-900 text-xs">
           <div className="flex items-center gap-1.5 font-bold mb-1 text-rose-950">
             <AlertOctagon className="w-4 h-4 text-rose-600 shrink-0" />
             <span>Quy tắc di sản bất khả xâm phạm:</span>
@@ -123,42 +122,42 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
 
       {/* Ngũ Hành Wisdom Pill */}
       {advice.nguHanhNote && (
-        <div className="mt-3 p-2.5 rounded-xl bg-white/70 border border-black/5 text-xs flex items-start gap-2 text-stone-700">
-          <Compass className="w-4 h-4 text-heritage-gold shrink-0 mt-0.5" />
+        <div className="mt-3 p-2.5 rounded-xl bg-stone-100/80 border border-[#E2D8C7] text-xs flex items-start gap-2 text-stone-700">
+          <Compass className="w-4 h-4 text-[#C59338] shrink-0 mt-0.5" />
           <div>
-            <span className="font-bold text-[10px] uppercase tracking-wider text-stone-800 block mb-0.5">
+            <span className="font-bold text-[10px] uppercase tracking-wider text-stone-900 block mb-0.5">
               Triết lý Ngũ Sắc & Ngũ Hành:
             </span>
-            <p className="leading-relaxed text-[11px]">{advice.nguHanhNote}</p>
+            <p className="leading-relaxed text-[11px] font-light">{advice.nguHanhNote}</p>
           </div>
         </div>
       )}
 
       {/* Traditional vs Modern Features Breakdown */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-3 border-t border-black/10 mt-3 text-xs">
-        <div className="bg-white/75 p-3 rounded-xl border border-black/5">
-          <span className="font-bold text-[10px] uppercase tracking-wider text-stone-800 block mb-1.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-3 border-t border-[#E2D8C7] mt-3 text-xs">
+        <div className="bg-white/80 p-3 rounded-xl border border-[#E2D8C7] shadow-2xs">
+          <span className="font-bold text-[10px] uppercase tracking-wider text-stone-900 block mb-1.5">
             🧵 Yếu tố Cổ truyền Giữ gìn
           </span>
           <ul className="space-y-1.5 text-stone-700">
             {advice.traditionalFeatures.map((feat, i) => (
               <li key={i} className="flex items-start gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-heritage-gold shrink-0 mt-1.5" />
-                <span className="leading-snug">{feat}</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C59338] shrink-0 mt-1.5" />
+                <span className="leading-snug font-light">{feat}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="bg-white/75 p-3 rounded-xl border border-black/5">
-          <span className="font-bold text-[10px] uppercase tracking-wider text-stone-800 block mb-1.5">
+        <div className="bg-white/80 p-3 rounded-xl border border-[#E2D8C7] shadow-2xs">
+          <span className="font-bold text-[10px] uppercase tracking-wider text-stone-900 block mb-1.5">
             ⚡ Điểm Cách Điệu & Đương đại
           </span>
           <ul className="space-y-1.5 text-stone-700">
             {advice.modernTwistNotes.map((note, i) => (
               <li key={i} className="flex items-start gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shrink-0 mt-1.5" />
-                <span className="leading-snug">{note}</span>
+                <span className="leading-snug font-light">{note}</span>
               </li>
             ))}
           </ul>
@@ -168,7 +167,7 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
       {/* Boundary Guide (Do & Don't) */}
       {advice.boundaryGuide && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 text-xs">
-          <div className="bg-emerald-50/70 p-2.5 rounded-xl border border-emerald-200/60">
+          <div className="bg-emerald-100/70 p-2.5 rounded-xl border border-emerald-300/60">
             <span className="font-bold text-[10px] uppercase tracking-wider text-emerald-800 block mb-1">
               ✓ Nên áp dụng (Do)
             </span>
@@ -176,12 +175,12 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
               {advice.boundaryGuide.doList.map((d, i) => (
                 <li key={i} className="flex items-start gap-1.5">
                   <span className="text-emerald-600 font-bold">•</span>
-                  <span>{d}</span>
+                  <span className="font-light">{d}</span>
                 </li>
               ))}
             </ul>
           </div>
-          <div className="bg-rose-50/70 p-2.5 rounded-xl border border-rose-200/60">
+          <div className="bg-rose-100/70 p-2.5 rounded-xl border border-rose-300/60">
             <span className="font-bold text-[10px] uppercase tracking-wider text-rose-800 block mb-1">
               ✕ Tuyệt đối tránh (Don't)
             </span>
@@ -189,7 +188,7 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
               {advice.boundaryGuide.dontList.map((d, i) => (
                 <li key={i} className="flex items-start gap-1.5">
                   <span className="text-rose-600 font-bold">•</span>
-                  <span>{d}</span>
+                  <span className="font-light">{d}</span>
                 </li>
               ))}
             </ul>
@@ -199,9 +198,9 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
 
       {/* Citation Footer */}
       {advice.sourceCitation && (
-        <div className="mt-3 pt-2 border-t border-black/10 flex items-center gap-1.5 text-[10px] text-stone-500">
-          <BookOpen className="w-3 h-3 text-stone-400" />
-          <span>Căn cứ lịch sử: <strong className="font-semibold text-stone-600">{advice.sourceCitation}</strong></span>
+        <div className="mt-3 pt-2 border-t border-stone-200 flex items-center gap-1.5 text-[10px] text-stone-500">
+          <BookOpen className="w-3 h-3 text-[#C59338]" />
+          <span>Căn cứ lịch sử: <strong className="font-semibold text-stone-800">{advice.sourceCitation}</strong></span>
         </div>
       )}
     </div>

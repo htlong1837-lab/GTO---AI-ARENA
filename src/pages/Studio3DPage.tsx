@@ -26,7 +26,8 @@ import {
   Bookmark,
   ShieldCheck,
   Layers,
-  FolderDown
+  FolderDown,
+  Sparkles
 } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 
@@ -244,27 +245,27 @@ export const Studio3DPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F7F4] text-stone-800 py-6 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#FAF7F2] text-stone-800 py-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Page Header */}
-        <div className="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-5">
+        {/* Page Header: High-Fashion 3D Atelier Masthead */}
+        <div className="bg-white rounded-[2.5rem] p-6 sm:p-7 border border-[#E2D8C7] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-5 text-stone-800">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-100 text-heritage-red border border-rose-200 flex items-center gap-1.5">
-                <Layers className="w-3.5 h-3.5" />
+              <span className="px-3 py-1 rounded-full text-xs font-serif font-bold uppercase tracking-wider bg-stone-100 text-[#C59338] border border-[#E2D8C7] flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5 text-[#C59338]" />
                 Không Gian Bảo Tồn Cổ Phục 3D
               </span>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-200">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-600 border border-[#E2D8C7]">
                 Chuẩn PBR Siêu Thực
               </span>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
                 5 Cổ Phục & 8 Phụ Kiện
               </span>
             </div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
-              Phòng Trưng Bày Cổ Phục & Phụ Kiện 3D
+            <h1 className="font-serif text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+              Sàn Diễn Trực Quan Cổ Phục & Phụ Kiện 3D
             </h1>
-            <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-2xl">
+            <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-2xl font-sans font-light">
               Chiêm ngưỡng và tương tác 360° với 5 trang phục di sản tiêu biểu và 8 trang phục kèm theo / phụ kiện cổ truyền Việt Nam chuẩn PBR siêu thực.
             </p>
           </div>
@@ -273,16 +274,16 @@ export const Studio3DPage: React.FC = () => {
           <div className="flex flex-wrap items-center gap-2.5">
             <button
               onClick={handleTakeSnapshot}
-              className="px-3.5 py-2.5 rounded-2xl bg-white hover:bg-stone-50 border border-stone-300 text-stone-800 text-xs font-bold flex items-center gap-1.5 shadow-2xs transition-all hover:scale-[1.02]"
+              className="px-4 py-2 rounded-full bg-[#FAF7F2] hover:bg-stone-100 border border-[#E2D8C7] text-stone-700 text-xs font-medium flex items-center gap-1.5 transition-all"
               title="Chụp ảnh Lookbook HD"
             >
-              <Camera className="w-4 h-4 text-heritage-gold" />
+              <Camera className="w-4 h-4 text-[#C59338]" />
               <span>Chụp Lookbook</span>
             </button>
 
             <button
               onClick={handleDownloadActiveGLB}
-              className="px-3.5 py-2.5 rounded-2xl bg-white hover:bg-stone-50 border border-stone-300 text-stone-800 text-xs font-bold flex items-center gap-1.5 shadow-2xs transition-all hover:scale-[1.02]"
+              className="px-4 py-2 rounded-full bg-[#FAF7F2] hover:bg-stone-100 border border-[#E2D8C7] text-stone-700 text-xs font-medium flex items-center gap-1.5 transition-all"
               title={`Tải file .GLB ${activeItem.name}`}
             >
               <Download className="w-4 h-4 text-emerald-600" />
@@ -291,18 +292,18 @@ export const Studio3DPage: React.FC = () => {
 
             <button
               onClick={handleDownloadBatch}
-              className="px-3.5 py-2.5 rounded-2xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-heritage-red text-xs font-bold flex items-center gap-1.5 shadow-2xs transition-all hover:scale-[1.02]"
+              className="px-4 py-2 rounded-full bg-amber-50 hover:bg-amber-100/80 border border-amber-300 text-amber-900 text-xs font-bold flex items-center gap-1.5 transition-all"
               title={activeTab === 'garment' ? 'Tải trọn bộ 5 file .GLB Cổ Phục' : 'Tải trọn bộ 8 file .GLB Phụ Kiện Kèm Theo'}
             >
-              <FolderDown className="w-4 h-4 text-heritage-red" />
+              <FolderDown className="w-4 h-4 text-[#C59338]" />
               <span>{activeTab === 'garment' ? 'Tải 5 Cổ Phục' : 'Tải 8 Phụ Kiện'}</span>
             </button>
 
             <button
               onClick={handleSaveToWardrobe}
-              className="px-4 py-2.5 rounded-2xl bg-heritage-red hover:bg-heritage-red-dark text-white text-xs font-bold flex items-center gap-1.5 shadow-red-glow transition-all hover:scale-[1.02]"
+              className="px-5 py-2 rounded-full bg-stone-900 hover:bg-black text-white text-xs font-semibold tracking-wide flex items-center gap-1.5 shadow-md transition-all"
             >
-              <Bookmark className="w-4 h-4 text-white" />
+              <Bookmark className="w-4 h-4 text-amber-300" />
               <span>Lưu Tủ Đồ</span>
             </button>
           </div>
@@ -311,39 +312,39 @@ export const Studio3DPage: React.FC = () => {
         {/* Main Grid: 3D Canvas (Left) + Garment Panel (Right) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Left: 3D Viewport & Toolbars (7-8 cols) */}
-          <div className="lg:col-span-7 xl:col-span-8 bg-white rounded-3xl p-4 sm:p-5 border border-stone-200/80 shadow-xs flex flex-col gap-4">
+          <div className="lg:col-span-7 xl:col-span-8 bg-white rounded-[2.5rem] p-4 sm:p-5 border border-[#E2D8C7] shadow-sm flex flex-col gap-4 text-stone-800">
             {/* Top Toolbar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-stone-100 text-xs">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#E2D8C7] text-xs">
               {/* Lighting Mood Switcher */}
-              <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-xl">
+              <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-full border border-stone-200">
                 <button
                   onClick={() => setLightingMode('studio')}
-                  className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
-                    lightingMode === 'studio' ? 'bg-white text-stone-900 shadow-2xs font-bold' : 'text-stone-600 hover:text-stone-900'
+                  className={`px-3 py-1 rounded-full font-medium transition-all ${
+                    lightingMode === 'studio' ? 'bg-white text-stone-950 font-semibold shadow-xs' : 'text-stone-600 hover:text-stone-900'
                   }`}
                 >
                   🏛️ Hoàng Cung
                 </button>
                 <button
                   onClick={() => setLightingMode('cyber')}
-                  className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
-                    lightingMode === 'cyber' ? 'bg-stone-900 text-fuchsia-400 shadow-2xs font-bold' : 'text-stone-600 hover:text-stone-900'
+                  className={`px-3 py-1 rounded-full font-medium transition-all ${
+                    lightingMode === 'cyber' ? 'bg-white text-stone-950 font-semibold shadow-xs' : 'text-stone-600 hover:text-stone-900'
                   }`}
                 >
                   ⚡ Cyber Neon
                 </button>
                 <button
                   onClick={() => setLightingMode('natural')}
-                  className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
-                    lightingMode === 'natural' ? 'bg-white text-emerald-800 shadow-2xs font-bold' : 'text-stone-600 hover:text-stone-900'
+                  className={`px-3 py-1 rounded-full font-medium transition-all ${
+                    lightingMode === 'natural' ? 'bg-white text-stone-950 font-semibold shadow-xs' : 'text-stone-600 hover:text-stone-900'
                   }`}
                 >
                   ☀️ Tự Nhiên
                 </button>
                 <button
                   onClick={() => setLightingMode('minimal')}
-                  className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
-                    lightingMode === 'minimal' ? 'bg-white text-stone-900 shadow-2xs font-bold' : 'text-stone-600 hover:text-stone-900'
+                  className={`px-3 py-1 rounded-full font-medium transition-all ${
+                    lightingMode === 'minimal' ? 'bg-white text-stone-950 font-semibold shadow-xs' : 'text-stone-600 hover:text-stone-900'
                   }`}
                 >
                   ⚪ Tối Giản
@@ -354,10 +355,10 @@ export const Studio3DPage: React.FC = () => {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setAutoRotate(!autoRotate)}
-                  className={`px-3 py-1.5 rounded-xl font-medium flex items-center gap-1.5 border transition-all ${
+                  className={`px-3.5 py-1.5 rounded-full font-medium flex items-center gap-1.5 border transition-all ${
                     autoRotate
-                      ? 'bg-rose-50 text-heritage-red border-rose-200 font-bold'
-                      : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'
+                      ? 'bg-stone-900 text-white border-stone-900 font-bold'
+                      : 'bg-[#FAF7F2] text-stone-700 border-[#E2D8C7] hover:bg-stone-100'
                   }`}
                 >
                   <RotateCw className={`w-3.5 h-3.5 ${autoRotate ? 'animate-spin' : ''}`} />
@@ -366,10 +367,10 @@ export const Studio3DPage: React.FC = () => {
 
                 <button
                   onClick={() => setIsWireframe(!isWireframe)}
-                  className={`px-3 py-1.5 rounded-xl font-medium flex items-center gap-1.5 border transition-all ${
+                  className={`px-3.5 py-1.5 rounded-full font-medium flex items-center gap-1.5 border transition-all ${
                     isWireframe
-                      ? 'bg-amber-50 text-amber-800 border-amber-300 font-bold'
-                      : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'
+                      ? 'bg-[#DFB058] text-stone-950 border-[#DFB058] font-bold'
+                      : 'bg-[#FAF7F2] text-stone-700 border-[#E2D8C7] hover:bg-stone-100'
                   }`}
                 >
                   <Eye className="w-3.5 h-3.5" />
@@ -379,7 +380,7 @@ export const Studio3DPage: React.FC = () => {
             </div>
 
             {/* 3D Canvas Element */}
-            <div className="w-full h-[540px] sm:h-[600px] bg-stone-100 rounded-2xl overflow-hidden relative border border-stone-200/60">
+            <div className="w-full h-[540px] sm:h-[600px] bg-stone-950 rounded-2xl overflow-hidden relative border border-[#E2D8C7] shadow-lg">
               <ThreeCanvas
                 ref={canvasRef}
                 slots={activeSlots}
@@ -415,37 +416,37 @@ export const Studio3DPage: React.FC = () => {
 
             {/* Bottom Camera Focus Bar */}
             <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs">
-              <span className="text-stone-500 font-medium">Góc nhìn chi tiết:</span>
+              <span className="text-stone-500 font-serif italic">Góc nhìn chi tiết sàn diễn:</span>
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => setCameraPreset('all')}
-                  className={`px-3 py-1.5 rounded-xl font-medium transition-all ${
+                  className={`px-3 py-1.5 rounded-full font-medium transition-all ${
                     cameraPreset === 'all'
-                      ? 'bg-stone-900 text-white shadow-2xs font-bold'
-                      : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                      ? 'bg-stone-900 text-white font-semibold'
+                      : 'bg-stone-100 text-stone-600 hover:text-stone-900 hover:bg-stone-200'
                   }`}
                 >
                   👘 Toàn cảnh
                 </button>
                 <button
                   onClick={() => setCameraPreset('collar')}
-                  className={`px-3 py-1.5 rounded-xl font-medium transition-all ${
+                  className={`px-3 py-1.5 rounded-full font-medium transition-all ${
                     cameraPreset === 'collar'
-                      ? 'bg-stone-900 text-white shadow-2xs font-bold'
-                      : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                      ? 'bg-stone-900 text-white font-semibold'
+                      : 'bg-stone-100 text-stone-600 hover:text-stone-900 hover:bg-stone-200'
                   }`}
                 >
-                  🔍 Cận cảnh / Hoa văn
+                  🔍 Cận cảnh / Nẹp cổ
                 </button>
                 <button
                   onClick={() => setCameraPreset('hem')}
-                  className={`px-3 py-1.5 rounded-xl font-medium transition-all ${
+                  className={`px-3 py-1.5 rounded-full font-medium transition-all ${
                     cameraPreset === 'hem'
-                      ? 'bg-stone-900 text-white shadow-2xs font-bold'
-                      : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                      ? 'bg-stone-900 text-white font-semibold'
+                      : 'bg-stone-100 text-stone-600 hover:text-stone-900 hover:bg-stone-200'
                   }`}
                 >
-                  📜 Chi tiết dưới
+                  📜 Vạt áo / Chân vạt
                 </button>
               </div>
             </div>
@@ -453,24 +454,24 @@ export const Studio3DPage: React.FC = () => {
 
           {/* Right: Selection & Cultural Info Panel (4-5 cols) */}
           <div className="lg:col-span-5 xl:col-span-4 space-y-4">
-            <div className="bg-white rounded-3xl p-5 border border-stone-200/80 shadow-xs space-y-4">
-              <div className="flex items-center justify-between">
+            <div className="bg-white rounded-[2.5rem] p-5 border border-[#E2D8C7] shadow-sm space-y-4 text-stone-800">
+              <div className="flex items-center justify-between border-b border-[#E2D8C7] pb-3">
                 <h3 className="font-serif font-bold text-stone-900 text-base flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-heritage-red" />
-                  Kho Mẫu 3D Cổ Phục
+                  <Sparkles className="w-4 h-4 text-[#C59338]" />
+                  <span>Kho Mẫu Di Sản 3D</span>
                 </h3>
-                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-600">
+                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-600 border border-[#E2D8C7]">
                   {currentCategoryItems.length} mẫu
                 </span>
               </div>
 
               {/* Tab Switcher inside Right Panel */}
-              <div className="grid grid-cols-2 gap-1.5 p-1 bg-stone-100 rounded-2xl">
+              <div className="grid grid-cols-2 gap-1.5 p-1 bg-stone-100 rounded-full border border-stone-200">
                 <button
                   onClick={() => handleTabChange('garment')}
-                  className={`py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                  className={`py-2 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
                     activeTab === 'garment'
-                      ? 'bg-white text-heritage-red shadow-2xs'
+                      ? 'bg-white text-stone-950 shadow-sm'
                       : 'text-stone-600 hover:text-stone-900'
                   }`}
                 >
@@ -478,9 +479,9 @@ export const Studio3DPage: React.FC = () => {
                 </button>
                 <button
                   onClick={() => handleTabChange('accessory')}
-                  className={`py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                  className={`py-2 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
                     activeTab === 'accessory'
-                      ? 'bg-white text-heritage-red shadow-2xs'
+                      ? 'bg-white text-stone-950 shadow-sm'
                       : 'text-stone-600 hover:text-stone-900'
                   }`}
                 >
@@ -507,8 +508,8 @@ export const Studio3DPage: React.FC = () => {
                       onClick={() => handleSelectItem('base', item.id)}
                       className={`p-3 rounded-2xl border cursor-pointer transition-all ${
                         isSelected
-                          ? 'border-heritage-red bg-rose-50/70 shadow-xs ring-1 ring-heritage-red/30'
-                          : 'border-stone-200 bg-white hover:border-stone-300 hover:bg-stone-50/60'
+                          ? 'border-stone-900 bg-stone-900 text-white shadow-lg ring-2 ring-[#DFB058]'
+                          : 'border-[#E2D8C7] bg-[#FAF7F2] text-stone-800 hover:border-[#C59338]/50 hover:bg-stone-50'
                       }`}
                     >
                       <div className="flex items-start justify-between gap-2.5">
@@ -517,24 +518,24 @@ export const Studio3DPage: React.FC = () => {
                             <img
                               src={item.thumbnail}
                               alt={item.name}
-                              className="w-11 h-11 rounded-xl object-cover border border-stone-200 shadow-2xs shrink-0"
+                              className="w-11 h-11 rounded-xl object-cover border border-[#E2D8C7] shrink-0"
                             />
                           ) : (
-                            <div className="w-11 h-11 rounded-xl bg-stone-100 flex items-center justify-center text-lg shrink-0">
+                            <div className="w-11 h-11 rounded-xl bg-stone-100 flex items-center justify-center text-lg shrink-0 border border-[#E2D8C7]">
                               {item.category === 'accessory' ? '💎' : '👘'}
                             </div>
                           )}
                           <div>
                             <div className="flex items-center gap-1.5">
-                              <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-stone-100 text-stone-600">
+                              <span className={`text-[10px] font-serif font-bold px-1.5 py-0.2 rounded ${isSelected ? 'bg-white/20 text-white' : 'bg-stone-200 text-stone-700'}`}>
                                 #{index + 1}
                               </span>
-                              <h4 className={`text-xs font-bold ${isSelected ? 'text-heritage-red' : 'text-stone-900'}`}>
+                              <h4 className={`text-xs font-serif font-bold ${isSelected ? 'text-white' : 'text-stone-900'}`}>
                                 {item.name}
                               </h4>
                             </div>
                             {item.dynasty && (
-                              <p className="text-[10px] font-medium text-amber-800 mt-0.5">
+                              <p className={`text-[10px] font-medium mt-0.5 ${isSelected ? 'text-amber-300' : 'text-[#C59338]'}`}>
                                 {item.dynasty}
                               </p>
                             )}
@@ -542,7 +543,7 @@ export const Studio3DPage: React.FC = () => {
                               {item.tags.map((tag) => (
                                 <span
                                   key={tag}
-                                  className="text-[9px] px-1.5 py-0.5 rounded-md bg-stone-100 text-stone-600 font-medium"
+                                  className={`text-[9px] px-1.5 py-0.5 rounded font-sans ${isSelected ? 'bg-white/20 text-white' : 'bg-stone-100 text-stone-600'}`}
                                 >
                                   {tag}
                                 </span>
@@ -552,7 +553,7 @@ export const Studio3DPage: React.FC = () => {
                         </div>
 
                         {isSelected ? (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-heritage-red text-white font-bold shrink-0">
+                          <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#DFB058] text-stone-950 font-semibold shrink-0">
                             Đang xem
                           </span>
                         ) : (
@@ -561,13 +562,13 @@ export const Studio3DPage: React.FC = () => {
                               e.stopPropagation();
                               handleSelectItem('base', item.id);
                             }}
-                            className="text-[10px] px-2 py-0.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 font-medium shrink-0"
+                            className="text-[10px] px-2.5 py-0.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium shrink-0 border border-[#E2D8C7]"
                           >
                             Chọn
                           </button>
                         )}
                       </div>
-                      <p className="text-[11px] text-stone-600 mt-1.5 line-clamp-2 leading-relaxed">
+                      <p className={`text-[11px] mt-1.5 line-clamp-2 leading-relaxed font-sans font-light ${isSelected ? 'text-stone-300 font-normal' : 'text-stone-500'}`}>
                         {item.description}
                       </p>
                     </div>
@@ -576,12 +577,12 @@ export const Studio3DPage: React.FC = () => {
               </div>
 
               {/* Color Tinting Bar */}
-              <div className="p-3.5 rounded-2xl bg-stone-50/70 border border-stone-200/80 space-y-2">
+              <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#E2D8C7] space-y-2">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-stone-700">Màu sắc hiển thị:</span>
+                  <span className="font-semibold text-stone-700 font-serif">Ám sắc tơ lụa:</span>
                   <button
                     onClick={() => handleSlotColor('base', undefined)}
-                    className="px-2.5 py-1 text-[10px] rounded-lg border border-stone-200 bg-white text-stone-700 font-semibold hover:bg-stone-100 shadow-2xs"
+                    className="px-2.5 py-1 text-[10px] rounded-full border border-[#E2D8C7] bg-white text-stone-700 font-semibold hover:bg-stone-100 shadow-2xs"
                   >
                     Màu PBR gốc
                   </button>
@@ -591,7 +592,7 @@ export const Studio3DPage: React.FC = () => {
                     <button
                       key={col.id}
                       onClick={() => handleSlotColor('base', col.hex)}
-                      className="w-6 h-6 rounded-full border border-stone-300 transition-transform hover:scale-110 shadow-2xs"
+                      className="w-6 h-6 rounded-full border border-black/10 transition-transform hover:scale-110 shadow-xs"
                       style={{ backgroundColor: col.hex }}
                       title={`Ám màu ${col.name}`}
                     />
@@ -603,21 +604,21 @@ export const Studio3DPage: React.FC = () => {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setCalibratingSlot(calibratingSlot === 'base' ? null : 'base')}
-                  className={`flex-1 py-2 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${
+                  className={`flex-1 py-2.5 rounded-full border text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${
                     calibratingSlot === 'base'
-                      ? 'bg-amber-100 border-amber-300 text-amber-900'
-                      : 'bg-white border-stone-200 text-stone-700 hover:bg-stone-50'
+                      ? 'bg-stone-900 border-stone-900 text-white'
+                      : 'bg-[#FAF7F2] border-[#E2D8C7] text-stone-700 hover:bg-stone-100'
                   }`}
                 >
-                  <Sliders className="w-3.5 h-3.5" />
+                  <Sliders className="w-3.5 h-3.5 text-[#C59338]" />
                   <span>Cân chỉnh vị trí / Tỉ lệ</span>
                 </button>
                 <button
                   onClick={() => handleToggleSlot('base')}
-                  className={`p-2 rounded-xl border transition-colors ${
+                  className={`p-2.5 rounded-full border transition-colors ${
                     activeSlots.base.visible
-                      ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                      : 'bg-stone-200/70 border-stone-300 text-stone-500'
+                      ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
+                      : 'bg-stone-100 border-stone-200 text-stone-400'
                   }`}
                   title={activeSlots.base.visible ? 'Đang hiển thị' : 'Đã ẩn'}
                 >
@@ -626,12 +627,12 @@ export const Studio3DPage: React.FC = () => {
               </div>
 
               {/* Upload GLB Custom Model */}
-              <div className="pt-2 border-t border-stone-100">
+              <div className="pt-2 border-t border-[#E2D8C7]">
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full py-2.5 rounded-xl border-2 border-dashed border-stone-300 hover:border-stone-400 bg-stone-50/50 hover:bg-stone-50 text-stone-700 text-xs font-semibold flex items-center justify-center gap-2 transition-colors"
+                  className="w-full py-2.5 rounded-full border border-dashed border-[#DFB058] hover:bg-amber-50/50 bg-[#FAF7F2] text-stone-700 text-xs font-medium flex items-center justify-center gap-2 transition-colors"
                 >
-                  <Upload className="w-3.5 h-3.5 text-stone-500" />
+                  <Upload className="w-3.5 h-3.5 text-[#C59338]" />
                   <span>{activeTab === 'garment' ? 'Nạp thêm file 3D .GLB cổ phục của bạn' : 'Nạp thêm file 3D .GLB phụ kiện của bạn'}</span>
                 </button>
               </div>
@@ -639,16 +640,16 @@ export const Studio3DPage: React.FC = () => {
 
             {/* Cultural Context Card for active item */}
             {activeItem && (
-              <div className="bg-white rounded-3xl p-5 border border-stone-200/80 shadow-xs space-y-3 text-xs">
+              <div className="bg-white rounded-[2.5rem] p-5 border border-[#E2D8C7] shadow-sm space-y-3 text-xs text-stone-800">
                 <div className="flex items-center gap-2 text-stone-900">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <ShieldCheck className="w-4 h-4 text-[#C59338]" />
                   <h4 className="font-serif font-bold text-sm">Điển Tích Văn Hóa Di Sản</h4>
                 </div>
-                <p className="text-stone-600 leading-relaxed text-[11px]">
+                <p className="text-stone-600 leading-relaxed text-[11px] font-sans font-light">
                   {activeItem.culturalNote}
                 </p>
                 {modelStats && (
-                  <div className="pt-2 border-t border-stone-100 flex items-center justify-between text-[10px] text-stone-500">
+                  <div className="pt-2 border-t border-[#E2D8C7] flex items-center justify-between text-[10px] text-stone-500 font-mono">
                     <span>Đa giác 3D: {modelStats.polyCount.toLocaleString()} tris</span>
                     <span>{modelStats.meshCount} meshes PBR</span>
                   </div>

@@ -297,7 +297,7 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-3xl p-5 sm:p-6 border border-heritage-border/90 shadow-editorial relative overflow-hidden flex flex-col gap-5 transition-all">
+    <div className="bg-white rounded-3xl p-5 sm:p-6 border border-[#E2D8C7] shadow-editorial relative overflow-hidden flex flex-col gap-5 transition-all text-stone-900">
       {/* Editorial Header Ribbon */}
       <div className="flex items-center justify-between border-b border-stone-100 pb-3.5">
         <div className="flex items-center gap-2">
@@ -306,7 +306,7 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
             Look Result Preview • 2026
           </span>
         </div>
-        <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-heritage-ivory border border-heritage-border text-stone-600">
+        <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-[#FAF7F2] border border-[#E2D8C7] text-stone-600">
           {occasion.name}
         </span>
       </div>
@@ -326,17 +326,17 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
       {/* Outfit Title & Meta Information */}
       <div className="space-y-1.5">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-stone-900 text-white">
+          <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-stone-900 text-white">
             {garment.name}
           </span>
-          <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 border border-amber-200">
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-200">
             {color.name}
           </span>
-          <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-rose-100 text-rose-900 border border-rose-200">
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-900 border border-rose-200">
             {style.name}
           </span>
           <span
-            className={`text-xs font-bold px-2 py-0.5 rounded-md border ${
+            className={`text-xs font-bold px-2.5 py-0.5 rounded-full border ${
               gender === 'male'
                 ? 'bg-sky-100 text-sky-900 border-sky-200'
                 : 'bg-rose-100 text-rose-900 border-rose-200'
@@ -345,7 +345,7 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
             {gender === 'male' ? 'Nam ♂' : 'Nữ ♀'}
           </span>
           {weather && (
-            <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1">
               <Compass className="w-3 h-3 text-emerald-600" />
               <span>{weather.name} ({weather.temperature})</span>
             </span>
@@ -356,8 +356,8 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
           {outfitName}
         </h3>
 
-        <p className="text-xs text-stone-500 leading-relaxed">
-          Bản phối dành riêng cho dịp <strong>{occasion.name}</strong> mang tinh thần <em>{style.vibe}</em>.
+        <p className="text-xs text-stone-500 leading-relaxed font-sans">
+          Bản phối dành riêng cho dịp <strong className="text-stone-800">{occasion.name}</strong> mang tinh thần <em className="text-heritage-red">{style.vibe}</em>.
         </p>
       </div>
 
@@ -371,7 +371,7 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
             {selectedAccessories.map((acc) => (
               <span
                 key={acc.id}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-700 border border-stone-200"
+                className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-700 border border-stone-200"
               >
                 <span>{acc.name}</span>
               </span>
@@ -393,10 +393,10 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-stone-100">
         <button
           onClick={handleSave}
-          className={`flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl font-bold text-xs transition-all ${
+          className={`flex items-center justify-center gap-1.5 py-3 px-3 rounded-full font-bold text-xs transition-all ${
             isSaved
               ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm'
-              : 'bg-stone-900 hover:bg-stone-800 text-white shadow-md hover:shadow-lg'
+              : 'bg-stone-900 hover:bg-stone-800 text-white shadow-md'
           }`}
         >
           {isSaved ? (
@@ -414,7 +414,7 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
 
         <button
           onClick={onAddToCompare}
-          className="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl font-bold text-xs bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-200 transition-colors"
+          className="flex items-center justify-center gap-1.5 py-3 px-3 rounded-full font-bold text-xs bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-200 transition-colors"
         >
           <Scale className="w-4 h-4 text-heritage-gold" />
           <span>So sánh</span>
@@ -422,7 +422,7 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
 
         <button
           onClick={onOpenShare}
-          className="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl font-bold text-xs bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200 transition-colors"
+          className="flex items-center justify-center gap-1.5 py-3 px-3 rounded-full font-bold text-xs bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200 transition-colors"
         >
           <Share2 className="w-4 h-4 text-rose-600" />
           <span>Chia sẻ</span>
@@ -431,7 +431,7 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
         <button
           onClick={handleDownloadCard}
           disabled={downloading}
-          className="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl font-bold text-xs bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 transition-colors"
+          className="flex items-center justify-center gap-1.5 py-3 px-3 rounded-full font-bold text-xs bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 transition-colors"
         >
           <Download className="w-4 h-4 text-amber-700" />
           <span>{downloading ? 'Đang xuất...' : 'Tải Look'}</span>

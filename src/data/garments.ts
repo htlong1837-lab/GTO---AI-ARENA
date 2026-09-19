@@ -22,7 +22,7 @@ export const GARMENTS: Garment[] = [
       'Phối cùng túi tote canvas in đồ họa typographic chữ Nôm / Quốc ngữ'
     ],
     silhouette: 'flowing',
-    image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80',
+    image: '/images/viet_phuc/ao_dai.jpg',
     defaultColorId: 'do-son',
     formalityTier: 'modern_national',
     inviolableFeatures: [
@@ -58,7 +58,7 @@ export const GARMENTS: Garment[] = [
       'Kết hợp cùng chunky boots hoặc guốc sơn mài đế cao'
     ],
     silhouette: 'layered',
-    image: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80',
+    image: '/images/viet_phuc/ao_tu_than.jpg',
     defaultColorId: 'xanh-cham',
     formalityTier: 'folk_traditional',
     inviolableFeatures: [
@@ -94,7 +94,7 @@ export const GARMENTS: Garment[] = [
       'Sử dụng phụ kiện kính râm đen gọng dày và vòng bạc xích bản nhỏ'
     ],
     silhouette: 'structured',
-    image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80',
+    image: '/images/viet_phuc/ao_ngu_than.jpg',
     defaultColorId: 'vang-hoang-cuc',
     formalityTier: 'scholarly_formal',
     inviolableFeatures: [
@@ -130,7 +130,7 @@ export const GARMENTS: Garment[] = [
       'Tránh phối đồ quá hầm hố phá vỡ tính lễ nghi tôn nghiêm của trang phục'
     ],
     silhouette: 'regal',
-    image: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80',
+    image: '/images/viet_phuc/ao_nhat_binh.jpg',
     defaultColorId: 'do-son',
     formalityTier: 'court_regal',
     inviolableFeatures: [
@@ -166,7 +166,7 @@ export const GARMENTS: Garment[] = [
       'Đi cùng dép cói, sandal quai mảnh hoặc sneaker năng động'
     ],
     silhouette: 'casual',
-    image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80',
+    image: '/images/viet_phuc/ao_ba_ba.jpg',
     defaultColorId: 'den-tuyen',
     formalityTier: 'folk_traditional',
     inviolableFeatures: [

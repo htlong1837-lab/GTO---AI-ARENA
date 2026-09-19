@@ -1,4 +1,4 @@
-import { CulturalAdvice, CulturalStatus } from '../types/outfit';
+import { CulturalAdvice } from '../types/outfit';
 import { GARMENTS } from '../data/garments';
 import { COLORS } from '../data/colors';
 

@@ -48,47 +48,47 @@ export const StepAccessories: React.FC<StepAccessoriesProps> = ({ selectedIds, o
     : ACCESSORIES.filter((a) => !a.isTraditional);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5 text-stone-800">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
           <h3 className="text-xl font-serif font-bold text-stone-900">Phụ kiện & Điểm xuyết</h3>
-          <p className="text-xs text-stone-500 mt-1">
+          <p className="text-xs text-stone-500 mt-1 font-light">
             Chọn một hoặc nhiều phụ kiện để tạo nét chấm phá giữa truyền thống và Gen Z.
           </p>
         </div>
-        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 border border-stone-200">
-          Đã chọn: <strong className="text-heritage-red">{selectedIds.length}</strong> món
+        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white text-stone-700 border border-[#E2D8C7] shadow-xs">
+          Đã chọn: <strong className="text-[#C59338]">{selectedIds.length}</strong> món
         </span>
       </div>
 
       {/* Filter tabs */}
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2">
         <button
           onClick={() => setFilterType('all')}
-          className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-all ${
+          className={`text-xs font-semibold px-3.5 py-1.5 rounded-full transition-all ${
             filterType === 'all'
-              ? 'bg-heritage-charcoal text-white shadow-xs'
-              : 'bg-stone-100 text-stone-600 hover:bg-stone-200/70'
+              ? 'bg-stone-900 text-white shadow-md'
+              : 'bg-white text-stone-600 hover:text-stone-900 hover:bg-stone-100 border border-[#E2D8C7]'
           }`}
         >
           Tất cả ({ACCESSORIES.length})
         </button>
         <button
           onClick={() => setFilterType('traditional')}
-          className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-all ${
+          className={`text-xs font-semibold px-3.5 py-1.5 rounded-full transition-all ${
             filterType === 'traditional'
-              ? 'bg-heritage-charcoal text-white shadow-xs'
-              : 'bg-stone-100 text-stone-600 hover:bg-stone-200/70'
+              ? 'bg-stone-900 text-white shadow-md'
+              : 'bg-white text-stone-600 hover:text-stone-900 hover:bg-stone-100 border border-[#E2D8C7]'
           }`}
         >
           Thuần Việt cổ phong
         </button>
         <button
           onClick={() => setFilterType('modern')}
-          className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-all ${
+          className={`text-xs font-semibold px-3.5 py-1.5 rounded-full transition-all ${
             filterType === 'modern'
-              ? 'bg-heritage-charcoal text-white shadow-xs'
-              : 'bg-stone-100 text-stone-600 hover:bg-stone-200/70'
+              ? 'bg-stone-900 text-white shadow-md'
+              : 'bg-white text-stone-600 hover:text-stone-900 hover:bg-stone-100 border border-[#E2D8C7]'
           }`}
         >
           Gen Z & Streetwear
@@ -96,24 +96,24 @@ export const StepAccessories: React.FC<StepAccessoriesProps> = ({ selectedIds, o
       </div>
 
       {/* Accessories Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {filtered.map((acc) => {
           const isSelected = selectedIds.includes(acc.id);
           return (
             <button
               key={acc.id}
               onClick={() => onToggle(acc.id)}
-              className={`text-left p-3 rounded-2xl border transition-all flex items-start gap-3 relative group ${
+              className={`text-left p-3.5 rounded-2xl border transition-all flex items-start gap-3 relative group ${
                 isSelected
-                  ? 'bg-amber-50/70 border-heritage-gold shadow-xs ring-1 ring-heritage-gold'
-                  : 'bg-white hover:bg-stone-50 border-heritage-border/80'
+                  ? 'bg-stone-900 text-white border-stone-900 shadow-xl ring-2 ring-[#DFB058]'
+                  : 'bg-white hover:bg-stone-50 text-stone-800 border-[#E2D8C7] hover:border-heritage-gold/50 shadow-xs'
               }`}
             >
               <div
                 className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                   isSelected
-                    ? 'bg-heritage-gold text-white'
-                    : 'bg-stone-100 text-stone-600 group-hover:bg-stone-200'
+                    ? 'bg-white/15 text-[#DFB058]'
+                    : 'bg-stone-100 text-stone-700 group-hover:text-stone-900'
                 }`}
               >
                 {ICON_MAP[acc.iconName] || <Sparkles className="w-4 h-4" />}
@@ -121,27 +121,29 @@ export const StepAccessories: React.FC<StepAccessoriesProps> = ({ selectedIds, o
 
               <div className="flex-1 min-w-0 pr-6">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <h4 className="font-bold text-xs text-stone-900 leading-tight">{acc.name}</h4>
+                  <h4 className={`font-bold text-xs leading-tight ${isSelected ? 'text-white' : 'text-stone-900'}`}>
+                    {acc.name}
+                  </h4>
                   <span
                     className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
                       acc.isTraditional
-                        ? 'bg-amber-100 text-amber-900'
-                        : 'bg-rose-100 text-rose-900'
+                        ? isSelected ? 'bg-amber-100 text-amber-950' : 'bg-amber-100/70 text-amber-800'
+                        : isSelected ? 'bg-rose-100 text-rose-950' : 'bg-rose-100/70 text-rose-800'
                     }`}
                   >
                     {acc.isTraditional ? 'Cổ phong' : 'Gen Z'}
                   </span>
                 </div>
-                <p className="text-[11px] text-stone-500 mt-1 line-clamp-2 leading-relaxed">
+                <p className={`text-[11px] mt-1 line-clamp-2 leading-relaxed font-light ${isSelected ? 'text-stone-300 font-normal' : 'text-stone-500'}`}>
                   {acc.description}
                 </p>
               </div>
 
               {/* Checkbox indicator */}
               <div
-                className={`w-5 h-5 rounded-md flex items-center justify-center absolute top-3 right-3 transition-colors ${
+                className={`w-5 h-5 rounded-md flex items-center justify-center absolute top-3.5 right-3.5 transition-colors ${
                   isSelected
-                    ? 'bg-heritage-gold text-white'
+                    ? 'bg-[#DFB058] text-stone-950'
                     : 'border border-stone-300 group-hover:border-stone-400'
                 }`}
               >

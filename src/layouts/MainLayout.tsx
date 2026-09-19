@@ -17,14 +17,14 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   compareCount
 }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-heritage-ivory text-heritage-ink font-sans selection:bg-heritage-red selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-heritage-ink font-sans selection:bg-heritage-red selection:text-white relative overflow-x-hidden">
       <Header
         currentTab={currentTab}
         onSelectTab={onSelectTab}
         compareCount={compareCount}
       />
 
-      <main className="flex-1 pb-16 lg:pb-0">{children}</main>
+      <main className="flex-1 pt-24 sm:pt-28 pb-16 lg:pb-0">{children}</main>
 
       <Footer onSelectTab={onSelectTab} />
 

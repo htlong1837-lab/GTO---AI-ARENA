@@ -29,8 +29,6 @@ export const CulturePage: React.FC<CulturePageProps> = ({
     if (currentQuizIndex + 1 < CULTURAL_QUIZ_QUESTIONS.length) {
       setCurrentQuizIndex((prev) => prev + 1);
     } else {
-      // Calculate quiz result
-      // Pick most frequent garmentId or last chosen
       const targetGarment = GARMENTS.find((g) => g.id === option.garmentId) || GARMENTS[0];
       setQuizResult({
         garment: targetGarment,
@@ -57,27 +55,27 @@ export const CulturePage: React.FC<CulturePageProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-      {/* Page Title */}
-      <div className="border-b border-heritage-border/70 pb-5">
-        <span className="text-xs font-bold uppercase tracking-widest text-heritage-red font-mono">
-          Cultural Knowledge Hub
+      {/* Page Title: Monograph Masthead */}
+      <div className="border-b border-[#E2D8C7] pb-6">
+        <span className="text-xs font-serif font-bold tracking-[0.25em] uppercase text-[#A8282B]">
+          CHUYÊN KHẢO MỸ THUẬT & DI SẢN CỔ PHỤC
         </span>
-        <h1 className="font-serif text-3xl sm:text-4xl font-extrabold text-stone-900 mt-1">
+        <h1 className="font-serif text-3xl sm:text-5xl font-bold text-[#111215] mt-1.5">
           Hiểu Đúng Về Việt Phục
         </h1>
-        <p className="text-xs sm:text-sm text-stone-500 mt-1 max-w-2xl leading-relaxed">
-          Phân định rõ nét giữa <strong>Giá trị Di sản Truyền thống</strong> và{' '}
-          <strong>Sáng tạo Cách tân Thế hệ mới</strong>. Tìm hiểu để mặc đẹp và tự hào về cội nguồn.
+        <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-2xl leading-relaxed font-sans">
+          Minh định rành rẽ giữa <strong>Quy thức Phẩm phục Cổ truyền</strong> và{' '}
+          <strong>Ngôn ngữ Sáng tạo Đương đại</strong>. Thấu suốt cội nguồn để tự hào mặc đẹp.
         </p>
       </div>
 
       {/* 1. INTERACTIVE GARMENT ENCYCLOPEDIA */}
       <section className="space-y-6">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <h2 className="font-serif text-2xl font-bold text-stone-900">
-            5 Dòng Việt Phục & Cấu Trúc Nguyên Bản
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111215]">
+            Ngũ Đại Phẩm Phục & Cấu Trúc Nguyên Bản
           </h2>
-          <span className="text-xs text-stone-500">Nhấp chọn để xem đặc trưng cội nguồn</span>
+          <span className="text-xs font-serif text-stone-500 italic">Chọn trang phục để nghiên cứu kết cấu</span>
         </div>
 
         {/* Garment Selector Tabs */}
@@ -88,10 +86,10 @@ export const CulturePage: React.FC<CulturePageProps> = ({
               <button
                 key={g.id}
                 onClick={() => setActiveGarmentId(g.id)}
-                className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 ${
+                className={`px-4 py-2 rounded-xl text-xs font-serif font-bold tracking-wide transition-all whitespace-nowrap flex items-center gap-2 ${
                   isActive
-                    ? 'bg-heritage-charcoal text-white shadow-sm'
-                    : 'bg-white hover:bg-stone-100 text-stone-700 border border-heritage-border/80'
+                    ? 'bg-[#18181B] text-[#FAF7F2] shadow-sm border border-[#D4AF37]/40'
+                    : 'bg-white hover:bg-[#FAF7F2] text-stone-700 border border-[#E2D8C7]'
                 }`}
               >
                 <span
@@ -99,7 +97,7 @@ export const CulturePage: React.FC<CulturePageProps> = ({
                   style={{
                     backgroundColor:
                       g.id === 'ao-dai'
-                        ? '#9B1D20'
+                        ? '#A8282B'
                         : g.id === 'ao-ngu-than'
                         ? '#C59338'
                         : g.id === 'nhat-binh'
@@ -116,22 +114,22 @@ export const CulturePage: React.FC<CulturePageProps> = ({
         </div>
 
         {/* Active Garment Deep-Dive Card */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-heritage-border/90 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#E2D8C7] shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Visual Column */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="relative h-72 sm:h-80 rounded-2xl overflow-hidden shadow-inner bg-stone-100 border border-stone-200">
+            <div className="relative aspect-[3/4] min-h-[420px] rounded-2xl overflow-hidden shadow-inner bg-[#F4EFE6] border border-[#E2D8C7] group">
               <img
                 src={selectedGarment.image}
                 alt={selectedGarment.name}
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 via-40% to-transparent pointer-events-none" />
               <div className="absolute bottom-4 left-4 right-4 text-white">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#DFB058]">
                   {selectedGarment.region}
                 </span>
-                <h3 className="font-serif text-xl font-bold">{selectedGarment.name}</h3>
-                <p className="text-[11px] text-stone-300 truncate">{selectedGarment.era}</p>
+                <h3 className="font-serif text-2xl font-bold">{selectedGarment.name}</h3>
+                <p className="text-[11px] text-stone-300 font-serif italic truncate">{selectedGarment.era}</p>
               </div>
             </div>
 
@@ -140,43 +138,43 @@ export const CulturePage: React.FC<CulturePageProps> = ({
                 onSelectGarmentToRemix(selectedGarment.id);
                 onNavigate('studio');
               }}
-              className="w-full py-3 rounded-xl bg-heritage-red hover:bg-heritage-red-dark text-white font-bold text-xs flex items-center justify-center gap-2 shadow-red-glow transition-all"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#A8282B] to-[#741416] hover:from-[#741416] hover:to-[#A8282B] text-white font-medium text-xs tracking-wide flex items-center justify-center gap-2 shadow-silk transition-all border border-[#D4AF37]/30"
             >
-              <Sparkles className="w-4 h-4 text-amber-200" />
-              <span>Phối {selectedGarment.name} trong Studio</span>
+              <Sparkles className="w-4 h-4 text-[#DFB058]" />
+              <span>Phối {selectedGarment.name} trong Xưởng May</span>
             </button>
           </div>
 
           {/* Details Content Column */}
           <div className="lg:col-span-8 space-y-5 text-xs sm:text-sm">
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
-                Nguồn Gốc & Ý Nghĩa
+              <span className="text-[10px] font-serif font-bold uppercase tracking-[0.2em] text-[#A8282B]">
+                NGUỒN GỐC & CĂN CƯỚC LỊCH SỬ
               </span>
               <h3 className="font-serif text-2xl font-bold text-stone-900 mt-0.5">
                 {selectedGarment.name} — {selectedGarment.subtitle}
               </h3>
-              <p className="text-stone-600 leading-relaxed mt-2">
+              <p className="text-stone-600 leading-relaxed mt-2 font-sans">
                 {selectedGarment.historyDetails.origin}
               </p>
             </div>
 
             {/* Micro grid of historical structure */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-              <div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-200/50">
-                <h4 className="font-bold text-stone-800 text-xs uppercase tracking-wider mb-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+              <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#E2D8C7]">
+                <h4 className="font-serif font-bold text-stone-900 text-xs uppercase tracking-wider mb-1">
                   Kiểu Cổ Áo Chuẩn
                 </h4>
-                <p className="text-stone-600 text-xs leading-relaxed">
+                <p className="text-stone-600 text-xs leading-relaxed font-sans">
                   {selectedGarment.historyDetails.collarType}
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-200/50">
-                <h4 className="font-bold text-stone-800 text-xs uppercase tracking-wider mb-1">
+              <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#E2D8C7]">
+                <h4 className="font-serif font-bold text-stone-900 text-xs uppercase tracking-wider mb-1">
                   Kết Cấu Tà & Thân Áo
                 </h4>
-                <p className="text-stone-600 text-xs leading-relaxed">
+                <p className="text-stone-600 text-xs leading-relaxed font-sans">
                   {selectedGarment.historyDetails.flapStructure}
                 </p>
               </div>
@@ -185,24 +183,24 @@ export const CulturePage: React.FC<CulturePageProps> = ({
             {/* Cultural Significance & Remix tips */}
             <div className="space-y-3 pt-2">
               <div>
-                <h4 className="font-bold text-stone-900 text-xs uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                  <span className="w-1.5 h-3 bg-heritage-red rounded-full" />
-                  Triết lý và Giá trị văn hóa
+                <h4 className="font-serif font-bold text-stone-900 text-xs uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                  <span className="w-1.5 h-3 bg-[#A8282B] rounded-full" />
+                  <span>Triết lý và Giá trị Di sản</span>
                 </h4>
-                <p className="text-stone-600 leading-relaxed bg-stone-50 p-3.5 rounded-2xl border border-stone-200/60">
+                <p className="text-stone-600 leading-relaxed bg-[#FAF7F2] p-3.5 rounded-xl border border-[#E2D8C7] font-sans">
                   {selectedGarment.culturalNote}
                 </p>
               </div>
 
               <div>
-                <h4 className="font-bold text-stone-900 text-xs uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-rose-500" />
-                  Gợi ý Gen Z Remix văn minh
+                <h4 className="font-serif font-bold text-stone-900 text-xs uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#C59338]" />
+                  <span>Gợi ý Phối Đồ Văn Minh</span>
                 </h4>
-                <ul className="space-y-1 text-stone-600 bg-rose-50/40 p-3.5 rounded-2xl border border-rose-200/50">
+                <ul className="space-y-1.5 text-stone-600 bg-[#FAF7F2] p-3.5 rounded-xl border border-[#E2D8C7] font-sans">
                   {selectedGarment.modernRemixTips.map((tip, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span className="text-rose-600 font-bold">✦</span>
+                      <span className="text-[#A8282B] font-bold">✦</span>
                       <span>{tip}</span>
                     </li>
                   ))}
@@ -214,52 +212,52 @@ export const CulturePage: React.FC<CulturePageProps> = ({
       </section>
 
       {/* 2. SECTION: 4 QUY TẮC VÀNG KHI PHỐI VIỆT PHỤC */}
-      <section className="bg-stone-900 text-white rounded-3xl p-8 sm:p-10 relative overflow-hidden border border-stone-800">
+      <section className="bg-gradient-to-br from-[#111215] via-[#1A181B] to-[#111215] text-white rounded-2xl p-8 sm:p-12 relative overflow-hidden border border-[#D4AF37]/30 shadow-editorial-xl">
         <div className="max-w-2xl mb-8">
-          <span className="text-xs font-bold uppercase tracking-widest text-heritage-gold font-mono">
-            Quy Ước Ứng Xử Thời Trang
+          <span className="text-xs font-serif font-bold tracking-[0.25em] uppercase text-[#DFB058]">
+            QUY ƯỚC ỨNG XỬ THỜI TRANG
           </span>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold mt-1">
-            4 Quy Tắc Vàng Khi Gen Z Phối Việt Phục
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold mt-1.5">
+            4 Quy Tắc Vàng Khi Phối Việt Phục
           </h2>
-          <p className="text-stone-400 text-xs sm:text-sm mt-2 leading-relaxed">
-            Giới hạn của sự sáng tạo nằm ở sự tôn trọng. Nắm vững 4 nguyên tắc để luôn tự tin diện cổ phục mọi lúc, mọi nơi.
+          <p className="text-stone-300 text-xs sm:text-sm mt-2 leading-relaxed font-sans">
+            Giới hạn của sự sáng tạo nằm ở sự thấu hiểu. Nắm vững 4 nguyên tắc để luôn tự tin diện cổ phục mọi lúc, mọi nơi.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
           {[
             {
-              num: '01',
+              num: 'I',
               title: 'Bảo Toàn Phom Dáng Cốt Lõi',
               desc: 'Không cắt xén quá đà làm mất phom áo lập lĩnh, đối khâm hay xẻ tà nguyên bản. Dáng áo là căn cước định danh của trang phục.'
             },
             {
-              num: '02',
+              num: 'II',
               title: 'Phối Phụ Kiện Có Điểm Dừng',
               desc: 'Đôi sneaker hay chiếc kính mắt tạo nét phá cách thú vị, nhưng hãy giữ một tỷ lệ hài hòa, tránh biến trang phục thành trang phục hóa trang (costume).'
             },
             {
-              num: '03',
+              num: 'III',
               title: 'Tôn Trọng Không Gian & Bối Cảnh',
               desc: 'Không gian tâm linh, đình chùa đòi hỏi sự kín đáo, tôn nghiêm. Không gian phố đi bộ, chụp lookbook cho phép sự tự do, ngẫu hứng nhiều hơn.'
             },
             {
-              num: '04',
+              num: 'IV',
               title: 'Tự Tin Kể Câu Chuyện Văn Hóa',
               desc: 'Mặc Việt phục đẹp nhất là khi bạn có thể trả lời câu hỏi: "Bộ đồ này bắt nguồn từ thời kỳ nào và mang ý nghĩa gì?".'
             }
           ].map((rule) => (
             <div
               key={rule.num}
-              className="p-5 rounded-2xl bg-stone-800/70 border border-stone-700/80 hover:border-heritage-gold/50 transition-colors flex items-start gap-4"
+              className="p-5 rounded-xl bg-stone-900/80 border border-stone-800 hover:border-[#D4AF37]/50 transition-colors flex items-start gap-4"
             >
-              <span className="font-serif font-bold text-2xl sm:text-3xl text-heritage-gold shrink-0">
+              <span className="font-serif font-bold text-2xl sm:text-3xl text-[#DFB058] shrink-0">
                 {rule.num}
               </span>
               <div>
-                <h4 className="font-bold text-sm text-white mb-1">{rule.title}</h4>
-                <p className="text-xs text-stone-300 leading-relaxed">{rule.desc}</p>
+                <h4 className="font-serif font-bold text-base text-[#FAF7F2] mb-1">{rule.title}</h4>
+                <p className="text-xs text-stone-300 leading-relaxed font-sans">{rule.desc}</p>
               </div>
             </div>
           ))}
@@ -267,26 +265,26 @@ export const CulturePage: React.FC<CulturePageProps> = ({
       </section>
 
       {/* 3. SECTION: TRẮC NGHIỆM VUI CỔ PHỤC */}
-      <section className="bg-gradient-to-br from-amber-50/70 to-rose-50/40 rounded-3xl p-6 sm:p-10 border border-amber-200/80 shadow-xs">
+      <section className="bg-white rounded-2xl p-6 sm:p-10 border border-[#E2D8C7] shadow-sm">
         <div className="max-w-2xl mx-auto text-center mb-8">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white text-heritage-red text-xs font-bold border border-rose-200 shadow-xs mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#FAF7F2] text-[#A8282B] text-xs font-serif font-bold border border-[#E2D8C7] mb-2">
             <HelpCircle className="w-3.5 h-3.5" />
-            <span>Trắc Nghiệm Tương Tác</span>
+            <span>Trắc Nghiệm Cá Tính</span>
           </div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
-            Bạn thuộc hệ Việt phục nào?
+          <h2 className="font-serif text-3xl font-bold text-[#111215]">
+            Bạn hòa hợp với dòng Việt phục nào?
           </h2>
-          <p className="text-xs sm:text-sm text-stone-600 mt-1">
-            Trả lời 3 câu hỏi nhanh để tìm ra dòng trang phục và phong cách hòa hợp nhất với cá tính của bạn.
+          <p className="text-xs sm:text-sm text-stone-600 mt-1 font-sans">
+            Trả lời 3 câu hỏi ngắn để tìm ra dòng trang phục và phong cách đồng điệu nhất với tâm hồn bạn.
           </p>
         </div>
 
-        <div className="max-w-xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-heritage-border shadow-sm">
+        <div className="max-w-xl mx-auto bg-[#FAF7F2] rounded-xl p-6 sm:p-8 border border-[#E2D8C7] shadow-xs">
           {!quizResult ? (
             <div className="space-y-5">
-              <div className="flex items-center justify-between text-xs font-bold text-stone-400">
+              <div className="flex items-center justify-between text-xs font-serif font-bold text-stone-500">
                 <span>CÂU HỎI {currentQuizIndex + 1} / {CULTURAL_QUIZ_QUESTIONS.length}</span>
-                <span className="text-heritage-red">{Math.round(((currentQuizIndex) / CULTURAL_QUIZ_QUESTIONS.length) * 100)}% Hoàn thành</span>
+                <span className="text-[#A8282B]">{Math.round(((currentQuizIndex) / CULTURAL_QUIZ_QUESTIONS.length) * 100)}% Hoàn thành</span>
               </div>
 
               <h3 className="font-serif text-lg sm:text-xl font-bold text-stone-900 leading-snug">
@@ -298,10 +296,10 @@ export const CulturePage: React.FC<CulturePageProps> = ({
                   <button
                     key={idx}
                     onClick={() => handleSelectQuizOption(opt)}
-                    className="w-full p-4 rounded-2xl border border-stone-200 hover:border-heritage-charcoal hover:bg-stone-50 text-left text-xs sm:text-sm font-semibold text-stone-800 transition-all flex items-center justify-between group"
+                    className="w-full p-4 rounded-xl border border-[#E2D8C7] bg-white hover:border-[#D4AF37] hover:bg-[#FAF7F2] text-left text-xs sm:text-sm font-medium text-stone-800 transition-all flex items-center justify-between group shadow-2xs"
                   >
-                    <span>{opt.label}</span>
-                    <ArrowRight className="w-4 h-4 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-1 transition-transform" />
+                    <span className="font-sans">{opt.label}</span>
+                    <ArrowRight className="w-4 h-4 text-stone-400 group-hover:text-[#A8282B] group-hover:translate-x-1 transition-transform" />
                   </button>
                 ))}
               </div>
@@ -309,23 +307,23 @@ export const CulturePage: React.FC<CulturePageProps> = ({
           ) : (
             /* Quiz Result Screen */
             <div className="text-center space-y-5">
-              <div className="w-16 h-16 rounded-full bg-rose-100 text-heritage-red flex items-center justify-center mx-auto shadow-sm">
-                <Sparkles className="w-8 h-8" />
+              <div className="w-16 h-16 rounded-full bg-rose-50 border border-rose-200 text-[#A8282B] flex items-center justify-center mx-auto shadow-xs">
+                <Sparkles className="w-8 h-8 text-[#C59338]" />
               </div>
 
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-heritage-gold font-mono">
-                  Kết Quả Cá Tính
+                <span className="text-[10px] font-serif font-bold uppercase tracking-[0.2em] text-[#C59338]">
+                  KẾT QUẢ PHONG CÁCH
                 </span>
                 <h3 className="font-serif text-2xl font-bold text-stone-900 mt-1">
                   Hệ {quizResult.persona}
                 </h3>
-                <p className="text-xs text-stone-500 mt-1">
+                <p className="text-xs text-stone-600 mt-1 font-sans">
                   Trang phục hòa hợp nhất: <strong>{quizResult.garment.name}</strong>
                 </p>
               </div>
 
-              <p className="text-xs text-stone-600 leading-relaxed bg-stone-50 p-4 rounded-2xl border border-stone-200/60">
+              <p className="text-xs text-stone-600 leading-relaxed bg-white p-4 rounded-xl border border-[#E2D8C7] font-sans">
                 {quizResult.garment.culturalNote}
               </p>
 
@@ -335,15 +333,15 @@ export const CulturePage: React.FC<CulturePageProps> = ({
                     onSelectGarmentToRemix(quizResult.garment.id);
                     onNavigate('studio');
                   }}
-                  className="w-full sm:w-auto px-6 py-3 rounded-full bg-heritage-red hover:bg-heritage-red-dark text-white font-bold text-xs shadow-red-glow flex items-center justify-center gap-2 transition-all"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-gradient-to-r from-[#A8282B] to-[#741416] hover:from-[#741416] hover:to-[#A8282B] text-white font-medium text-xs tracking-wide shadow-silk flex items-center justify-center gap-2 transition-all border border-[#D4AF37]/30"
                 >
-                  <Sparkles className="w-4 h-4 text-amber-200" />
-                  <span>Vào Studio phối ngay {quizResult.garment.name}</span>
+                  <Sparkles className="w-4 h-4 text-[#DFB058]" />
+                  <span>Vào Studio phối {quizResult.garment.name}</span>
                 </button>
 
                 <button
                   onClick={handleResetQuiz}
-                  className="w-full sm:w-auto px-5 py-3 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-white hover:bg-[#FAF7F2] text-stone-700 font-medium text-xs flex items-center justify-center gap-1.5 transition-colors border border-[#E2D8C7]"
                 >
                   <RotateCcw className="w-4 h-4" />
                   <span>Làm lại trắc nghiệm</span>

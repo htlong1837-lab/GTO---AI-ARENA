@@ -15,7 +15,7 @@ import { OutfitPreviewCard } from '../components/studio/OutfitPreviewCard';
 import { ShareModal } from '../components/share/ShareModal';
 import { StorageService } from '../services/storageService';
 import { useToast } from '../context/ToastContext';
-import { Sparkles, Dices, ArrowLeft, ArrowRight, Check, Compass } from 'lucide-react';
+import { Sparkles, Dices, ArrowLeft, ArrowRight, Check, Compass, Box } from 'lucide-react';
 
 interface StudioPageProps {
   initialGarmentId?: string;
@@ -37,7 +37,7 @@ export const StudioPage: React.FC<StudioPageProps> = ({
   initialAccessoryIds,
   initialGender,
   initialWeatherId,
-  onNavigate: _onNavigate,
+  onNavigate,
   onRefreshCompareCount
 }) => {
   const { showToast } = useToast();
@@ -95,7 +95,7 @@ export const StudioPage: React.FC<StudioPageProps> = ({
           showToast({
             type: 'warning',
             title: 'Tối đa 5 phụ kiện',
-            message: 'Để giữ nét tinh tế cho trang phục, nên tiết chế phụ kiện vừa phải.'
+            message: 'Để giữ nét thanh tao cho tà áo, nên tiết chế phụ kiện vừa phải.'
           });
           return prev;
         }
@@ -124,7 +124,7 @@ export const StudioPage: React.FC<StudioPageProps> = ({
     showToast({
       type: 'info',
       title: 'Stylist AI gợi ý Look mới!',
-      message: `${randomGarment.name} ${randomColor.name} (${selectedGender === 'male' ? 'Nam' : 'Nữ'}) theo phong cách ${randomStyle.name}`
+      message: `${randomGarment.name} ${randomColor.name} (${selectedGender === 'male' ? 'Nam' : 'Nữ'}) phong cách ${randomStyle.name}`
     });
   };
 
@@ -210,52 +210,60 @@ export const StudioPage: React.FC<StudioPageProps> = ({
   };
 
   const stepsList = [
-    { num: 1, label: 'Bối cảnh', summary: selectedOccasion.name },
-    { num: 2, label: 'Việt phục', summary: selectedGarment.name },
-    { num: 3, label: 'Màu sắc', summary: selectedColor.vietnameseName },
-    { num: 4, label: 'Phụ kiện', summary: `${selectedAccessoryIds.length} món` },
-    { num: 5, label: 'Phong cách', summary: selectedStyle.name }
+    { num: 1, roman: 'I', label: 'Bối cảnh', summary: selectedOccasion.name },
+    { num: 2, roman: 'II', label: 'Việt phục', summary: selectedGarment.name },
+    { num: 3, roman: 'III', label: 'Ngũ Sắc', summary: selectedColor.vietnameseName },
+    { num: 4, roman: 'IV', label: 'Phụ kiện', summary: `${selectedAccessoryIds.length} món` },
+    { num: 5, roman: 'V', label: 'Phong cách', summary: selectedStyle.name }
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-stone-800">
       {/* Studio Header Ribbon */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-heritage-border/70 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E2D8C7] pb-5">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-heritage-red font-mono">
-            Mix & Match Workshop
+          <span className="text-xs font-serif font-bold tracking-[0.25em] uppercase text-[#A8282B]">
+            ATELIER PHỐI PHỤC TRANG
           </span>
-          <h1 className="font-serif text-3xl sm:text-4xl font-extrabold text-stone-900 mt-1">
-            Studio Phối Đồ Việt Phục
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#111215] mt-1">
+            Xưởng May Di Sản
           </h1>
-          <p className="text-xs sm:text-sm text-stone-500 mt-1">
-            5 bước tương tác trực quan để tạo outfit thời thượng cho riêng bạn.
+          <p className="text-xs sm:text-sm text-stone-600 mt-1 font-sans">
+            5 bước tương tác trực quan tái hiện chuẩn mực cổ truyền cùng hơi thở Gen Z.
           </p>
         </div>
 
         <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
           <button
+            onClick={() => onNavigate('studio3d')}
+            className="px-4 py-2 rounded-full bg-[#18181B] hover:bg-stone-800 text-white text-xs font-medium border border-[#D4AF37]/50 shadow-xs flex items-center gap-1.5 transition-all"
+          >
+            <Box className="w-3.5 h-3.5 text-[#DFB058]" />
+            <span>Mở Xưởng 3D Canvas</span>
+          </button>
+
+          <button
             onClick={handleWeatherRecommend}
-            className="px-3.5 py-2 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold border border-amber-300/80 shadow-xs flex items-center gap-1.5 transition-all"
+            className="px-3.5 py-2 rounded-full bg-[#FAF7F2] hover:bg-[#F4EFE6] text-stone-800 text-xs font-medium border border-[#E2D8C7] shadow-xs flex items-center gap-1.5 transition-all"
             title="Tự động gợi ý bản phối phù hợp với thời tiết đã chọn"
           >
-            <Compass className="w-3.5 h-3.5 text-amber-700" />
+            <Compass className="w-3.5 h-3.5 text-[#C59338]" />
             <span>Stylist Thời Tiết</span>
           </button>
 
           <button
             onClick={handleRandomize}
-            className="px-3.5 py-2 rounded-full bg-white hover:bg-stone-50 text-stone-800 text-xs font-bold border border-stone-300 shadow-xs flex items-center gap-1.5 transition-all"
+            className="px-3.5 py-2 rounded-full bg-[#FAF7F2] hover:bg-[#F4EFE6] text-stone-800 text-xs font-medium border border-[#E2D8C7] shadow-xs flex items-center gap-1.5 transition-all"
           >
-            <Dices className="w-4 h-4 text-heritage-red" />
-            <span>Phối ngẫu nhiên (AI)</span>
+            <Dices className="w-4 h-4 text-[#A8282B]" />
+            <span>Gợi Ý Ngẫu Nhiên (AI)</span>
           </button>
         </div>
       </div>
 
-      {/* 5-Step Progress Stepper Bar */}
-      <div className="bg-white rounded-2xl p-3 sm:p-4 border border-heritage-border/80 shadow-xs overflow-x-auto">
-        <div className="flex items-center justify-between min-w-[540px] gap-2">
+      {/* 5-Step Progress Stepper Bar with Roman Numerals */}
+      <div className="bg-white rounded-2xl p-3 sm:p-3.5 border border-[#E2D8C7] shadow-xs overflow-x-auto">
+        <div className="flex items-center justify-between min-w-[560px] gap-2">
           {stepsList.map((st) => {
             const isActive = currentStep === st.num;
             const isPassed = currentStep > st.num;
@@ -265,30 +273,30 @@ export const StudioPage: React.FC<StudioPageProps> = ({
                 onClick={() => setCurrentStep(st.num)}
                 className={`flex-1 p-2.5 rounded-xl text-left transition-all flex items-center gap-3 relative group ${
                   isActive
-                    ? 'bg-stone-900 text-white shadow-xs'
+                    ? 'bg-[#18181B] text-[#FAF7F2] shadow-sm border border-[#D4AF37]/40'
                     : isPassed
-                    ? 'bg-stone-50 text-stone-800 hover:bg-stone-100'
+                    ? 'bg-[#FAF7F2] text-stone-800 hover:bg-[#F4EFE6] border border-[#E2D8C7]'
                     : 'text-stone-400 hover:text-stone-700'
                 }`}
               >
                 <div
-                  className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-colors ${
+                  className={`w-7 h-7 rounded-md flex items-center justify-center text-xs font-serif font-bold shrink-0 transition-colors ${
                     isActive
-                      ? 'bg-heritage-gold text-stone-900'
+                      ? 'bg-[#D4AF37] text-stone-950'
                       : isPassed
-                      ? 'bg-emerald-600 text-white'
+                      ? 'bg-[#1D6246] text-white'
                       : 'bg-stone-200 text-stone-600'
                   }`}
                 >
-                  {isPassed ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : st.num}
+                  {isPassed ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : st.roman}
                 </div>
 
                 <div className="min-w-0">
-                  <div className="text-[10px] font-bold uppercase tracking-wider opacity-75">
-                    Bước {st.num}
+                  <div className="text-[9px] font-bold tracking-wider uppercase opacity-75">
+                    Giai đoạn {st.roman}
                   </div>
-                  <div className="text-xs font-bold truncate leading-tight">{st.label}</div>
-                  <div className="text-[11px] opacity-80 truncate hidden sm:block">
+                  <div className="text-xs font-serif font-bold truncate leading-tight">{st.label}</div>
+                  <div className="text-[11px] opacity-80 truncate hidden sm:block font-sans">
                     {st.summary}
                   </div>
                 </div>
@@ -298,11 +306,11 @@ export const StudioPage: React.FC<StudioPageProps> = ({
         </div>
       </div>
 
-      {/* Main Studio Grid: Left Stepper Selection + Right Dynamic Look Preview Card */}
+      {/* Main Split Atelier: Left Stepper Selection + Right Dynamic Look Preview Card */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Interactive Steps (7 Cols) */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="bg-white/80 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-heritage-border/80 shadow-sm min-h-[460px] flex flex-col justify-between">
+          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#E2D8C7] shadow-sm min-h-[480px] flex flex-col justify-between">
             {/* Render Current Step Component */}
             <div>
               {currentStep === 1 && (
@@ -354,24 +362,24 @@ export const StudioPage: React.FC<StudioPageProps> = ({
             </div>
 
             {/* Step Navigation Controls */}
-            <div className="flex items-center justify-between pt-8 mt-6 border-t border-stone-100">
+            <div className="flex items-center justify-between pt-8 mt-6 border-t border-[#F4EFE6]">
               <button
                 onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
                 disabled={currentStep === 1}
-                className="px-4 py-2.5 rounded-xl border border-stone-200 text-stone-700 text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-stone-50 flex items-center gap-1.5 transition-all"
+                className="px-4 py-2.5 rounded-full border border-[#E2D8C7] text-stone-700 text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#FAF7F2] flex items-center gap-1.5 transition-all"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Quay lại</span>
               </button>
 
-              <div className="text-xs font-semibold text-stone-400">
-                Bước <strong>{currentStep}</strong> / 5
+              <div className="text-xs font-serif font-bold text-stone-500 tracking-wider">
+                GIAI ĐOẠN <strong>{stepsList[currentStep - 1].roman}</strong> / V
               </div>
 
               {currentStep < 5 ? (
                 <button
                   onClick={() => setCurrentStep((prev) => Math.min(5, prev + 1))}
-                  className="px-6 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all"
+                  className="px-6 py-2.5 rounded-full bg-[#18181B] hover:bg-[#A8282B] text-white text-xs font-medium tracking-wide flex items-center gap-1.5 shadow-xs transition-all"
                 >
                   <span>Tiếp tục</span>
                   <ArrowRight className="w-4 h-4" />
@@ -379,18 +387,18 @@ export const StudioPage: React.FC<StudioPageProps> = ({
               ) : (
                 <button
                   onClick={handleSaveOutfit}
-                  className="px-6 py-2.5 rounded-xl bg-heritage-red hover:bg-heritage-red-dark text-white text-xs font-bold flex items-center gap-1.5 shadow-red-glow transition-all"
+                  className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#A8282B] to-[#741416] hover:from-[#741416] hover:to-[#A8282B] text-white text-xs font-semibold tracking-wide flex items-center gap-1.5 shadow-sm transition-all border border-[#D4AF37]/30"
                 >
-                  <Sparkles className="w-4 h-4" />
-                  <span>Hoàn tất & Lưu Look</span>
+                  <Sparkles className="w-4 h-4 text-[#DFB058]" />
+                  <span>Hoàn Tất & Lưu Look</span>
                 </button>
               )}
             </div>
           </div>
         </div>
 
-        {/* Right Column: Live Look Result Card & Styling Preview (5 Cols Sticky) */}
-        <div className="lg:col-span-5 lg:sticky lg:top-24">
+        {/* Right Column: Dynamic Look Preview Card (5 Cols) */}
+        <div className="lg:col-span-5 sticky top-24">
           <OutfitPreviewCard
             garment={selectedGarment}
             color={selectedColor}
@@ -398,7 +406,7 @@ export const StudioPage: React.FC<StudioPageProps> = ({
             style={selectedStyle}
             accessoryIds={selectedAccessoryIds}
             gender={selectedGender}
-            onToggleGender={setSelectedGender}
+            onToggleGender={(g) => setSelectedGender(g)}
             weather={selectedWeather}
             outfitName={outfitName}
             onSaveOutfit={handleSaveOutfit}
@@ -409,10 +417,9 @@ export const StudioPage: React.FC<StudioPageProps> = ({
         </div>
       </div>
 
-      {/* Share Modal Dialog */}
+      {/* Share Lookbook Modal */}
       <ShareModal
         isOpen={isShareModalOpen}
-        onClose={() => setIsShareModalOpen(false)}
         outfit={{
           name: outfitName,
           garment: selectedGarment,
@@ -420,6 +427,7 @@ export const StudioPage: React.FC<StudioPageProps> = ({
           styleName: selectedStyle.name,
           occasionName: selectedOccasion.name
         }}
+        onClose={() => setIsShareModalOpen(false)}
       />
     </div>
   );

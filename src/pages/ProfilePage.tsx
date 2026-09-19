@@ -43,7 +43,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   const [importJsonText, setImportJsonText] = useState('');
   const [importError, setImportError] = useState<string | null>(null);
 
-
   const handleSaveProfile = () => {
     if (!editName.trim()) {
       showToast({ type: 'warning', title: 'Tên không được để trống' });
@@ -119,14 +118,14 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Header Profile Card */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-heritage-border/90 shadow-sm relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-50 rounded-full blur-3xl pointer-events-none" />
+      {/* Header Profile Card: Editorial Fashion Passport */}
+      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#E2D8C7] shadow-sm relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-[#D4AF37]/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
             {/* User Avatar */}
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-3 border-heritage-gold shadow-md shrink-0 bg-stone-100">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-2 border-[#D4AF37] shadow-md shrink-0 bg-[#F4EFE6]">
               <img
                 src={profile.avatar}
                 alt={profile.name}
@@ -142,21 +141,21 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               {!isEditing ? (
                 <>
                   <div className="flex items-center gap-2">
-                    <h1 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
+                    <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#111215]">
                       {profile.name}
                     </h1>
                     <button
                       onClick={() => setIsEditing(true)}
-                      className="p-1.5 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors"
+                      className="p-1.5 rounded-lg text-stone-400 hover:text-stone-800 hover:bg-[#FAF7F2] transition-colors"
                       aria-label="Chỉnh sửa thông tin"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                   </div>
-                  <p className="text-xs font-semibold text-heritage-red uppercase tracking-wider">
+                  <p className="text-xs font-serif font-bold text-[#A8282B] uppercase tracking-[0.2em]">
                     {profile.title}
                   </p>
-                  <p className="text-xs text-stone-500 max-w-md mt-1 leading-relaxed">
+                  <p className="text-xs text-stone-600 max-w-md mt-1 leading-relaxed font-sans">
                     {profile.bio}
                   </p>
                 </>
@@ -167,34 +166,34 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     type="text"
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
-                    className="text-sm font-bold bg-stone-50 px-3 py-1.5 rounded-xl border border-stone-300 w-full"
+                    className="text-sm font-bold bg-[#FAF7F2] px-3 py-1.5 rounded-lg border border-[#E2D8C7] w-full"
                     placeholder="Tên của bạn"
                   />
                   <input
                     type="text"
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
-                    className="text-xs bg-stone-50 px-3 py-1.5 rounded-xl border border-stone-300 w-full"
+                    className="text-xs bg-[#FAF7F2] px-3 py-1.5 rounded-lg border border-[#E2D8C7] w-full"
                     placeholder="Danh hiệu phong cách"
                   />
                   <textarea
                     value={editBio}
                     onChange={(e) => setEditBio(e.target.value)}
                     rows={2}
-                    className="text-xs bg-stone-50 px-3 py-1.5 rounded-xl border border-stone-300 w-full"
+                    className="text-xs bg-[#FAF7F2] px-3 py-1.5 rounded-lg border border-[#E2D8C7] w-full font-sans"
                     placeholder="Giới thiệu bản thân..."
                   />
                   <div className="flex items-center gap-2 pt-1">
                     <button
                       onClick={handleSaveProfile}
-                      className="px-3 py-1 rounded-lg bg-stone-900 text-white text-xs font-bold flex items-center gap-1"
+                      className="px-3.5 py-1 rounded-lg bg-[#18181B] text-white text-xs font-medium flex items-center gap-1"
                     >
-                      <Check className="w-3.5 h-3.5" />
+                      <Check className="w-3.5 h-3.5 text-[#DFB058]" />
                       <span>Lưu</span>
                     </button>
                     <button
                       onClick={() => setIsEditing(false)}
-                      className="px-3 py-1 rounded-lg bg-stone-100 text-stone-600 text-xs font-semibold"
+                      className="px-3.5 py-1 rounded-lg bg-[#FAF7F2] text-stone-700 text-xs font-medium border border-[#E2D8C7]"
                     >
                       Hủy
                     </button>
@@ -205,57 +204,57 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           </div>
 
           {/* Micro Stats Counter */}
-          <div className="flex items-center gap-4 pt-4 sm:pt-0 border-t sm:border-t-0 border-stone-100 w-full sm:w-auto justify-around sm:justify-start">
+          <div className="flex items-center gap-5 pt-4 sm:pt-0 border-t sm:border-t-0 border-[#F4EFE6] w-full sm:w-auto justify-around sm:justify-start">
             <div className="text-center">
-              <div className="font-serif font-bold text-xl sm:text-2xl text-stone-900">
+              <div className="font-serif font-bold text-2xl sm:text-3xl text-stone-900">
                 {profile.savedOutfits.length}
               </div>
-              <div className="text-[11px] text-stone-400 font-medium">Look Đã Lưu</div>
+              <div className="text-[10px] text-stone-500 font-serif uppercase tracking-wider mt-0.5">Look Đã Lưu</div>
             </div>
-            <div className="h-8 w-px bg-stone-200" />
+            <div className="h-8 w-px bg-[#E2D8C7]" />
             <div className="text-center">
-              <div className="font-serif font-bold text-xl sm:text-2xl text-stone-900">
+              <div className="font-serif font-bold text-2xl sm:text-3xl text-stone-900">
                 {profile.history.length}
               </div>
-              <div className="text-[11px] text-stone-400 font-medium">Lịch Sử Phối</div>
+              <div className="text-[10px] text-stone-500 font-serif uppercase tracking-wider mt-0.5">Lịch Sử Phối</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Tabs Row */}
-      <div className="flex items-center justify-between border-b border-heritage-border/70 pb-3 flex-wrap gap-3">
+      <div className="flex items-center justify-between border-b border-[#E2D8C7] pb-3 flex-wrap gap-3">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('saved')}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center gap-2 ${
               activeTab === 'saved'
-                ? 'bg-stone-900 text-white shadow-xs'
-                : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                ? 'bg-[#18181B] text-[#FAF7F2] font-semibold shadow-xs'
+                : 'bg-[#F4EFE6] text-stone-700 hover:bg-[#EDE6D8]'
             }`}
           >
             <Bookmark className="w-3.5 h-3.5" />
-            <span>Tủ đồ đã lưu ({profile.savedOutfits.length})</span>
+            <span>Tủ đồ lưu trữ ({profile.savedOutfits.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('history')}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center gap-2 ${
               activeTab === 'history'
-                ? 'bg-stone-900 text-white shadow-xs'
-                : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                ? 'bg-[#18181B] text-[#FAF7F2] font-semibold shadow-xs'
+                : 'bg-[#F4EFE6] text-stone-700 hover:bg-[#EDE6D8]'
             }`}
           >
             <History className="w-3.5 h-3.5" />
-            <span>Lịch sử phối đồ ({profile.history.length})</span>
+            <span>Lịch sử phối ({profile.history.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('data')}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center gap-2 ${
               activeTab === 'data'
-                ? 'bg-stone-900 text-white shadow-xs'
-                : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                ? 'bg-[#18181B] text-[#FAF7F2] font-semibold shadow-xs'
+                : 'bg-[#F4EFE6] text-stone-700 hover:bg-[#EDE6D8]'
             }`}
           >
             <Upload className="w-3.5 h-3.5" />
@@ -265,10 +264,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
         <button
           onClick={() => onNavigate('studio')}
-          className="px-4 py-2 rounded-full bg-heritage-red hover:bg-heritage-red-dark text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-colors"
+          className="px-4 py-2 rounded-full bg-gradient-to-r from-[#A8282B] to-[#741416] hover:from-[#741416] hover:to-[#A8282B] text-white text-xs font-medium tracking-wide flex items-center gap-1.5 shadow-silk transition-all border border-[#D4AF37]/30"
         >
-          <Sparkles className="w-3.5 h-3.5 text-amber-200" />
-          <span>Tạo Look mới</span>
+          <Sparkles className="w-3.5 h-3.5 text-[#DFB058]" />
+          <span>Tạo Look Mới</span>
         </button>
       </div>
 
@@ -285,7 +284,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 return (
                   <div
                     key={outfit.id}
-                    className="bg-white rounded-3xl p-5 border border-heritage-border/80 shadow-sm hover:shadow-editorial transition-all flex flex-col justify-between group"
+                    className="bg-white rounded-2xl p-5 border border-[#E2D8C7] hover:border-[#D4AF37] shadow-xs hover:shadow-editorial transition-all flex flex-col justify-between group"
                   >
                     <div>
                       {/* Top Header Card */}
@@ -295,7 +294,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                             className="w-3.5 h-3.5 rounded-full shadow-xs border border-black/10"
                             style={{ backgroundColor: color?.hex }}
                           />
-                          <span className="text-xs font-bold text-stone-800">
+                          <span className="text-xs font-serif font-bold text-stone-900">
                             {garment?.name}
                           </span>
                         </div>
@@ -304,8 +303,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                             <span
                               className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${
                                 outfit.gender === 'male'
-                                  ? 'bg-sky-50 text-sky-700 border-sky-200'
-                                  : 'bg-rose-50 text-rose-700 border-rose-200'
+                                  ? 'bg-sky-50 text-sky-800 border-sky-200'
+                                  : 'bg-rose-50 text-rose-800 border-rose-200'
                               }`}
                             >
                               {outfit.gender === 'male' ? 'Nam ♂' : 'Nữ ♀'}
@@ -321,32 +320,32 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                         {outfit.name}
                       </h3>
 
-                      <div className="text-[11px] text-stone-400 mt-2">
+                      <div className="text-[11px] text-stone-400 mt-2 font-mono">
                         Ngày tạo: {new Date(outfit.createdAt).toLocaleDateString('vi-VN')}
                       </div>
                     </div>
 
                     {/* Card Actions */}
-                    <div className="pt-4 mt-4 border-t border-stone-100 grid grid-cols-4 gap-1.5">
+                    <div className="pt-4 mt-4 border-t border-[#F4EFE6] grid grid-cols-4 gap-1.5">
                       <button
                         onClick={() => onRemixOutfit(outfit)}
-                        className="col-span-2 py-2 rounded-xl bg-stone-900 hover:bg-heritage-red text-white text-xs font-bold transition-colors flex items-center justify-center gap-1 shadow-xs"
+                        className="col-span-2 py-2 rounded-lg bg-[#18181B] hover:bg-[#A8282B] text-white text-xs font-medium tracking-wide transition-colors flex items-center justify-center gap-1 shadow-xs"
                       >
-                        <Sparkles className="w-3 h-3 text-amber-300" />
+                        <Sparkles className="w-3 h-3 text-[#DFB058]" />
                         <span>Phối lại</span>
                       </button>
 
                       <button
                         onClick={() => handleAddToCompare(outfit)}
-                        className="py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold transition-colors flex items-center justify-center"
+                        className="py-2 rounded-lg bg-[#FAF7F2] hover:bg-[#F4EFE6] text-stone-700 text-xs font-medium transition-colors flex items-center justify-center border border-[#E2D8C7]"
                         title="Thêm vào so sánh"
                       >
-                        <Scale className="w-3.5 h-3.5 text-heritage-gold" />
+                        <Scale className="w-3.5 h-3.5 text-[#C59338]" />
                       </button>
 
                       <button
                         onClick={() => handleDeleteOutfit(outfit.id)}
-                        className="py-2 rounded-xl bg-stone-100 hover:bg-rose-100 hover:text-rose-700 text-stone-500 text-xs font-bold transition-colors flex items-center justify-center"
+                        className="py-2 rounded-lg bg-[#FAF7F2] hover:bg-rose-50 hover:text-[#A8282B] text-stone-500 text-xs font-medium transition-colors flex items-center justify-center border border-[#E2D8C7]"
                         title="Xóa outfit"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -358,17 +357,17 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             </div>
           ) : (
             /* Empty State */
-            <div className="bg-white rounded-3xl p-12 text-center border border-heritage-border max-w-md mx-auto space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-amber-50 text-heritage-gold flex items-center justify-center mx-auto">
-                <Bookmark className="w-7 h-7" />
+            <div className="bg-white rounded-2xl p-12 text-center border border-[#E2D8C7] max-w-md mx-auto space-y-4 shadow-sm">
+              <div className="w-12 h-12 rounded-xl bg-[#F4EFE6] text-[#C59338] flex items-center justify-center mx-auto border border-[#D4AF37]/30">
+                <Bookmark className="w-6 h-6" />
               </div>
               <h3 className="font-serif text-xl font-bold text-stone-900">Tủ đồ còn trống</h3>
-              <p className="text-xs text-stone-500 leading-relaxed">
-                Bạn chưa lưu outfit nào. Hãy vào Studio để tự tay sáng tạo bản phối yêu thích của bạn!
+              <p className="text-xs text-stone-500 leading-relaxed font-sans">
+                Bạn chưa lưu outfit nào. Hãy vào Xưởng may để tự tay sáng tạo bản phối yêu thích của bạn!
               </p>
               <button
                 onClick={() => onNavigate('studio')}
-                className="px-6 py-2.5 rounded-full bg-heritage-red hover:bg-heritage-red-dark text-white font-bold text-xs shadow-red-glow transition-all"
+                className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#A8282B] to-[#741416] hover:from-[#741416] hover:to-[#A8282B] text-white font-medium text-xs shadow-silk transition-all border border-[#D4AF37]/30"
               >
                 Bắt đầu phối đồ ngay
               </button>
@@ -379,19 +378,19 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
       {/* TAB 2: HISTORY */}
       {activeTab === 'history' && (
-        <div className="bg-white rounded-3xl p-6 border border-heritage-border/80 shadow-xs space-y-4">
+        <div className="bg-white rounded-2xl p-6 border border-[#E2D8C7] shadow-xs space-y-4">
           <h3 className="font-serif text-lg font-bold text-stone-900">
             Lịch sử các phiên phối gần đây
           </h3>
           {profile.history.length > 0 ? (
-            <div className="divide-y divide-stone-100">
+            <div className="divide-y divide-[#F4EFE6]">
               {profile.history.map((h, i) => {
                 const garment = GARMENTS.find((g) => g.id === h.garmentId);
                 const color = COLORS.find((c) => c.id === h.colorId);
                 return (
                   <div
                     key={i}
-                    className="py-3 flex items-center justify-between gap-4 text-xs hover:bg-stone-50/60 p-2 rounded-xl transition-colors"
+                    className="py-3 flex items-center justify-between gap-4 text-xs hover:bg-[#FAF7F2] p-2 rounded-xl transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <div
@@ -399,104 +398,85 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                         style={{ backgroundColor: color?.hex }}
                       />
                       <div>
-                        <h4 className="font-bold text-stone-800">{h.name}</h4>
-                        <span className="text-[11px] text-stone-400">
-                          {new Date(h.createdAt).toLocaleTimeString('vi-VN')} • {garment?.name}
-                        </span>
+                        <div className="font-serif font-bold text-stone-900 text-sm">{garment?.name}</div>
+                        <div className="text-[11px] text-stone-500 font-sans">
+                          {color?.vietnameseName} • {new Date(h.createdAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}, {new Date(h.createdAt).toLocaleDateString('vi-VN')}
+                        </div>
                       </div>
                     </div>
-
-                    <button
-                      onClick={() => onRemixOutfit(h)}
-                      className="px-3 py-1.5 rounded-lg bg-stone-100 hover:bg-stone-900 hover:text-white text-stone-700 font-bold transition-colors"
-                    >
-                      Tải lại
-                    </button>
                   </div>
                 );
               })}
             </div>
           ) : (
-            <p className="text-xs text-stone-500 italic">Chưa có lịch sử phiên làm việc nào.</p>
+            <div className="py-8 text-center text-xs text-stone-400 font-serif italic">
+              Chưa có lịch sử phiên phối nào.
+            </div>
           )}
         </div>
       )}
 
       {/* TAB 3: DATA & BACKUP */}
       {activeTab === 'data' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {/* Export card */}
-          <div className="bg-white rounded-3xl p-6 border border-heritage-border/80 shadow-xs space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-stone-100 text-stone-800 flex items-center justify-center">
+        <div className="bg-white rounded-2xl p-6 border border-[#E2D8C7] shadow-xs space-y-6 max-w-2xl">
+          <div className="space-y-2">
+            <h3 className="font-serif text-lg font-bold text-stone-900">
+              Sao Lưu & Khôi Phục Dữ Liệu Tủ Đồ
+            </h3>
+            <p className="text-xs text-stone-600 leading-relaxed font-sans">
+              Toàn bộ dữ liệu outfit, bộ sưu tập cá nhân và điểm số hài hòa được lưu trữ an toàn trong LocalStorage trình duyệt của bạn. Bạn có thể xuất file JSON để lưu giữ hoặc chuyển sang thiết bị khác.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <button
+              onClick={handleExport}
+              className="p-4 rounded-xl border border-[#E2D8C7] bg-[#FAF7F2] hover:bg-[#F4EFE6] hover:border-[#D4AF37] transition-all text-left flex items-center gap-3"
+            >
+              <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0 border border-emerald-200">
                 <Download className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-bold text-sm text-stone-900">Xuất dữ liệu Tủ đồ</h3>
-                <p className="text-xs text-stone-500">Tải tệp JSON chứa tất cả look đã lưu</p>
+                <div className="font-serif font-bold text-stone-900 text-xs">Xuất Dữ Liệu (.JSON)</div>
+                <div className="text-[10px] text-stone-500 mt-0.5">Tải file lưu trữ về máy</div>
               </div>
-            </div>
-            <p className="text-xs text-stone-600 leading-relaxed">
-              Bạn có thể tải về máy tính để sao lưu hồ sơ, danh sách so sánh và toàn bộ trang phục đã sáng tạo.
-            </p>
+            </button>
+
             <button
-              onClick={handleExport}
-              className="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold transition-colors flex items-center justify-center gap-2"
+              onClick={handleReset}
+              className="p-4 rounded-xl border border-rose-200 bg-rose-50/40 hover:bg-rose-50 transition-all text-left flex items-center gap-3"
             >
-              <Download className="w-4 h-4" />
-              <span>Tải file JSON về máy</span>
+              <div className="w-10 h-10 rounded-lg bg-rose-100 text-[#A8282B] flex items-center justify-center shrink-0 border border-rose-200">
+                <RotateCcw className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="font-serif font-bold text-[#A8282B] text-xs">Đặt Lại Mặc Định</div>
+                <div className="text-[10px] text-stone-500 mt-0.5">Xóa sạch toàn bộ dữ liệu</div>
+              </div>
             </button>
           </div>
 
-          {/* Import card */}
-          <div className="bg-white rounded-3xl p-6 border border-heritage-border/80 shadow-xs space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center">
-                <Upload className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="font-bold text-sm text-stone-900">Nhập dữ liệu JSON</h3>
-                <p className="text-xs text-stone-500">Khôi phục tủ đồ từ mã JSON đã xuất</p>
-              </div>
-            </div>
+          {/* Import JSON Form */}
+          <div className="pt-4 border-t border-[#F4EFE6] space-y-3">
+            <h4 className="font-serif font-bold text-xs uppercase tracking-wider text-stone-800">
+              Nhập Dữ Liệu Từ File JSON
+            </h4>
             <textarea
               value={importJsonText}
               onChange={(e) => setImportJsonText(e.target.value)}
-              placeholder="Dán chuỗi JSON vào đây..."
-              rows={3}
-              className="w-full text-xs font-mono bg-stone-50 p-2.5 rounded-xl border border-stone-200 focus:outline-hidden"
+              placeholder="Dán nội dung chuỗi JSON dữ liệu đã sao lưu vào đây..."
+              rows={4}
+              className="w-full text-xs font-mono p-3 rounded-xl border border-[#E2D8C7] bg-[#FAF7F2] focus:outline-none focus:border-[#D4AF37]"
             />
             {importError && (
-              <p className="text-xs text-rose-600 font-medium">{importError}</p>
+              <div className="text-xs text-[#A8282B] font-medium">{importError}</div>
             )}
             <button
               onClick={handleImport}
-              className="w-full py-2.5 rounded-xl bg-heritage-gold hover:bg-heritage-gold-light text-stone-950 text-xs font-bold transition-colors flex items-center justify-center gap-2"
+              className="px-5 py-2.5 rounded-full bg-[#18181B] hover:bg-[#A8282B] text-white text-xs font-medium tracking-wide transition-colors shadow-xs"
             >
-              <Upload className="w-4 h-4" />
-              <span>Khôi phục dữ liệu</span>
+              Nhập & Khôi Phục Dữ Liệu
             </button>
-          </div>
-
-          {/* Reset card */}
-          <div className="sm:col-span-2 bg-rose-50/50 rounded-3xl p-6 border border-rose-200 space-y-3">
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-rose-800">
-                  Vùng nguy hiểm
-                </h4>
-                <p className="text-xs text-stone-600 mt-0.5">
-                  Đặt lại toàn bộ ứng dụng về trạng thái ban đầu của đề thi Audition.
-                </p>
-              </div>
-              <button
-                onClick={handleReset}
-                className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center gap-1.5 transition-colors"
-              >
-                <RotateCcw className="w-4 h-4" />
-                <span>Đặt lại mặc định</span>
-              </button>
-            </div>
           </div>
         </div>
       )}
