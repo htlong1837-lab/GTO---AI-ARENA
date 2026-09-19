@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MainLayout } from './layouts/MainLayout';
 import { HomePage } from './pages/HomePage';
 import { StudioPage } from './pages/StudioPage';
+import { Studio3DPage } from './pages/Studio3DPage';
 import { LookbookPage } from './pages/LookbookPage';
 import { ComparePage } from './pages/ComparePage';
 import { CulturePage } from './pages/CulturePage';
@@ -103,6 +104,10 @@ export function App() {
             onNavigate={handleNavigate}
             onRefreshCompareCount={refreshCompareCount}
           />
+        )}
+
+        {currentTab === 'studio3d' && (
+          <Studio3DPage />
         )}
 
         {currentTab === 'lookbook' && (

@@ -3,7 +3,7 @@ import { GARMENTS } from '../data/garments';
 import { OCCASIONS } from '../data/occasions';
 import { STYLES } from '../data/styles';
 import { CURATED_LOOKBOOKS } from '../data/curatedLookbooks';
-import { Sparkles, ArrowRight, Compass, ShieldCheck, Heart, Flame, ChevronRight } from 'lucide-react';
+import { Sparkles, ArrowRight, Compass, ShieldCheck, Heart, Flame, ChevronRight, Box } from 'lucide-react';
 
 interface HomePageProps {
   onNavigate: (tab: string, params?: any) => void;
@@ -64,8 +64,17 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </button>
 
                 <button
+                  onClick={() => onNavigate('studio3d')}
+                  className="w-full sm:w-auto px-6 py-4 rounded-full bg-stone-900 hover:bg-stone-800 text-white font-bold text-sm border border-stone-800 transition-all flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <Box className="w-4 h-4 text-heritage-gold" />
+                  <span>Phòng thử đồ 3D</span>
+                  <span className="px-1.5 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-rose-500 text-[10px] font-extrabold text-white">MỚI</span>
+                </button>
+
+                <button
                   onClick={() => onNavigate('lookbook')}
-                  className="w-full sm:w-auto px-7 py-4 rounded-full bg-white hover:bg-stone-50 text-stone-800 font-bold text-sm border border-stone-300 transition-all flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-6 py-4 rounded-full bg-white hover:bg-stone-50 text-stone-800 font-bold text-sm border border-stone-300 transition-all flex items-center justify-center gap-2"
                 >
                   <Compass className="w-4 h-4 text-heritage-gold" />
                   <span>Khám phá Lookbook</span>

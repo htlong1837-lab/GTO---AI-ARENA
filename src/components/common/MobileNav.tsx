@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, PlusCircle, Compass, Scale, User } from 'lucide-react';
+import { Home, PlusCircle, Compass, User, Box } from 'lucide-react';
 
 interface MobileNavProps {
   currentTab: string;
@@ -7,12 +7,20 @@ interface MobileNavProps {
   compareCount: number;
 }
 
-export const MobileNav: React.FC<MobileNavProps> = ({ currentTab, onSelectTab, compareCount }) => {
-  const tabs = [
+interface NavTab {
+  id: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  isMain?: boolean;
+  badge?: number;
+}
+
+export const MobileNav: React.FC<MobileNavProps> = ({ currentTab, onSelectTab }) => {
+  const tabs: NavTab[] = [
     { id: 'home', label: 'Trang chủ', icon: Home },
+    { id: 'studio', label: 'Phối 2D', icon: PlusCircle, isMain: true },
+    { id: 'studio3d', label: 'Phối 3D', icon: Box },
     { id: 'lookbook', label: 'Lookbook', icon: Compass },
-    { id: 'studio', label: 'Phối đồ', icon: PlusCircle, isMain: true },
-    { id: 'compare', label: 'So sánh', icon: Scale, badge: compareCount > 0 ? compareCount : undefined },
     { id: 'profile', label: 'Tủ đồ', icon: User }
   ];
 

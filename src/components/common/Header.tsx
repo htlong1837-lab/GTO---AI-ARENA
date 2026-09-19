@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Scale, Compass, BookOpen, User, Menu, X, PlusCircle } from 'lucide-react';
+import { Sparkles, Scale, Compass, BookOpen, User, Menu, X, PlusCircle, Box } from 'lucide-react';
 
 interface HeaderProps {
   currentTab: string;
@@ -13,6 +13,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab, compare
   const navItems = [
     { id: 'home', label: 'Trang chủ', icon: Sparkles },
     { id: 'studio', label: 'Studio Phối Đồ', icon: PlusCircle, highlight: true },
+    { id: 'studio3d', label: 'Phối đồ 3D', icon: Box, tag: '3D MỚI' },
     { id: 'lookbook', label: 'Lookbook Việt', icon: Compass },
     {
       id: 'compare',
@@ -72,6 +73,11 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab, compare
                 }`}
               >
                 <span>{item.label}</span>
+                {item.tag && (
+                  <span className="px-1.5 py-0.2 text-[9px] font-extrabold rounded-full bg-gradient-to-r from-amber-500 to-rose-500 text-white shadow-xs">
+                    {item.tag}
+                  </span>
+                )}
                 {item.badge !== undefined && (
                   <span className="w-4 h-4 rounded-full bg-heritage-red text-white text-[10px] font-bold flex items-center justify-center">
                     {item.badge}
@@ -122,6 +128,11 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab, compare
                 <div className="flex items-center gap-2.5">
                   <Icon className="w-4 h-4" />
                   <span>{item.label}</span>
+                  {(item as any).tag && (
+                    <span className="px-1.5 py-0.5 text-[9px] font-extrabold rounded-full bg-gradient-to-r from-amber-500 to-rose-500 text-white">
+                      {(item as any).tag}
+                    </span>
+                  )}
                 </div>
                 {item.badge !== undefined && (
                   <span className="px-2 py-0.5 rounded-full bg-heritage-red text-white text-xs font-bold">
