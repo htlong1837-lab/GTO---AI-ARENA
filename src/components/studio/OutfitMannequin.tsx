@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { Garment, ColorOption, StyleGenZ } from '../../types/outfit';
-import { Sparkles, Eye, Image as ImageIcon } from 'lucide-react';
+import { Garment, ColorOption, StyleGenZ, Occasion, WeatherCondition } from '../../types/outfit';
+import { ACCESSORIES } from '../../data/accessories';
+import { GeminiService } from '../../services/geminiService';
+import { useToast } from '../../context/ToastContext';
+import { Sparkles, Eye, Image as ImageIcon, Wand2, Download, Maximize2, RotateCw } from 'lucide-react';
 
 interface OutfitMannequinProps {
   garment: Garment;
@@ -9,6 +12,11 @@ interface OutfitMannequinProps {
   accessoryIds: string[];
   gender?: 'female' | 'male';
   onToggleGender?: (gender: 'female' | 'male') => void;
+  occasion?: Occasion;
+  weather?: WeatherCondition;
+  aiImageUrl?: string;
+  onAiImageGenerated?: (imageUrl: string, promptUsed: string) => void;
+  onOpenKeyModal?: () => void;
 }
 
 export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
@@ -17,17 +25,106 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
   style,
   accessoryIds,
   gender = 'female',
-  onToggleGender
+  onToggleGender,
+  occasion,
+  weather,
+  aiImageUrl,
+  onAiImageGenerated,
+  onOpenKeyModal
 }) => {
-  const [viewMode, setViewMode] = useState<'avatar' | 'photo'>('avatar');
+  const { showToast } = useToast();
+  const [viewMode, setViewMode] = useState<'avatar' | 'photo' | 'ai'>('avatar');
   const [photoError, setPhotoError] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+
+  // AI Generation State
+  const [currentAiImage, setCurrentAiImage] = useState<string | undefined>(aiImageUrl);
+  const [prevPropAiImage, setPrevPropAiImage] = useState<string | undefined>(aiImageUrl);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationStep, setGenerationStep] = useState('');
+  const [isZoomOpen, setIsZoomOpen] = useState(false);
+
+  if (aiImageUrl !== prevPropAiImage) {
+    setPrevPropAiImage(aiImageUrl);
+    setCurrentAiImage(aiImageUrl);
+  }
 
   const currentGender = gender;
   const isMale = currentGender === 'male';
 
   const handleGenderChange = (newGender: 'female' | 'male') => {
     if (onToggleGender) onToggleGender(newGender);
+  };
+
+  const handleGenerateAi = async () => {
+    setIsGenerating(true);
+    setViewMode('ai');
+    setGenerationStep('Đang chuẩn bị thông số Việt phục di sản...');
+
+    try {
+      const selectedAccNames = ACCESSORIES.filter((a) => accessoryIds.includes(a.id)).map((a) => a.name);
+      const prompt = GeminiService.buildHeritageFashionPrompt({
+        garment,
+        color,
+        occasion: occasion || { id: 'thuong-ngay', name: 'Dạo phố & Thường nhật', description: 'Phong cách trẻ trung dạo phố', tag: 'Thường nhật', icon: '', recommendedGarments: [], recommendedStyles: [] },
+        style,
+        accessoryNames: selectedAccNames,
+        gender: currentGender,
+        weather
+      });
+
+      setGenerationStep('Gemini Imagen 3 đang kết xuất người mẫu thời trang...');
+      const result = await GeminiService.generateOutfitImage(prompt);
+
+      if (result.success && result.imageUrl) {
+        setCurrentAiImage(result.imageUrl);
+        if (onAiImageGenerated) {
+          onAiImageGenerated(result.imageUrl, prompt);
+        }
+        showToast({
+          type: 'success',
+          title: 'Tạo ảnh Gemini thành công!',
+          message: `Đã kết xuất ảnh người mẫu ${garment.name} phong cách ${style.name} (${currentGender === 'male' ? 'Nam' : 'Nữ'}).`
+        });
+      } else {
+        if (result.error && result.error.includes('Chưa cấu hình GEMINI_API_KEY')) {
+          if (onOpenKeyModal) onOpenKeyModal();
+          showToast({
+            type: 'warning',
+            title: 'Cần cấu hình API Key',
+            message: 'Vui lòng nhập API Key Gemini để sử dụng tính năng tạo ảnh AI.'
+          });
+        } else {
+          showToast({
+            type: 'error',
+            title: 'Không thể tạo ảnh',
+            message: result.error || 'Có lỗi xảy ra khi tạo ảnh với Gemini.'
+          });
+        }
+      }
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        title: 'Lỗi phát sinh',
+        message: err.message || 'Lỗi không xác định.'
+      });
+    } finally {
+      setIsGenerating(false);
+      setGenerationStep('');
+    }
+  };
+
+  const handleDownloadAiImage = () => {
+    if (!currentAiImage) return;
+    const link = document.createElement('a');
+    link.href = currentAiImage;
+    link.download = `viet-phuc-remix-ai-${garment.id}-${currentGender}-${Date.now()}.jpg`;
+    link.click();
+    showToast({
+      type: 'success',
+      title: 'Đã tải ảnh AI',
+      message: 'Hình ảnh người mẫu thời trang đã được tải về thiết bị của bạn.'
+    });
   };
 
   // Checks for specific accessories
@@ -62,7 +159,7 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
         <div className="absolute inset-0 subtle-grid opacity-25" />
       </div>
 
-      {/* Top Header Overlay: Tags (Left) and Gender Toggle (Right) */}
+      {/* Top Header Overlay: Tags (Left) and Gender Toggle + AI Button (Right) */}
       <div className="absolute top-3 sm:top-4 inset-x-3 sm:inset-x-4 z-20 flex justify-between items-start gap-2.5 pointer-events-none">
         {/* Style & Color floating tags */}
         <div className="flex flex-col gap-1.5 pointer-events-auto">
@@ -76,34 +173,47 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
           </span>
         </div>
 
-        {/* Gender Toggle Pill (Single pill, never wraps or collides) */}
-        <div className="flex bg-white/95 backdrop-blur-md rounded-full p-1 border border-stone-200 shadow-sm text-xs font-semibold pointer-events-auto">
+        {/* Right Controls: Quick AI Button + Gender Toggle */}
+        <div className="flex items-center gap-2 pointer-events-auto">
           <button
-            onClick={() => handleGenderChange('female')}
-            className={`px-3 py-1 rounded-full transition-all flex items-center gap-1 text-[11px] ${
-              !isMale
-                ? 'bg-rose-600 text-white shadow-xs'
-                : 'text-stone-600 hover:text-stone-900'
-            }`}
-            title="Xem trên vóc dáng Nữ"
+            onClick={handleGenerateAi}
+            disabled={isGenerating}
+            className="px-3 py-1 rounded-full bg-gradient-to-r from-[#9B1D20] via-rose-600 to-amber-600 hover:opacity-95 text-white text-[11px] font-bold shadow-md flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95 disabled:opacity-50"
+            title="Tạo ảnh người mẫu thực tế bằng Gemini Imagen 3"
           >
-            <span>Nữ ♀</span>
+            <Wand2 className="w-3 h-3 text-amber-200 animate-pulse" />
+            <span>{isGenerating ? 'Đang tạo...' : 'Tạo ảnh AI'}</span>
           </button>
-          <button
-            onClick={() => handleGenderChange('male')}
-            className={`px-3 py-1 rounded-full transition-all flex items-center gap-1 text-[11px] ${
-              isMale
-                ? 'bg-sky-700 text-white shadow-xs'
-                : 'text-stone-600 hover:text-stone-900'
-            }`}
-            title="Xem trên vóc dáng Nam"
-          >
-            <span>Nam ♂</span>
-          </button>
+
+          {/* Gender Toggle Pill */}
+          <div className="flex bg-white/95 backdrop-blur-md rounded-full p-1 border border-stone-200 shadow-sm text-xs font-semibold">
+            <button
+              onClick={() => handleGenderChange('female')}
+              className={`px-2.5 sm:px-3 py-1 rounded-full transition-all flex items-center gap-1 text-[11px] ${
+                !isMale
+                  ? 'bg-rose-600 text-white shadow-xs'
+                  : 'text-stone-600 hover:text-stone-900'
+              }`}
+              title="Xem trên vóc dáng Nữ"
+            >
+              <span>Nữ ♀</span>
+            </button>
+            <button
+              onClick={() => handleGenderChange('male')}
+              className={`px-2.5 sm:px-3 py-1 rounded-full transition-all flex items-center gap-1 text-[11px] ${
+                isMale
+                  ? 'bg-sky-700 text-white shadow-xs'
+                  : 'text-stone-600 hover:text-stone-900'
+              }`}
+              title="Xem trên vóc dáng Nam"
+            >
+              <span>Nam ♂</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Bottom Right: View Switcher Button Pill (Editorial Croquis / Ảnh Mẫu) */}
+      {/* Bottom Right: View Switcher Button Pill (Editorial Croquis / Ảnh Mẫu / Ảnh AI) */}
       <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-20 flex bg-white/90 backdrop-blur-md rounded-full p-1 border border-stone-200 shadow-md text-xs font-medium">
         <button
           onClick={() => setViewMode('avatar')}
@@ -127,6 +237,18 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
         >
           <ImageIcon className="w-3.5 h-3.5" />
           <span>Ảnh Mẫu</span>
+        </button>
+        <button
+          onClick={() => setViewMode('ai')}
+          className={`flex items-center gap-1.5 px-3 py-1 rounded-full transition-all ${
+            viewMode === 'ai'
+              ? 'bg-gradient-to-r from-[#9B1D20] to-amber-600 text-white shadow-sm font-semibold'
+              : 'text-rose-700 hover:text-rose-900'
+          }`}
+        >
+          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+          <span>Ảnh AI</span>
+          {currentAiImage && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />}
         </button>
       </div>
 
@@ -1411,7 +1533,7 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
             )}
           </svg>
         </div>
-      ) : (
+      ) : viewMode === 'photo' ? (
         /* MODE 2: High-Fashion Lookbook Photography with graceful fallback */
         <div className="relative w-full h-full">
           {!photoError ? (
@@ -1439,6 +1561,133 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
             <p className="font-serif text-lg font-bold drop-shadow-md">
               {garment.name} × {style.name} • {isMale ? 'Nam' : 'Nữ'}
             </p>
+          </div>
+        </div>
+      ) : (
+        /* MODE 3: Gemini AI Generated High-Fashion Lookbook Photography */
+        <div className="relative w-full h-full flex flex-col items-center justify-center">
+          {isGenerating ? (
+            <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-stone-900 text-white relative overflow-hidden">
+              {/* Pulsing aura */}
+              <div className="absolute w-72 h-72 rounded-full bg-gradient-to-tr from-rose-600/30 to-amber-500/30 blur-3xl animate-pulse" />
+              <div className="relative z-10 flex flex-col items-center space-y-4 max-w-sm">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#9B1D20] to-[#C59338] flex items-center justify-center shadow-lg shadow-amber-500/20 animate-spin">
+                  <Sparkles className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-serif text-lg font-bold text-amber-200">
+                    Google Gemini AI (Imagen 3)
+                  </h4>
+                  <p className="text-xs text-stone-300 mt-1 font-mono">
+                    {generationStep || 'Đang kết xuất người mẫu ảnh thực tế...'}
+                  </p>
+                </div>
+                <div className="w-48 h-1.5 bg-stone-800 rounded-full overflow-hidden">
+                  <div className="w-full h-full bg-gradient-to-r from-rose-500 via-amber-400 to-rose-500 animate-pulse" />
+                </div>
+                <span className="text-[10px] text-stone-400">
+                  {garment.name} • {color.name} • {style.name} ({isMale ? 'Nam' : 'Nữ'})
+                </span>
+              </div>
+            </div>
+          ) : currentAiImage ? (
+            <div className="relative w-full h-full group/aimg overflow-hidden">
+              <img
+                src={currentAiImage}
+                alt={`${garment.name} AI Generated`}
+                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover/aimg:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-stone-950/30 pointer-events-none" />
+
+              {/* Floating Action Buttons */}
+              <div className="absolute top-14 right-3 z-20 flex flex-col gap-2">
+                <button
+                  onClick={() => setIsZoomOpen(true)}
+                  className="p-2 bg-stone-900/80 hover:bg-stone-900 text-white rounded-full backdrop-blur-md shadow-md hover:scale-110 transition-all"
+                  title="Phóng to xem chi tiết"
+                >
+                  <Maximize2 className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={handleDownloadAiImage}
+                  className="p-2 bg-stone-900/80 hover:bg-stone-900 text-white rounded-full backdrop-blur-md shadow-md hover:scale-110 transition-all"
+                  title="Tải ảnh về máy"
+                >
+                  <Download className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={handleGenerateAi}
+                  className="p-2 bg-rose-900/80 hover:bg-rose-900 text-white rounded-full backdrop-blur-md shadow-md hover:scale-110 transition-all"
+                  title="Tạo lại bản phối khác"
+                >
+                  <RotateCw className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Caption */}
+              <div className="absolute bottom-4 left-4 right-36 sm:right-44 text-white z-10">
+                <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider font-bold text-amber-300 bg-amber-950/70 px-2 py-0.5 rounded-full border border-amber-500/30 backdrop-blur-xs mb-1">
+                  <Sparkles className="w-3 h-3 text-amber-300" />
+                  Gemini Imagen 3 Editorial
+                </span>
+                <p className="font-serif text-lg font-bold drop-shadow-md">
+                  {garment.name} × {style.name} • {isMale ? 'Nam' : 'Nữ'}
+                </p>
+                <p className="text-[11px] text-stone-300 line-clamp-1">
+                  {color.vietnameseName} • Phụ kiện: {accessoryIds.length} món
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-stone-900 text-stone-200 relative overflow-hidden">
+              <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-[#9B1D20] via-rose-600 to-amber-500 flex items-center justify-center text-white shadow-xl mb-3 animate-bounce">
+                <Wand2 className="w-8 h-8" />
+              </div>
+              <h4 className="font-serif text-lg font-bold text-white">
+                Tạo Ảnh Người Mẫu Thực Tế
+              </h4>
+              <p className="text-xs text-stone-400 mt-1 max-w-xs leading-relaxed">
+                Tái hiện chân thực <strong>{garment.name}</strong> ({color.name}) phong cách <strong>{style.name}</strong> trên vóc dáng {isMale ? 'Nam' : 'Nữ'}.
+              </p>
+              <button
+                onClick={handleGenerateAi}
+                className="mt-4 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#9B1D20] to-[#C59338] hover:opacity-95 text-white font-bold text-xs shadow-lg shadow-rose-900/40 flex items-center gap-2 transition-all hover:scale-105 active:scale-95"
+              >
+                <Sparkles className="w-4 h-4 text-amber-200" />
+                <span>Bắt đầu tạo ảnh với Gemini</span>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Fullscreen Zoom Modal */}
+      {isZoomOpen && currentAiImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
+          onClick={() => setIsZoomOpen(false)}
+        >
+          <div className="relative max-w-3xl max-h-[90vh] flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={currentAiImage}
+              alt="Zoomed AI Outfit"
+              className="max-h-[80vh] w-auto rounded-2xl shadow-2xl object-contain border border-stone-700"
+            />
+            <div className="flex items-center gap-3 mt-3">
+              <button
+                onClick={handleDownloadAiImage}
+                className="px-4 py-2 bg-stone-800 hover:bg-stone-700 text-white text-xs font-bold rounded-full flex items-center gap-1.5 border border-stone-600 shadow-md"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Tải ảnh gốc</span>
+              </button>
+              <button
+                onClick={() => setIsZoomOpen(false)}
+                className="px-4 py-2 bg-white text-stone-900 hover:bg-stone-100 text-xs font-bold rounded-full shadow-md"
+              >
+                Đóng
+              </button>
+            </div>
           </div>
         </div>
       )}

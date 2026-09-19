@@ -26,6 +26,7 @@ export function App() {
     accessoryIds?: string[];
     gender?: 'female' | 'male';
     weatherId?: string;
+    aiGeneratedImage?: string;
   }>({});
 
   const refreshCompareCount = () => {
@@ -63,7 +64,8 @@ export function App() {
       colorId: outfit.colorId,
       accessoryIds: outfit.accessoryIds,
       gender: outfit.gender,
-      weatherId: outfit.weatherId
+      weatherId: outfit.weatherId,
+      aiGeneratedImage: outfit.aiGeneratedImage
     });
     setCurrentTab('studio');
   };
@@ -101,6 +103,7 @@ export function App() {
             initialAccessoryIds={studioInitialParams.accessoryIds}
             initialGender={studioInitialParams.gender}
             initialWeatherId={studioInitialParams.weatherId}
+            initialAiImageUrl={studioInitialParams.aiGeneratedImage}
             onNavigate={handleNavigate}
             onRefreshCompareCount={refreshCompareCount}
           />

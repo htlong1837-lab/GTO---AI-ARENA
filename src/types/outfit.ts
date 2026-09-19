@@ -100,6 +100,8 @@ export interface Outfit {
   createdAt: string;
   isFavorite?: boolean;
   likesCount?: number;
+  aiGeneratedImage?: string;
+  aiPrompt?: string;
 }
 
 export interface ColorHarmonyReport {

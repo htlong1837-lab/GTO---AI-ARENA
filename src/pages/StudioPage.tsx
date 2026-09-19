@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Garment, Occasion, ColorOption, StyleGenZ, Outfit, WeatherCondition } from '../types/outfit';
 import { GARMENTS } from '../data/garments';
 import { OCCASIONS } from '../data/occasions';
@@ -13,9 +13,11 @@ import { StepAccessories } from '../components/studio/StepAccessories';
 import { StepStyle } from '../components/studio/StepStyle';
 import { OutfitPreviewCard } from '../components/studio/OutfitPreviewCard';
 import { ShareModal } from '../components/share/ShareModal';
+import { GeminiKeyModal } from '../components/common/GeminiKeyModal';
 import { StorageService } from '../services/storageService';
+import { GeminiService } from '../services/geminiService';
 import { useToast } from '../context/ToastContext';
-import { Sparkles, Dices, ArrowLeft, ArrowRight, Check, Compass, Box } from 'lucide-react';
+import { Sparkles, Dices, ArrowLeft, ArrowRight, Check, Compass, Box, Key } from 'lucide-react';
 
 interface StudioPageProps {
   initialGarmentId?: string;
@@ -25,6 +27,7 @@ interface StudioPageProps {
   initialAccessoryIds?: string[];
   initialGender?: 'female' | 'male';
   initialWeatherId?: string;
+  initialAiImageUrl?: string;
   onNavigate: (_tab: string) => void;
   onRefreshCompareCount: () => void;
 }
@@ -37,6 +40,7 @@ export const StudioPage: React.FC<StudioPageProps> = ({
   initialAccessoryIds,
   initialGender,
   initialWeatherId,
+  initialAiImageUrl,
   onNavigate,
   onRefreshCompareCount
 }) => {
@@ -67,9 +71,18 @@ export const StudioPage: React.FC<StudioPageProps> = ({
   );
 
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
+  const [aiGeneratedImage, setAiGeneratedImage] = useState<string | undefined>(initialAiImageUrl);
+  const [aiPrompt, setAiPrompt] = useState<string | undefined>();
+  const [aiStatus, setAiStatus] = useState<{ configured: boolean; preview?: string | null }>({ configured: false });
+
   const [savedOutfitIds, setSavedOutfitIds] = useState<string[]>(() => {
     return StorageService.getSavedOutfits().map((o) => o.id);
   });
+
+  useEffect(() => {
+    GeminiService.checkStatus().then(setAiStatus);
+  }, []);
 
   // Dynamic Outfit Name with gender tag
   const outfitName = `${selectedGarment.name} ${selectedColor.name} (${selectedGender === 'male' ? 'Nam' : 'Nữ'}) × ${
@@ -163,7 +176,9 @@ export const StudioPage: React.FC<StudioPageProps> = ({
       gender: selectedGender,
       weatherId: selectedWeather.id,
       createdAt: new Date().toISOString(),
-      isFavorite: true
+      isFavorite: true,
+      aiGeneratedImage,
+      aiPrompt
     };
 
     StorageService.saveOutfit(newOutfit);
@@ -172,7 +187,9 @@ export const StudioPage: React.FC<StudioPageProps> = ({
     showToast({
       type: 'success',
       title: 'Đã lưu Outfit vào tủ đồ!',
-      message: 'Bạn có thể xem lại tại mục Tủ đồ & Hồ sơ bất kỳ lúc nào.'
+      message: aiGeneratedImage
+        ? 'Bản phối cùng ảnh người mẫu AI độc bản đã được lưu trữ an toàn.'
+        : 'Bạn có thể xem lại tại mục Tủ đồ & Hồ sơ bất kỳ lúc nào.'
     });
   };
 
@@ -188,7 +205,9 @@ export const StudioPage: React.FC<StudioPageProps> = ({
       styleId: selectedStyle.id,
       gender: selectedGender,
       weatherId: selectedWeather.id,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      aiGeneratedImage,
+      aiPrompt
     };
 
     const res = StorageService.addToCompare(newOutfit);
@@ -252,11 +271,24 @@ export const StudioPage: React.FC<StudioPageProps> = ({
           </button>
 
           <button
+            onClick={() => setIsKeyModalOpen(true)}
+            className={`px-3.5 py-2 rounded-full text-xs font-medium border shadow-xs flex items-center gap-1.5 transition-all ${
+              aiStatus.configured
+                ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-emerald-300'
+                : 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
+            }`}
+            title="Cấu hình Google Gemini API Key để tạo ảnh AI dùng chung"
+          >
+            <Key className="w-3.5 h-3.5 text-amber-600" />
+            <span>{aiStatus.configured ? 'Gemini AI: Sẵn sàng' : 'Cấu hình Gemini AI'}</span>
+          </button>
+
+          <button
             onClick={handleRandomize}
             className="px-3.5 py-2 rounded-full bg-[#FAF7F2] hover:bg-[#F4EFE6] text-stone-800 text-xs font-medium border border-[#E2D8C7] shadow-xs flex items-center gap-1.5 transition-all"
           >
             <Dices className="w-4 h-4 text-[#A8282B]" />
-            <span>Gợi Ý Ngẫu Nhiên (AI)</span>
+            <span>Gợi Ý Ngẫu Nhiên</span>
           </button>
         </div>
       </div>
@@ -413,6 +445,12 @@ export const StudioPage: React.FC<StudioPageProps> = ({
             onAddToCompare={handleAddToCompare}
             onOpenShare={() => setIsShareModalOpen(true)}
             isSaved={isSaved}
+            aiImageUrl={aiGeneratedImage}
+            onAiImageGenerated={(img, prompt) => {
+              setAiGeneratedImage(img);
+              setAiPrompt(prompt);
+            }}
+            onOpenKeyModal={() => setIsKeyModalOpen(true)}
           />
         </div>
       </div>
@@ -428,6 +466,15 @@ export const StudioPage: React.FC<StudioPageProps> = ({
           occasionName: selectedOccasion.name
         }}
         onClose={() => setIsShareModalOpen(false)}
+      />
+
+      {/* Gemini AI API Configuration Modal */}
+      <GeminiKeyModal
+        isOpen={isKeyModalOpen}
+        onClose={() => setIsKeyModalOpen(false)}
+        onKeySaved={() => {
+          GeminiService.checkStatus().then(setAiStatus);
+        }}
       />
     </div>
   );

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserProfile, Outfit } from '../types/outfit';
 import { GARMENTS } from '../data/garments';
 import { COLORS } from '../data/colors';
 import { STYLES } from '../data/styles';
 import { StorageService } from '../services/storageService';
+import { GeminiService } from '../services/geminiService';
+import { GeminiKeyModal } from '../components/common/GeminiKeyModal';
 import { useToast } from '../context/ToastContext';
 import {
   Bookmark,
@@ -15,7 +17,8 @@ import {
   Trash2,
   Scale,
   Edit2,
-  Check
+  Check,
+  Key
 } from 'lucide-react';
 
 interface ProfilePageProps {
@@ -32,6 +35,12 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   const { showToast } = useToast();
   const [profile, setProfile] = useState<UserProfile>(() => StorageService.getProfile());
   const [activeTab, setActiveTab] = useState<'saved' | 'history' | 'data'>('saved');
+  const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
+  const [aiStatus, setAiStatus] = useState<{ configured: boolean; preview?: string | null }>({ configured: false });
+
+  useEffect(() => {
+    GeminiService.checkStatus().then(setAiStatus);
+  }, []);
 
   // Edit Profile State
   const [isEditing, setIsEditing] = useState(false);
@@ -260,6 +269,19 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             <Upload className="w-3.5 h-3.5" />
             <span>Dữ liệu & Sao lưu</span>
           </button>
+
+          <button
+            onClick={() => setIsKeyModalOpen(true)}
+            className={`px-3.5 py-2 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 border shadow-xs ${
+              aiStatus.configured
+                ? 'bg-emerald-50 text-emerald-900 border-emerald-300 hover:bg-emerald-100'
+                : 'bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100'
+            }`}
+            title="Cấu hình Google Gemini API Key"
+          >
+            <Key className="w-3.5 h-3.5 text-amber-600" />
+            <span>{aiStatus.configured ? 'Gemini AI: Sẵn sàng' : 'Cấu hình Gemini'}</span>
+          </button>
         </div>
 
         <button
@@ -319,6 +341,30 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       <h3 className="font-serif font-bold text-base text-stone-900 line-clamp-2 leading-snug">
                         {outfit.name}
                       </h3>
+
+                      {/* AI Generated Image or Default Preview */}
+                      {outfit.aiGeneratedImage ? (
+                        <div className="mt-2.5 relative h-40 rounded-xl overflow-hidden group/thumb border border-stone-200">
+                          <img
+                            src={outfit.aiGeneratedImage}
+                            alt={outfit.name}
+                            className="w-full h-full object-cover object-top transition-transform duration-500 group-hover/thumb:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-stone-900/70 via-transparent to-transparent pointer-events-none" />
+                          <span className="absolute bottom-1.5 left-2 px-2 py-0.5 rounded-full text-[9px] font-bold bg-stone-900/80 text-amber-300 backdrop-blur-xs border border-amber-400/30 flex items-center gap-1">
+                            <Sparkles className="w-2.5 h-2.5 text-amber-300" />
+                            Ảnh AI Imagen 3
+                          </span>
+                        </div>
+                      ) : garment?.image ? (
+                        <div className="mt-2.5 relative h-28 rounded-xl overflow-hidden border border-stone-100 opacity-80 group/thumb">
+                          <img
+                            src={garment.image}
+                            alt={garment.name}
+                            className="w-full h-full object-cover object-center filter grayscale-20 group-hover/thumb:grayscale-0 transition-all"
+                          />
+                        </div>
+                      ) : null}
 
                       <div className="text-[11px] text-stone-400 mt-2 font-mono">
                         Ngày tạo: {new Date(outfit.createdAt).toLocaleDateString('vi-VN')}
@@ -480,6 +526,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           </div>
         </div>
       )}
+
+      {/* Gemini AI API Configuration Modal */}
+      <GeminiKeyModal
+        isOpen={isKeyModalOpen}
+        onClose={() => setIsKeyModalOpen(false)}
+        onKeySaved={() => {
+          GeminiService.checkStatus().then(setAiStatus);
+        }}
+      />
     </div>
   );
 };

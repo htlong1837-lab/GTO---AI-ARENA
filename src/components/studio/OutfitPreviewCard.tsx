@@ -25,6 +25,9 @@ interface OutfitPreviewCardProps {
   onAddToCompare: () => void;
   onOpenShare: () => void;
   isSaved?: boolean;
+  aiImageUrl?: string;
+  onAiImageGenerated?: (imageUrl: string, promptUsed: string) => void;
+  onOpenKeyModal?: () => void;
 }
 
 export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
@@ -40,7 +43,10 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
   onSaveOutfit,
   onAddToCompare,
   onOpenShare,
-  isSaved = false
+  isSaved = false,
+  aiImageUrl,
+  onAiImageGenerated,
+  onOpenKeyModal
 }) => {
   const [downloading, setDownloading] = useState(false);
   const [lookCode] = useState(() => `VP-${Math.random().toString(36).slice(2, 8).toUpperCase()}`);
@@ -320,6 +326,11 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
           accessoryIds={accessoryIds}
           gender={gender}
           onToggleGender={onToggleGender}
+          occasion={occasion}
+          weather={weather}
+          aiImageUrl={aiImageUrl}
+          onAiImageGenerated={onAiImageGenerated}
+          onOpenKeyModal={onOpenKeyModal}
         />
       </div>
 
