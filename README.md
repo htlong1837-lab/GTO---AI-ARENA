@@ -59,20 +59,19 @@
 ## 💻 Cài đặt & Chạy trên máy cục bộ
 
 ```bash
-# 1. Clone repository
-git clone https://github.com/tulaanh/viet-phuc-remix.git
+# 1. Clone repository (hoặc pull code mới nhất)
+git clone https://github.com/htlong1837-lab/GTO---AI-ARENA.git
 
 # 2. Di chuyển vào thư mục dự án
-cd viet-phuc-remix
+cd GTO---AI-ARENA
 
-# 3. Cài đặt các gói phụ thuộc
+# 3. Cài đặt các gói phụ thuộc (Bắt buộc cho lần đầu tải về)
 npm install
 
-# 4. Chạy môi trường phát triển (Dev server)
+# 4. Chạy môi trường phát triển (Yêu cầu Node.js >= 18)
 npm run dev
 
-# 5. Đóng gói bản Production
-npm run build
+# Hoặc trên Windows, bạn có thể click đúp chạy file dev.bat (file sẽ tự động cài đặt npm install nếu chưa có)
 ```
 
 ---
