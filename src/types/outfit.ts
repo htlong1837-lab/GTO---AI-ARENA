@@ -62,6 +62,7 @@ export interface Accessory {
   description: string;
   iconName: string;
   matchStyles: string[];
+  thumbnailUrl?: string;
 }
 
 export interface StyleGenZ {

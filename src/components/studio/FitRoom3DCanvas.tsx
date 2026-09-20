@@ -1,73 +1,57 @@
-import React, { useRef, useState, useEffect } from 'react';
-import {
-  ThreeCanvas,
-  ThreeCanvasHandle,
-  LightingMode,
-  CameraPreset
-} from '../studio3d/ThreeCanvas';
-import {
-  Slot3DType,
-  ActiveSlotState,
-  Item3D,
-  STARTER_3D_ITEMS,
-  DEFAULT_ACTIVE_SLOTS
-} from '../../data/models3d';
+import React, { useState, useEffect } from 'react';
 import { ClothingItemOption, TryOnModel } from '../../data/modelsTryOn';
+import { ACCESSORIES } from '../../data/accessories';
+import { Accessory } from '../../types/outfit';
 import {
-  RotateCw,
-  Camera,
-  Maximize2,
   Sparkles,
   Download,
   Share2,
-  Layers,
   Check,
-  Eye,
-  Sun
+  Maximize2,
+  X,
+  Shirt,
+  Info,
+  Layers,
+  ZoomIn
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useToast } from '../../context/ToastContext';
 
 interface FitRoom3DCanvasProps {
   selectedClothes: ClothingItemOption;
+  customClothesImage?: string | null;
   selectedColorHex: string;
   selectedColorName: string;
   selectedModel: TryOnModel;
+  selectedAccessoryIds?: string[];
   selectedAccessoryNames?: string[];
   aiResultImage?: string | null;
   onOpenShareModal?: () => void;
   onSaveToWardrobe?: () => void;
   onAddToCompare?: () => void;
+  onToggleAccessory?: (id: string) => void;
 }
-
-// Map garment type to 3D starter item ID
-const GARMENT_3D_ID_MAP: Record<string, string> = {
-  'ao-dai': 'base-ao-dai',
-  'ao-ngu-than': 'base-ao-ngu-than',
-  'nhat-binh': 'base-ao-nhat-binh',
-  'ao-tu-than': 'base-ao-tu-than',
-  'ao-ba-ba': 'base-ao-ba-ba'
-};
 
 export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
   selectedClothes,
+  customClothesImage,
   selectedColorHex,
   selectedColorName,
   selectedModel,
+  selectedAccessoryIds = [],
   selectedAccessoryNames = [],
   aiResultImage,
   onOpenShareModal,
   onSaveToWardrobe,
-  onAddToCompare
+  onAddToCompare,
+  onToggleAccessory
 }) => {
   const { showToast } = useToast();
-  const canvasRef = useRef<ThreeCanvasHandle>(null);
 
-  // 3D Viewport Settings
-  const [autoRotate, setAutoRotate] = useState<boolean>(false);
-  const [lightingMode, setLightingMode] = useState<LightingMode>('studio');
-  const [cameraPreset, setCameraPreset] = useState<CameraPreset>('all');
-  const [viewMode, setViewMode] = useState<'3d' | 'ai' | 'photo'>('3d');
+  // View Mode: 'garment' (Trang phục độc bản không người mặc) vs 'ai' (Ảnh AI đã thử có mẫu mặc)
+  const [viewMode, setViewMode] = useState<'garment' | 'ai'>('garment');
+  const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
+  const [inspectingAccessory, setInspectingAccessory] = useState<Accessory | null>(null);
 
   // When AI result is generated, automatically switch to AI preview
   useEffect(() => {
@@ -76,230 +60,135 @@ export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
     }
   }, [aiResultImage]);
 
-  // Active 3D Slots State
-  const target3DItemId = GARMENT_3D_ID_MAP[selectedClothes.garmentType] || 'base-ao-dai';
+  // The active garment image (custom uploaded or clean ghost-mannequin product photo without human wearer)
+  const garmentImageUrl = customClothesImage || selectedClothes.thumbnailUrl;
 
-  const [activeSlots, setActiveSlots] = useState<Record<Slot3DType, ActiveSlotState>>({
-    base: {
-      itemId: target3DItemId,
-      visible: true,
-      color: selectedColorHex,
-      transform: { position: [0, 0, 0], rotation: [0, 0, 0], scale: [1, 1, 1] }
-    }
-  });
+  // Selected accessory objects
+  const activeAccessories: Accessory[] = ACCESSORIES.filter((acc) =>
+    selectedAccessoryIds.includes(acc.id) || selectedAccessoryNames.includes(acc.name)
+  );
 
-  // Synchronize 3D model and color whenever selection changes
-  useEffect(() => {
-    const newItemId = GARMENT_3D_ID_MAP[selectedClothes.garmentType] || 'base-ao-dai';
-    setActiveSlots({
-      base: {
-        itemId: newItemId,
-        visible: true,
-        color: selectedColorHex,
-        transform: { position: [0, 0, 0], rotation: [0, 0, 0], scale: [1, 1, 1] }
-      }
-    });
-  }, [selectedClothes.garmentType, selectedColorHex]);
-
-  // Capture Snapshot from 3D Viewport
-  const handleCaptureSnapshot = () => {
-    const dataUrl = canvasRef.current?.captureSnapshot();
-    if (!dataUrl) {
-      showToast({ type: 'error', title: 'Lỗi chụp ảnh', message: 'Không thể chụp ảnh từ khung 3D.' });
-      return;
-    }
+  // Download the current view photo
+  const handleDownloadPhoto = () => {
+    const isAi = viewMode === 'ai' && aiResultImage;
+    const downloadUrl = isAi ? aiResultImage : garmentImageUrl;
+    if (!downloadUrl) return;
 
     const link = document.createElement('a');
-    link.href = dataUrl;
-    link.download = `viet-phuc-3d-${selectedClothes.garmentType}-${selectedModel.gender}-${Date.now()}.png`;
+    link.href = downloadUrl;
+    link.download = isAi
+      ? `viet-phuc-ai-${selectedClothes.garmentType}-${selectedModel.gender}-${Date.now()}.jpg`
+      : `viet-phuc-san-pham-${selectedClothes.garmentType}-${Date.now()}.jpg`;
+    link.target = '_blank';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
     confetti({
-      particleCount: 75,
-      spread: 60,
+      particleCount: 70,
+      spread: 55,
       origin: { y: 0.8 },
       colors: ['#0D9488', '#DFB058', '#9B1D20']
     });
 
     showToast({
       type: 'success',
-      title: 'Đã chụp ảnh 3D thành công!',
-      message: 'Hình ảnh góc chụp 3D độ nét cao đã được tải về máy của bạn.'
+      title: isAi ? 'Đã tải ảnh thử đồ AI!' : 'Đã tải ảnh trang phục!',
+      message: 'Ảnh chất lượng cao đã được lưu về thiết bị của bạn.'
     });
   };
 
   return (
-    <div className="flex flex-col min-h-[640px] sm:min-h-[720px] bg-[#F3F4F6] rounded-3xl p-4 sm:p-5 border border-stone-200 shadow-inner relative overflow-hidden text-stone-900">
+    <div className="flex flex-col min-h-[640px] sm:min-h-[720px] bg-[#F7F7F8] rounded-3xl p-4 sm:p-5 border border-stone-200 shadow-inner relative overflow-hidden text-stone-900">
       
       {/* Top Floating Control Bar */}
       <div className="flex flex-wrap items-center justify-between z-20 mb-3 gap-2">
-        {/* Title & Tag */}
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/95 backdrop-blur text-stone-800 border border-stone-200 shadow-xs">
-            <span className="w-2 h-2 rounded-full bg-teal-600 animate-pulse shrink-0" />
+        {/* Title & Heritage Tags */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-white text-stone-800 border border-stone-200 shadow-xs">
+            <Shirt className="w-3.5 h-3.5 text-teal-600 shrink-0" />
             <span>{selectedClothes.name}</span>
           </span>
-          <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100/90 text-amber-900 border border-amber-300/80">
-            {selectedModel.gender === 'female' ? 'Dáng Nữ ♀' : 'Dáng Nam ♂'}
+          <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-900 border border-amber-200/80">
+            {selectedClothes.era}
+          </span>
+          <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-stone-100 text-stone-700 border border-stone-200">
+            {selectedModel.gender === 'female' ? 'Form Nữ ♀' : 'Form Nam ♂'}
           </span>
         </div>
 
-        {/* View Mode Switcher: 3D Model vs Ảnh AI vs Ảnh Mẫu */}
-        <div className="flex items-center gap-1 bg-white/95 backdrop-blur-md p-1 rounded-full border border-stone-200 shadow-sm text-xs">
+        {/* View Mode Switcher: Y Phục Độc Bản vs Ảnh AI */}
+        <div className="flex items-center gap-1 bg-white/95 backdrop-blur-md p-1 rounded-full border border-stone-200 shadow-xs text-xs">
           <button
-            onClick={() => setViewMode('3d')}
-            className={`px-3 py-1 rounded-full transition-all flex items-center gap-1.5 font-semibold ${
-              viewMode === '3d'
+            onClick={() => setViewMode('garment')}
+            className={`px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 font-semibold ${
+              viewMode === 'garment'
                 ? 'bg-stone-900 text-white shadow-xs'
                 : 'text-stone-600 hover:text-stone-900'
             }`}
           >
-            <Layers className="w-3.5 h-3.5" />
-            <span>Mô hình 3D</span>
+            <Shirt className="w-3.5 h-3.5" />
+            <span>Ảnh Trang Phục</span>
           </button>
           
           {aiResultImage && (
             <button
               onClick={() => setViewMode('ai')}
-              className={`px-3 py-1 rounded-full transition-all flex items-center gap-1.5 font-semibold ${
+              className={`px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 font-semibold ${
                 viewMode === 'ai'
                   ? 'bg-teal-700 text-white shadow-xs'
                   : 'text-stone-600 hover:text-stone-900'
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>Ảnh AI Đã Thử</span>
+              <span>Ảnh Mẫu Đã Thử AI</span>
             </button>
           )}
 
+          {/* Zoom Lightbox Trigger */}
           <button
-            onClick={() => setViewMode('photo')}
-            className={`px-3 py-1 rounded-full transition-all flex items-center gap-1.5 font-semibold ${
-              viewMode === 'photo'
-                ? 'bg-stone-900 text-white shadow-xs'
-                : 'text-stone-600 hover:text-stone-900'
-            }`}
+            onClick={() => setIsZoomModalOpen(true)}
+            className="p-1.5 rounded-full text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors"
+            title="Xem ảnh cỡ lớn"
           >
-            <Eye className="w-3.5 h-3.5" />
-            <span>Ảnh Mẫu</span>
+            <Maximize2 className="w-3.5 h-3.5" />
+          </button>
+
+          {/* Download Trigger */}
+          <button
+            onClick={handleDownloadPhoto}
+            className="p-1.5 rounded-full text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors"
+            title="Tải ảnh về máy"
+          >
+            <Download className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
 
-      {/* 3D Secondary Controls Toolbar (Camera Presets, Auto Rotate, Snapshot) */}
-      {viewMode === '3d' && (
-        <div className="flex flex-wrap items-center justify-between gap-2 z-20 mb-2 px-1 text-xs">
-          {/* Camera Presets */}
-          <div className="flex items-center gap-1 bg-white/90 backdrop-blur px-2 py-1 rounded-xl border border-stone-200 shadow-xs">
-            <span className="text-[10px] text-stone-400 font-bold uppercase tracking-wider mr-1">Góc:</span>
-            <button
-              onClick={() => setCameraPreset('all')}
-              className={`px-2 py-0.5 rounded-lg text-[11px] font-medium transition-colors ${
-                cameraPreset === 'all' ? 'bg-teal-600 text-white' : 'text-stone-600 hover:bg-stone-100'
-              }`}
-            >
-              Toàn thân
-            </button>
-            <button
-              onClick={() => setCameraPreset('collar')}
-              className={`px-2 py-0.5 rounded-lg text-[11px] font-medium transition-colors ${
-                cameraPreset === 'collar' ? 'bg-teal-600 text-white' : 'text-stone-600 hover:bg-stone-100'
-              }`}
-            >
-              Cổ áo
-            </button>
-            <button
-              onClick={() => setCameraPreset('hem')}
-              className={`px-2 py-0.5 rounded-lg text-[11px] font-medium transition-colors ${
-                cameraPreset === 'hem' ? 'bg-teal-600 text-white' : 'text-stone-600 hover:bg-stone-100'
-              }`}
-            >
-              Tà áo
-            </button>
-          </div>
-
-          {/* Actions: Auto Rotate, Light Mode, Capture Snapshot */}
-          <div className="flex items-center gap-1.5">
-            <button
-              onClick={() => setAutoRotate(!autoRotate)}
-              className={`flex items-center gap-1 px-2.5 py-1 rounded-xl border text-[11px] font-medium transition-all ${
-                autoRotate
-                  ? 'bg-amber-100 border-amber-300 text-amber-900 shadow-xs'
-                  : 'bg-white border-stone-200 text-stone-700 hover:bg-stone-50'
-              }`}
-              title="Bật/tắt tự động xoay 360 độ"
-            >
-              <RotateCw className={`w-3 h-3 ${autoRotate ? 'animate-spin' : ''}`} />
-              <span>Xoay 360°</span>
-            </button>
-
-            <button
-              onClick={() => {
-                const nextLight: Record<LightingMode, LightingMode> = {
-                  studio: 'cyber',
-                  cyber: 'natural',
-                  natural: 'studio',
-                  minimal: 'studio'
-                };
-                setLightingMode(nextLight[lightingMode]);
-              }}
-              className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white border border-stone-200 text-stone-700 hover:bg-stone-50 text-[11px] font-medium transition-all shadow-xs"
-              title="Đổi ánh sáng: Studio / Cyber / Tự nhiên"
-            >
-              <Sun className="w-3 h-3 text-amber-600" />
-              <span className="capitalize">{lightingMode}</span>
-            </button>
-
-            <button
-              onClick={handleCaptureSnapshot}
-              className="flex items-center gap-1 px-3 py-1 rounded-xl bg-stone-900 hover:bg-teal-700 text-white text-[11px] font-bold transition-all shadow-xs"
-              title="Chụp ảnh góc 3D hiện tại tải về máy"
-            >
-              <Camera className="w-3 h-3" />
-              <span>Chụp 3D</span>
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Main Viewport Container */}
-      <div className="relative w-full h-[520px] sm:h-[600px] rounded-2xl overflow-hidden bg-gradient-to-b from-stone-100 via-white to-stone-100 border border-stone-200/80 shadow-xs group">
+      {/* Main Showcase Viewport */}
+      <div className="relative w-full flex-1 min-h-[480px] sm:min-h-[540px] rounded-2xl overflow-hidden bg-gradient-to-b from-[#F9F9FA] via-white to-[#F0F0F4] border border-stone-200 shadow-xs flex flex-col justify-between p-4 group">
         
-        {viewMode === '3d' ? (
-          /* 3D INTERACTIVE VIEWPORT */
-          <div className="w-full h-full relative cursor-grab active:cursor-grabbing">
-            <ThreeCanvas
-              ref={canvasRef}
-              slots={activeSlots}
-              items={STARTER_3D_ITEMS}
-              lightingMode={lightingMode}
-              autoRotate={autoRotate}
-              cameraPreset={cameraPreset}
-            />
+        {/* Subtle Luxury Pattern Watermark */}
+        <div className="absolute inset-0 bg-[radial-gradient(#00000008_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
-            {/* Bottom 3D Helper Hint */}
-            <div className="absolute bottom-3 inset-x-0 flex justify-center pointer-events-none z-10">
-              <span className="px-3.5 py-1 rounded-full text-[11px] font-medium bg-stone-900/75 text-stone-200 backdrop-blur-md shadow-md flex items-center gap-1.5">
-                <RotateCw className="w-3 h-3 text-teal-400" />
-                <span>Dùng chuột hoặc chạm để xoay 360° và cuộn phóng to</span>
-              </span>
-            </div>
+        {/* Top Floating Badge */}
+        <div className="relative z-10 flex items-center justify-between pointer-events-none">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-white/90 text-stone-700 backdrop-blur-md border border-stone-200/80 shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span>
+              {viewMode === 'ai' && aiResultImage
+                ? '✨ KẾT QUẢ AI ƯỚM LÊN MẪU STUDIO'
+                : 'Y PHỤC ĐỘC BẢN • KHÔNG CÓ NGƯỜI MẶC'}
+            </span>
           </div>
-        ) : viewMode === 'ai' && aiResultImage ? (
-          /* AI TRY-ON PHOTO VIEWPORT */
-          <div className="relative w-full h-full flex items-center justify-center p-4 bg-stone-900/5">
-            <img
-              src={aiResultImage}
-              alt="AI Try-On Result"
-              className="max-h-[500px] max-w-full object-contain object-center rounded-xl drop-shadow-2xl transition-all duration-500 animate-in fade-in zoom-in-95"
-            />
-            <div className="absolute top-4 right-4 flex items-center gap-2">
+
+          {/* Actions in AI View Mode */}
+          {viewMode === 'ai' && aiResultImage && (
+            <div className="flex items-center gap-1.5 pointer-events-auto">
               {onSaveToWardrobe && (
                 <button
                   onClick={onSaveToWardrobe}
-                  className="px-3 py-1.5 rounded-xl bg-white/95 hover:bg-white text-stone-800 text-xs font-semibold shadow-md border border-stone-200 transition-all flex items-center gap-1"
+                  className="px-3 py-1.5 rounded-xl bg-white/95 hover:bg-white text-stone-800 text-xs font-semibold shadow-md border border-stone-200 transition-all flex items-center gap-1.5"
                 >
                   <Check className="w-3.5 h-3.5 text-teal-600" />
                   <span>Lưu Tủ Đồ</span>
@@ -315,35 +204,116 @@ export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
                 </button>
               )}
             </div>
-            <div className="absolute bottom-3 right-3 text-teal-900 font-medium text-[11px] bg-teal-50/90 border border-teal-200/80 px-2.5 py-1 rounded-lg backdrop-blur">
-              ✨ KẾT QUẢ AI THỬ ĐỒ CHÂN THỰC
-            </div>
-          </div>
-        ) : (
-          /* PHOTO / EDITORIAL VIEWPORT */
-          <div className="relative w-full h-full flex items-center justify-center p-4">
-            <img
-              src={selectedClothes.defaultModelLookUrl[selectedModel.id] || selectedClothes.thumbnailUrl}
-              alt={selectedClothes.name}
-              className="max-h-full max-w-full object-contain object-center drop-shadow-xl transition-all duration-500"
-            />
-            <div className="absolute bottom-3 right-3 text-stone-400 font-mono text-[10px] opacity-75">
-              LOOKBOOK STUDIO • {selectedClothes.era}
-            </div>
-          </div>
-        )}
-
-        {/* Floating Brand & Silk Tag (Bottom Left) */}
-        <div className="absolute bottom-3 left-3 z-10 flex flex-col gap-1 pointer-events-none">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/95 text-stone-900 backdrop-blur-md border border-stone-200 shadow-md">
-            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: selectedColorHex }} />
-            <span>Sắc lụa: {selectedColorName}</span>
-          </span>
-          {selectedAccessoryNames.length > 0 && (
-            <span className="text-[10px] text-stone-600 bg-white/80 backdrop-blur px-2 py-0.5 rounded-md w-fit border border-stone-200 shadow-xs">
-              Kèm: {selectedAccessoryNames.join(' • ')}
-            </span>
           )}
+        </div>
+
+        {/* Central Display Image */}
+        <div className="relative flex-1 flex items-center justify-center my-2 overflow-hidden">
+          {viewMode === 'ai' && aiResultImage ? (
+            /* AI TRY-ON PHOTO */
+            <div className="relative max-h-[460px] sm:max-h-[500px] w-full h-full flex items-center justify-center">
+              <img
+                src={aiResultImage}
+                alt="AI Try-On Result"
+                className="max-h-[460px] sm:max-h-[500px] max-w-full object-contain object-center rounded-2xl drop-shadow-2xl transition-all duration-500 animate-in fade-in zoom-in-95 cursor-zoom-in"
+                onClick={() => setIsZoomModalOpen(true)}
+              />
+            </div>
+          ) : (
+            /* CLEAN GARMENT PRODUCT PHOTO (NO HUMAN WEARER) */
+            <div className="relative max-h-[460px] sm:max-h-[500px] w-full h-full flex items-center justify-center">
+              <img
+                src={garmentImageUrl}
+                alt={selectedClothes.name}
+                className="max-h-[460px] sm:max-h-[500px] max-w-full object-contain object-center drop-shadow-2xl transition-all duration-500 group-hover:scale-[1.02] cursor-zoom-in"
+                onClick={() => setIsZoomModalOpen(true)}
+              />
+              
+              {/* Subtle Zoom Hint on Hover */}
+              <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-stone-900/75 text-white text-[10px] font-medium px-2.5 py-1 rounded-full backdrop-blur pointer-events-none flex items-center gap-1">
+                <ZoomIn className="w-3 h-3" />
+                <span>Bấm để phóng to</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom Floating Info & Selected Accessories Showcase Tray */}
+        <div className="relative z-10 flex flex-col gap-2 pt-2 border-t border-stone-200/60 bg-white/70 backdrop-blur-md -mx-4 -mb-4 p-4 rounded-b-2xl">
+          
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            {/* Color Tag */}
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white text-stone-800 border border-stone-200 shadow-xs">
+                <span
+                  className="w-3 h-3 rounded-full shrink-0 border border-black/10 shadow-xs"
+                  style={{ backgroundColor: selectedColorHex }}
+                />
+                <span>Sắc lụa: {selectedColorName}</span>
+              </span>
+              <span className="text-[11px] text-stone-500 font-light hidden sm:inline">
+                {selectedClothes.description}
+              </span>
+            </div>
+
+            {/* Accessory Count Tag */}
+            <span className="text-[11px] font-medium text-stone-600 bg-stone-100 px-2.5 py-1 rounded-lg border border-stone-200">
+              Phụ kiện phối kèm: <strong className="text-teal-700 font-bold">{activeAccessories.length}</strong>/4
+            </span>
+          </div>
+
+          {/* Selected Accessories Strip */}
+          {activeAccessories.length > 0 ? (
+            <div className="flex items-center gap-2 overflow-x-auto pb-0.5 pt-1">
+              {activeAccessories.map((acc) => (
+                <div
+                  key={acc.id}
+                  onClick={() => setInspectingAccessory(acc)}
+                  className="group/acc flex items-center gap-2 bg-white hover:bg-stone-50 border border-stone-200 hover:border-teal-500/80 rounded-xl p-1.5 pr-2.5 transition-all shadow-xs cursor-pointer shrink-0"
+                  title="Bấm để xem chi tiết phụ kiện"
+                >
+                  {acc.thumbnailUrl ? (
+                    <img
+                      src={acc.thumbnailUrl}
+                      alt={acc.name}
+                      className="w-8 h-8 rounded-lg object-cover border border-stone-200"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center font-bold text-xs border border-teal-100">
+                      <Sparkles className="w-4 h-4" />
+                    </div>
+                  )}
+
+                  <div className="text-left">
+                    <span className="text-xs font-bold text-stone-800 block line-clamp-1 group-hover/acc:text-teal-700 transition-colors">
+                      {acc.name}
+                    </span>
+                    <span className="text-[9px] text-stone-400">
+                      {acc.isTraditional ? 'Thuần Việt Cổ Phong' : 'Gen Z Remix'}
+                    </span>
+                  </div>
+
+                  {onToggleAccessory && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onToggleAccessory(acc.id);
+                      }}
+                      className="opacity-60 hover:opacity-100 p-0.5 rounded-full hover:bg-rose-50 hover:text-rose-600 transition-all ml-1"
+                      title="Bỏ phụ kiện này"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-[11px] text-stone-400 font-light italic">
+              Chưa chọn phụ kiện phối kèm nào. Bạn có thể chọn thêm khăn đóng, kiềng bạc, nón quai thao... ở cột bên trái.
+            </p>
+          )}
+
         </div>
 
       </div>
@@ -351,13 +321,101 @@ export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
       {/* Bottom Footer Information */}
       <div className="mt-3 flex items-center justify-between text-xs text-stone-500 pt-2 border-t border-stone-200">
         <div className="flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 text-teal-600" />
-          <span>Mô hình 3D chuẩn PBR kết hợp ánh sáng đa hướng</span>
+          <Shirt className="w-3.5 h-3.5 text-teal-600" />
+          <span>Hình ảnh y phục nguyên bản không người mặc • Tôn vinh nét tinh xảo của cổ phục Việt</span>
         </div>
         <div>
-          <span>Định dạng: <strong className="text-stone-700 font-mono">GLTF / GLB</strong></span>
+          <span>Định dạng ảnh: <strong className="text-stone-700 font-mono">Ultra HD Studio</strong></span>
         </div>
       </div>
+
+      {/* Fullscreen Zoom Lightbox Modal */}
+      {isZoomModalOpen && (
+        <div className="fixed inset-0 z-50 bg-stone-950/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in">
+          <button
+            onClick={() => setIsZoomModalOpen(false)}
+            className="absolute top-5 right-5 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+            title="Đóng xem lớn"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          <div className="max-w-4xl max-h-[90vh] flex flex-col items-center justify-center">
+            <img
+              src={viewMode === 'ai' && aiResultImage ? aiResultImage : garmentImageUrl}
+              alt={selectedClothes.name}
+              className="max-h-[80vh] max-w-full object-contain rounded-2xl drop-shadow-2xl"
+            />
+            <div className="mt-4 text-center text-white">
+              <h4 className="text-lg font-bold font-serif">{selectedClothes.name}</h4>
+              <p className="text-xs text-stone-300 mt-0.5">
+                {viewMode === 'ai' && aiResultImage
+                  ? `AI Try-on • Người mẫu ${selectedModel.name} • Sắc lụa: ${selectedColorName}`
+                  : `Ảnh sản phẩm không người mặc • ${selectedClothes.era} • Sắc lụa: ${selectedColorName}`}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Accessory Inspection Modal */}
+      {inspectingAccessory && (
+        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in">
+          <div className="bg-white rounded-2xl max-w-md w-full p-5 border border-stone-200 shadow-2xl relative">
+            <button
+              onClick={() => setInspectingAccessory(null)}
+              className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-stone-100 text-stone-400 hover:text-stone-700 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center gap-3 mb-4">
+              {inspectingAccessory.thumbnailUrl ? (
+                <img
+                  src={inspectingAccessory.thumbnailUrl}
+                  alt={inspectingAccessory.name}
+                  className="w-16 h-16 rounded-xl object-cover border border-stone-200 shadow-xs"
+                />
+              ) : (
+                <div className="w-16 h-16 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center border border-teal-100">
+                  <Sparkles className="w-8 h-8" />
+                </div>
+              )}
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200">
+                  {inspectingAccessory.isTraditional ? 'Phụ Kiện Cổ Phong' : 'Phụ Kiện Gen Z'}
+                </span>
+                <h4 className="text-base font-bold text-stone-900 mt-1">{inspectingAccessory.name}</h4>
+                <span className="text-xs text-stone-500 capitalize">Phân loại: {inspectingAccessory.category}</span>
+              </div>
+            </div>
+
+            <p className="text-xs text-stone-600 leading-relaxed bg-stone-50 p-3 rounded-xl border border-stone-200/80">
+              {inspectingAccessory.description}
+            </p>
+
+            <div className="mt-4 flex items-center justify-end gap-2">
+              <button
+                onClick={() => setInspectingAccessory(null)}
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-stone-600 hover:bg-stone-100 transition-colors"
+              >
+                Đóng
+              </button>
+              {onToggleAccessory && (
+                <button
+                  onClick={() => {
+                    onToggleAccessory(inspectingAccessory.id);
+                    setInspectingAccessory(null);
+                  }}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold bg-rose-50 hover:bg-rose-100 text-rose-700 transition-colors"
+                >
+                  Bỏ phụ kiện này
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

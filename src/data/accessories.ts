@@ -8,7 +8,8 @@ export const ACCESSORIES: Accessory[] = [
     isTraditional: true,
     description: 'Khăn vấn nhiều nếp quấn gọn quanh đầu, tôn lên đường nét khuôn mặt đĩnh đạc và phong thái lễ nghi.',
     iconName: 'Crown',
-    matchStyles: ['traditional', 'elegant', 'vintage']
+    matchStyles: ['traditional', 'elegant', 'vintage'],
+    thumbnailUrl: '/images/viet_phuc/phu_kien_6.jpg'
   },
   {
     id: 'non-quai-thao',
@@ -17,7 +18,8 @@ export const ACCESSORIES: Accessory[] = [
     isTraditional: true,
     description: 'Nón lá tròn to phẳng viền mây, gắn quai thao bằng tơ mềm rủ xuống ngực, biểu tượng thiếu nữ Kinh Bắc.',
     iconName: 'SunMedium',
-    matchStyles: ['traditional', 'vintage', 'elegant']
+    matchStyles: ['traditional', 'vintage', 'elegant'],
+    thumbnailUrl: '/images/viet_phuc/phu_kien_3.jpg'
   },
   {
     id: 'guoc-moc',
@@ -26,7 +28,8 @@ export const ACCESSORIES: Accessory[] = [
     isTraditional: true,
     description: 'Guốc gỗ mít mài nhẵn, quai nhung thêu hoa hoặc vẽ hoa văn sơn mài mỹ nghệ tinh tế.',
     iconName: 'Footprints',
-    matchStyles: ['traditional', 'vintage', 'minimal']
+    matchStyles: ['traditional', 'vintage', 'minimal'],
+    thumbnailUrl: '/images/viet_phuc/phu_kien_4.jpg'
   },
   {
     id: 'sneaker-chunky',
@@ -71,7 +74,8 @@ export const ACCESSORIES: Accessory[] = [
     isTraditional: true,
     description: 'Trâm cài khắc hoa sen, khảm xà cừ óng ánh giúp búi tóc cao thanh thoát kiểu tiểu thư quý phái.',
     iconName: 'Gem',
-    matchStyles: ['traditional', 'elegant', 'vintage']
+    matchStyles: ['traditional', 'elegant', 'vintage'],
+    thumbnailUrl: '/images/viet_phuc/phu_kien_2.jpg'
   },
   {
     id: 'kieng-bac',
@@ -80,7 +84,8 @@ export const ACCESSORIES: Accessory[] = [
     isTraditional: true,
     description: 'Chiếc kiềng bạc tròn ôm sát chân cổ truyền thống, điểm xuyết họa tiết mai lan cúc trúc.',
     iconName: 'Circle',
-    matchStyles: ['traditional', 'elegant', 'modern-genz']
+    matchStyles: ['traditional', 'elegant', 'modern-genz'],
+    thumbnailUrl: '/images/viet_phuc/phu_kien_7.jpg'
   },
   {
     id: 'kinh-mat-y2k',
@@ -98,7 +103,8 @@ export const ACCESSORIES: Accessory[] = [
     isTraditional: true,
     description: 'Chiếc quạt giấy lụa nan tre vẽ cành đào cúc hoặc viết thư pháp thanh tao khi cầm tay.',
     iconName: 'Wind',
-    matchStyles: ['traditional', 'vintage', 'elegant']
+    matchStyles: ['traditional', 'vintage', 'elegant'],
+    thumbnailUrl: '/images/viet_phuc/phu_kien_5.jpg'
   },
   {
     id: 'ngoc-trai-layer',
@@ -107,7 +113,8 @@ export const ACCESSORIES: Accessory[] = [
     isTraditional: false,
     description: 'Chuỗi hạt ngọc trai nước ngọt xếp nhiều tầng kiểu Parisian Chic, tạo nét cổ điển tân thời.',
     iconName: 'Sparkles',
-    matchStyles: ['elegant', 'vintage', 'cute']
+    matchStyles: ['elegant', 'vintage', 'cute'],
+    thumbnailUrl: '/images/viet_phuc/phu_kien_1.jpg'
   },
   {
     id: 'blazer-oversize',
@@ -125,6 +132,7 @@ export const ACCESSORIES: Accessory[] = [
     isTraditional: true,
     description: 'Khăn rằn caro đen trắng hoặc đỏ trắng đặc trưng, thắt nơ cổ hoặc vắt vai đậm chất hào sảng phương Nam.',
     iconName: 'Shirt',
-    matchStyles: ['traditional', 'street', 'vintage']
+    matchStyles: ['traditional', 'street', 'vintage'],
+    thumbnailUrl: '/images/viet_phuc/phu_kien_8.jpg'
   }
 ];

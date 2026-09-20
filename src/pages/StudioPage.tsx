@@ -375,18 +375,21 @@ export const StudioPage: React.FC<StudioPageProps> = ({
 
           </div>
 
-          {/* RIGHT COLUMN: 3D Model & Interactive Viewport (7 Cols) */}
+          {/* RIGHT COLUMN: Garment Showcase & AI Viewport (7 Cols) */}
           <div className="lg:col-span-7 sticky top-24 order-1 lg:order-2">
             <FitRoom3DCanvas
               selectedClothes={selectedClothes}
+              customClothesImage={customClothesImage}
               selectedColorHex={chosenColor.hex}
               selectedColorName={chosenColor.vietnameseName}
               selectedModel={selectedModel}
+              selectedAccessoryIds={selectedAccessoryIds}
               selectedAccessoryNames={accNames}
               aiResultImage={currentResult?.imageUrl}
               onOpenShareModal={() => setIsShareModalOpen(true)}
               onSaveToWardrobe={handleSaveToWardrobe}
               onAddToCompare={handleAddToCompare}
+              onToggleAccessory={handleToggleAccessory}
             />
           </div>
 
