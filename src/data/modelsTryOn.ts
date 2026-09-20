@@ -17,6 +17,7 @@ export interface ClothingItemOption {
   colorHex: string;
   colorName: string;
   thumbnailUrl: string;
+  colorVariants?: Record<string, string>; // Maps colorId to garment image url
   defaultModelLookUrl: Record<string, string>; // Maps modelId to result image of that exact model
   description: string;
   era: string;
@@ -58,6 +59,15 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     colorHex: '#9B1D20',
     colorName: 'Đỏ Son Cung Đình',
     thumbnailUrl: '/images/viet_phuc/ao_dai.jpg',
+    colorVariants: {
+      'do-son': '/images/viet_phuc/ao_dai_do-son.jpg',
+      'trang-lua-nga': '/images/viet_phuc/ao_dai_trang-lua-nga.jpg',
+      'hong-canh-sen': '/images/viet_phuc/ao_dai_hong-canh-sen.jpg',
+      'vang-hoang-cuc': '/images/viet_phuc/ao_dai_vang-hoang-cuc.jpg',
+      'xanh-ngoc-luc': '/images/viet_phuc/ao_dai_xanh-ngoc-luc.jpg',
+      'tim-hue': '/images/viet_phuc/ao_dai_tim-hue.jpg',
+      'xanh-cham': '/images/viet_phuc/ao_dai_xanh-cham.jpg'
+    },
     defaultModelLookUrl: {
       'model-female-standard': '/images/looks/look_aodai_duxuan.jpg',
       'model-male-standard': '/images/hero_vietphuc.jpg'
@@ -72,6 +82,15 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     colorHex: '#C59338',
     colorName: 'Vàng Hoàng Cúc',
     thumbnailUrl: '/images/viet_phuc/ao_ngu_than.jpg',
+    colorVariants: {
+      'do-son': '/images/viet_phuc/ao_ngu_than_do-son.jpg',
+      'trang-lua-nga': '/images/viet_phuc/ao_ngu_than_trang-lua-nga.jpg',
+      'hong-canh-sen': '/images/viet_phuc/ao_ngu_than_hong-canh-sen.jpg',
+      'vang-hoang-cuc': '/images/viet_phuc/ao_ngu_than_vang-hoang-cuc.jpg',
+      'xanh-ngoc-luc': '/images/viet_phuc/ao_ngu_than_xanh-ngoc-luc.jpg',
+      'tim-hue': '/images/viet_phuc/ao_ngu_than_tim-hue.jpg',
+      'xanh-cham': '/images/viet_phuc/ao_ngu_than_xanh-cham.jpg'
+    },
     defaultModelLookUrl: {
       'model-female-standard': '/images/looks/look_nguthan_trachieu.jpg',
       'model-male-standard': '/images/looks/look_nguthan_trachieu.jpg'
@@ -86,6 +105,15 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     colorHex: '#582C4D',
     colorName: 'Tím Hoa Cà Cố Đô',
     thumbnailUrl: '/images/viet_phuc/ao_nhat_binh.jpg',
+    colorVariants: {
+      'do-son': '/images/viet_phuc/ao_nhat_binh_do-son.jpg',
+      'trang-lua-nga': '/images/viet_phuc/ao_nhat_binh_trang-lua-nga.jpg',
+      'hong-canh-sen': '/images/viet_phuc/ao_nhat_binh_hong-canh-sen.jpg',
+      'vang-hoang-cuc': '/images/viet_phuc/ao_nhat_binh_vang-hoang-cuc.jpg',
+      'xanh-ngoc-luc': '/images/viet_phuc/ao_nhat_binh_xanh-ngoc-luc.jpg',
+      'tim-hue': '/images/viet_phuc/ao_nhat_binh_tim-hue.jpg',
+      'xanh-cham': '/images/viet_phuc/ao_nhat_binh_xanh-cham.jpg'
+    },
     defaultModelLookUrl: {
       'model-female-standard': '/images/looks/look_nhatbinh_hoangtrieu.jpg',
       'model-male-standard': '/images/looks/look_nhatbinh_hoangtrieu.jpg'
@@ -100,6 +128,15 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     colorHex: '#182747',
     colorName: 'Xanh Chàm Bắc Bộ',
     thumbnailUrl: '/images/viet_phuc/ao_tu_than.jpg',
+    colorVariants: {
+      'do-son': '/images/viet_phuc/ao_tu_than_do-son.jpg',
+      'trang-lua-nga': '/images/viet_phuc/ao_tu_than_trang-lua-nga.jpg',
+      'hong-canh-sen': '/images/viet_phuc/ao_tu_than_hong-canh-sen.jpg',
+      'vang-hoang-cuc': '/images/viet_phuc/ao_tu_than_vang-hoang-cuc.jpg',
+      'xanh-ngoc-luc': '/images/viet_phuc/ao_tu_than_xanh-ngoc-luc.jpg',
+      'tim-hue': '/images/viet_phuc/ao_tu_than_tim-hue.jpg',
+      'xanh-cham': '/images/viet_phuc/ao_tu_than_xanh-cham.jpg'
+    },
     defaultModelLookUrl: {
       'model-female-standard': '/images/looks/look_aodai_duxuan.jpg',
       'model-male-standard': '/images/looks/look_nguthan_trachieu.jpg'
@@ -114,6 +151,15 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     colorHex: '#1A1C20',
     colorName: 'Đen Tuyền Mực Tàu',
     thumbnailUrl: '/images/viet_phuc/ao_ba_ba.jpg',
+    colorVariants: {
+      'do-son': '/images/viet_phuc/ao_ba_ba_do-son.jpg',
+      'trang-lua-nga': '/images/viet_phuc/ao_ba_ba_trang-lua-nga.jpg',
+      'hong-canh-sen': '/images/viet_phuc/ao_ba_ba_hong-canh-sen.jpg',
+      'vang-hoang-cuc': '/images/viet_phuc/ao_ba_ba_vang-hoang-cuc.jpg',
+      'xanh-ngoc-luc': '/images/viet_phuc/ao_ba_ba_xanh-ngoc-luc.jpg',
+      'tim-hue': '/images/viet_phuc/ao_ba_ba_tim-hue.jpg',
+      'xanh-cham': '/images/viet_phuc/ao_ba_ba_xanh-cham.jpg'
+    },
     defaultModelLookUrl: {
       'model-female-standard': '/images/hero_model_modern.jpg',
       'model-male-standard': '/images/hero_vietphuc.jpg'

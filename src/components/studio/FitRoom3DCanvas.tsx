@@ -17,9 +17,13 @@ import {
 import confetti from 'canvas-confetti';
 import { useToast } from '../../context/ToastContext';
 
+import { POPULAR_COLORS } from '../../data/colors';
+
 interface FitRoom3DCanvasProps {
   selectedClothes: ClothingItemOption;
   customClothesImage?: string | null;
+  selectedColorId?: string;
+  onSelectColor?: (colorId: string) => void;
   selectedColorHex: string;
   selectedColorName: string;
   selectedModel: TryOnModel;
@@ -35,6 +39,8 @@ interface FitRoom3DCanvasProps {
 export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
   selectedClothes,
   customClothesImage,
+  selectedColorId,
+  onSelectColor,
   selectedColorHex,
   selectedColorName,
   selectedModel,
@@ -60,8 +66,11 @@ export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
     }
   }, [aiResultImage]);
 
-  // The active garment image (custom uploaded or clean ghost-mannequin product photo without human wearer)
-  const garmentImageUrl = customClothesImage || selectedClothes.thumbnailUrl;
+  // The active garment image (custom uploaded or clean ghost-mannequin product photo of the exact selected color)
+  const garmentImageUrl =
+    customClothesImage ||
+    (selectedColorId && selectedClothes.colorVariants?.[selectedColorId]) ||
+    selectedClothes.thumbnailUrl;
 
   // Selected accessory objects
   const activeAccessories: Accessory[] = ACCESSORIES.filter((acc) =>
@@ -223,9 +232,10 @@ export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
             /* CLEAN GARMENT PRODUCT PHOTO (NO HUMAN WEARER) */
             <div className="relative max-h-[460px] sm:max-h-[500px] w-full h-full flex items-center justify-center">
               <img
+                key={garmentImageUrl}
                 src={garmentImageUrl}
                 alt={selectedClothes.name}
-                className="max-h-[460px] sm:max-h-[500px] max-w-full object-contain object-center drop-shadow-2xl transition-all duration-500 group-hover:scale-[1.02] cursor-zoom-in"
+                className="max-h-[460px] sm:max-h-[500px] max-w-full object-contain object-center drop-shadow-2xl transition-all duration-500 animate-in fade-in zoom-in-95 group-hover:scale-[1.02] cursor-zoom-in"
                 onClick={() => setIsZoomModalOpen(true)}
               />
               
@@ -242,16 +252,43 @@ export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
         <div className="relative z-10 flex flex-col gap-2 pt-2 border-t border-stone-200/60 bg-white/70 backdrop-blur-md -mx-4 -mb-4 p-4 rounded-b-2xl">
           
           <div className="flex items-center justify-between flex-wrap gap-2">
-            {/* Color Tag */}
-            <div className="flex items-center gap-2">
+            {/* Color Tag & Quick Swatches */}
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white text-stone-800 border border-stone-200 shadow-xs">
                 <span
-                  className="w-3 h-3 rounded-full shrink-0 border border-black/10 shadow-xs"
+                  className="w-3 h-3 rounded-full shrink-0 border border-black/10 shadow-xs transition-colors duration-300"
                   style={{ backgroundColor: selectedColorHex }}
                 />
                 <span>Sắc lụa: {selectedColorName}</span>
               </span>
-              <span className="text-[11px] text-stone-500 font-light hidden sm:inline">
+
+              {/* Quick Interactive Color Swatches on Canvas */}
+              {onSelectColor && !customClothesImage && (
+                <div className="flex items-center gap-1.5 bg-stone-100/90 px-2 py-0.5 rounded-full border border-stone-200 shadow-2xs">
+                  {POPULAR_COLORS.map((c) => {
+                    const isActive = selectedColorId === c.id;
+                    const isLight = c.id === 'trang-lua-nga';
+                    return (
+                      <button
+                        key={c.id}
+                        type="button"
+                        onClick={() => onSelectColor(c.id)}
+                        className={`w-4 h-4 rounded-full transition-all border ${
+                          isLight ? 'border-stone-300' : 'border-black/15'
+                        } ${
+                          isActive
+                            ? 'ring-2 ring-stone-900 scale-125 shadow-xs z-10'
+                            : 'hover:scale-110 opacity-75 hover:opacity-100'
+                        }`}
+                        style={{ backgroundColor: c.hex }}
+                        title={`${c.vietnameseName} (${c.element})`}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+
+              <span className="text-[11px] text-stone-500 font-light hidden lg:inline">
                 {selectedClothes.description}
               </span>
             </div>

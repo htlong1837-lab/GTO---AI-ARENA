@@ -380,6 +380,8 @@ export const StudioPage: React.FC<StudioPageProps> = ({
             <FitRoom3DCanvas
               selectedClothes={selectedClothes}
               customClothesImage={customClothesImage}
+              selectedColorId={selectedColorId}
+              onSelectColor={setSelectedColorId}
               selectedColorHex={chosenColor.hex}
               selectedColorName={chosenColor.vietnameseName}
               selectedModel={selectedModel}
