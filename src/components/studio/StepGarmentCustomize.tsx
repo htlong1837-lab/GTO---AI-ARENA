@@ -1,7 +1,7 @@
 import React from 'react';
 import { ClothingItemOption, PRESET_CLOTHING_ITEMS, TryOnModel } from '../../data/modelsTryOn';
 import { ACCESSORIES } from '../../data/accessories';
-import { COLORS, POPULAR_COLORS } from '../../data/colors';
+import { COLORS, POPULAR_COLORS, getCuratedPalettesForGarment } from '../../data/colors';
 import { Check, Sparkles, ArrowLeft, Zap, ArrowRight, User } from 'lucide-react';
 
 interface StepGarmentCustomizeProps {
@@ -128,44 +128,83 @@ export const StepGarmentCustomize: React.FC<StepGarmentCustomizeProps> = ({
         </div>
       </div>
 
-      {/* 2. CHỌN SẮC LỤA DI SẢN (Color Swatches with Fixed Clipping & Contrast) */}
+      {/* 2. CHỌN BẢN PHỐI KINH ĐIỂN CHUẨN DI SẢN */}
       <div className="space-y-3 bg-stone-50/80 p-4 rounded-2xl border border-stone-200">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold text-stone-800 flex items-center gap-1.5">
             <span className="w-3.5 h-3.5 rounded-full bg-amber-500 inline-block" />
-            <span>2. Chọn màu sắc vải lụa & gấm (Phổ biến)</span>
+            <span>2. Chọn bản phối màu kinh điển (Chuẩn di sản)</span>
           </h3>
           <span className="text-xs font-semibold text-teal-800 bg-white px-2.5 py-0.5 rounded-full border border-stone-200">
-            {POPULAR_COLORS.find((c) => c.id === selectedColorId)?.vietnameseName || COLORS.find((c) => c.id === selectedColorId)?.vietnameseName || 'Mặc định'}
+            {getCuratedPalettesForGarment(selectedClothes.garmentType).find((p) => p.id === selectedColorId)?.name || 'Bản phối gốc'}
           </span>
         </div>
 
-        {/* Swatches Grid */}
-        <div className="flex flex-wrap items-center gap-2.5 py-1">
-          {POPULAR_COLORS.map((c) => {
-            const isColorActive = selectedColorId === c.id;
-            const isLight = c.id === 'trang-lua-nga';
+        {/* Grid 4 Card bản phối */}
+        <div className="grid grid-cols-2 gap-2.5 py-1">
+          {getCuratedPalettesForGarment(selectedClothes.garmentType).map((palette) => {
+            const isActive = selectedColorId === palette.id;
             return (
               <button
-                key={c.id}
+                key={palette.id}
                 type="button"
-                onClick={() => onSelectColor(c.id)}
-                className={`w-8 h-8 rounded-full transition-all flex items-center justify-center relative border ${
-                  isLight ? 'border-stone-300' : 'border-black/10'
-                } ${
-                  isColorActive
-                    ? 'ring-2 ring-offset-2 ring-stone-900 shadow-md scale-110'
-                    : 'hover:scale-105 opacity-85 hover:opacity-100'
+                onClick={() => onSelectColor(palette.id)}
+                className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all relative overflow-hidden group ${
+                  isActive
+                    ? 'border-teal-700 bg-teal-50/70 shadow-xs ring-1 ring-teal-700'
+                    : 'border-stone-200 bg-white hover:border-stone-300 hover:bg-stone-50'
                 }`}
-                style={{ backgroundColor: c.hex }}
-                title={`${c.vietnameseName} (${c.element})`}
               >
-                {isColorActive && (
-                  <Check
-                    className={`w-4 h-4 stroke-[3] ${
-                      isLight ? 'text-stone-900' : 'text-white drop-shadow-sm'
+                {/* Header card: Cặp chấm màu kép + Tag */}
+                <div className="flex items-center justify-between w-full mb-2">
+                  <div className="flex items-center relative pl-0.5">
+                    {/* Chấm màu áo */}
+                    <div
+                      className="w-6 h-6 rounded-full border border-black/15 shadow-2xs shrink-0 z-10"
+                      style={{ backgroundColor: palette.primaryColorHex }}
+                      title={palette.primaryName}
+                    />
+                    {/* Chấm màu quần / yếm / nẹp gối đè */}
+                    <div
+                      className="-ml-2.5 w-5 h-5 rounded-full border-2 border-white shadow-2xs shrink-0 z-20"
+                      style={{ backgroundColor: palette.secondaryColorHex }}
+                      title={palette.secondaryName}
+                    />
+                  </div>
+
+                  <span
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                      isActive
+                        ? 'bg-teal-700 text-white'
+                        : 'bg-stone-100 text-stone-600 group-hover:bg-stone-200'
                     }`}
-                  />
+                  >
+                    {palette.tag}
+                  </span>
+                </div>
+
+                {/* Tên bản phối mỹ miều */}
+                <div>
+                  <h5
+                    className={`text-xs font-bold leading-tight ${
+                      isActive ? 'text-teal-900' : 'text-stone-800'
+                    }`}
+                  >
+                    {palette.name}
+                  </h5>
+                  <p className="text-[11px] text-stone-600 font-medium leading-tight mt-0.5">
+                    {palette.secondaryName}
+                  </p>
+                  <p className="text-[10px] text-stone-400 mt-1 line-clamp-1">
+                    {palette.context}
+                  </p>
+                </div>
+
+                {/* Active check icon */}
+                {isActive && (
+                  <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-teal-700 text-white flex items-center justify-center">
+                    <Check className="w-2.5 h-2.5 stroke-[3]" />
+                  </div>
                 )}
               </button>
             );

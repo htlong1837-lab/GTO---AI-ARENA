@@ -149,3 +149,264 @@ export const COLORS: ColorOption[] = [
 
 // Danh sách các sắc lụa di sản phổ biến nhất trong trang phục truyền thống Việt Nam
 export const POPULAR_COLORS: ColorOption[] = COLORS.filter((c) => c.isPopular);
+
+export interface CuratedPaletteOption {
+  id: string; // colorId in colorVariants (e.g. 'do-son')
+  name: string; // Tên bản phối mỹ miều (vd: 'Đỏ Son Cát Tường')
+  primaryColorHex: string; // Màu thân áo
+  secondaryColorHex: string; // Màu quần / yếm / nẹp cổ
+  primaryName: string; // Tên màu áo
+  secondaryName: string; // Tên màu quần/yếm
+  context: string; // Ngữ cảnh sử dụng
+  description: string; // Mô tả hòa sắc
+  tag: string; // Tag hiển thị
+}
+
+export const GARMENT_CURATED_PALETTES: Record<string, CuratedPaletteOption[]> = {
+  'ao-dai': [
+    {
+      id: 'do-son',
+      name: 'Đỏ Son Cát Tường',
+      primaryColorHex: '#9B1D20',
+      secondaryColorHex: '#F4EFE6',
+      primaryName: 'Áo lụa Đỏ Son',
+      secondaryName: 'Quần lụa trắng ngà',
+      context: 'Hỷ sự, Lễ Tết, Khai xuân',
+      description: 'Sắc đỏ son vương giả kết hợp quần lụa trắng ngà buông rủ thanh khiết.',
+      tag: 'Kinh điển'
+    },
+    {
+      id: 'trang-lua-nga',
+      name: 'Bạch Ngọc Nữ Sinh',
+      primaryColorHex: '#F4EFE6',
+      secondaryColorHex: '#1A1C20',
+      primaryName: 'Áo lụa Bạch Ngọc',
+      secondaryName: 'Quần lụa đen/trắng',
+      context: 'Thanh tân học đường, Lễ tốt nghiệp',
+      description: 'Tà áo dài trắng ngọc thuần khiết, biểu tượng nữ sinh Việt Nam qua nhiều thế hệ.',
+      tag: 'Kinh điển'
+    },
+    {
+      id: 'hong-canh-sen',
+      name: 'Hồng Sen Thanh Lịch',
+      primaryColorHex: '#CA4F76',
+      secondaryColorHex: '#F4EFE6',
+      primaryName: 'Áo Hồng Cánh Sen',
+      secondaryName: 'Quần lụa trắng ngà',
+      context: 'Du xuân, Dạo phố, Tiệc trà',
+      description: 'Sắc hồng sen tao nhã, nhu hòa tôn vinh nét duyên dáng thiếu nữ.',
+      tag: 'Phổ biến'
+    },
+    {
+      id: 'xanh-ngoc-luc',
+      name: 'Ngọc Bích Quý Phái',
+      primaryColorHex: '#1D6246',
+      secondaryColorHex: '#F4EFE6',
+      primaryName: 'Áo Xanh Ngọc Bích',
+      secondaryName: 'Quần lụa trắng ngà',
+      context: 'Nghi lễ trang trọng, Dạ tiệc',
+      description: 'Sắc ngọc lục bảo sang trọng, cốt cách thanh tao và trường tồn.',
+      tag: 'Quý phái'
+    }
+  ],
+  'ao-ngu-than': [
+    {
+      id: 'xanh-cham',
+      name: 'Xanh Chàm Nho Sinh',
+      primaryColorHex: '#182747',
+      secondaryColorHex: '#F4EFE6',
+      primaryName: 'Áo Xanh Chàm',
+      secondaryName: 'Nẹp cổ & Quần trắng',
+      context: 'Học đạo, Thư phòng, Bác học',
+      description: 'Sắc chàm thâm trầm của bậc sĩ phu Nho học, nẹp cổ lập lĩnh trắng nghiêm cẩn.',
+      tag: 'Kinh điển'
+    },
+    {
+      id: 'vang-hoang-cuc',
+      name: 'Vàng Cúc Vương Giả',
+      primaryColorHex: '#C59338',
+      secondaryColorHex: '#F4EFE6',
+      primaryName: 'Áo Vàng Hoàng Cúc',
+      secondaryName: 'Nẹp cổ & Quần trắng',
+      context: 'Khánh tiết, Hội nghị, Lễ nghi',
+      description: 'Sắc vàng tơ cúc vương giả, đại diện vị thế cao sang và phúc lộc.',
+      tag: 'Phổ biến'
+    },
+    {
+      id: 'den-tuyen',
+      name: 'Hắc Tuyền Trầm Mặc',
+      primaryColorHex: '#1A1C20',
+      secondaryColorHex: '#F4EFE6',
+      primaryName: 'Áo Đen Hắc Tuyền',
+      secondaryName: 'Nẹp cổ & Quần trắng',
+      context: 'Đại lễ, Trưởng thượng, Mực thước',
+      description: 'Màu đen tuyền kinh điển của quan viên, văn nhân xưa, tương phản nẹp cổ trắng.',
+      tag: 'Truyền thống'
+    },
+    {
+      id: 'do-son',
+      name: 'Đỏ Son Hỷ Sự',
+      primaryColorHex: '#9B1D20',
+      secondaryColorHex: '#F4EFE6',
+      primaryName: 'Áo Gấm Đỏ Son',
+      secondaryName: 'Nẹp cổ & Quần trắng',
+      context: 'Đón hỷ, Chúc thọ, Gia lễ',
+      description: 'Sắc gấm đỏ son tươi thắm mang lại may mắn, phúc thọ tràn đầy.',
+      tag: 'Hỷ sự'
+    }
+  ],
+  'nhat-binh': [
+    {
+      id: 'vang-hoang-cuc',
+      name: 'Hoàng Cúc Đại Triều',
+      primaryColorHex: '#C59338',
+      secondaryColorHex: '#E8C57A',
+      primaryName: 'Áo Vàng Hoàng Cúc',
+      secondaryName: 'Cổ ngũ sắc & Quần trắng',
+      context: 'Đại triều • Hoàng Thái Hậu, Hoàng Hậu',
+      description: 'Màu vàng hoàng yến độc tôn hoàng tộc triều Nguyễn, cổ áo ngũ sắc dệt chỉ vàng lộng lẫy.',
+      tag: 'Vương quyền'
+    },
+    {
+      id: 'do-son',
+      name: 'Xích Đào Cung Đình',
+      primaryColorHex: '#9B1D20',
+      secondaryColorHex: '#DFB058',
+      primaryName: 'Áo Đỏ Xích Đào',
+      secondaryName: 'Cổ ngũ sắc & Quần trắng',
+      context: 'Cung đình • Công Chúa, Hoàng Quý Phi',
+      description: 'Sắc đỏ xích đào tôn quý của bậc Công Chúa, kết hợp hoa văn phụng điệp cung đình.',
+      tag: 'Hoàng gia'
+    },
+    {
+      id: 'tim-hue',
+      name: 'Tím Cố Đô Sông Hương',
+      primaryColorHex: '#6B3074',
+      secondaryColorHex: '#F4EFE6',
+      primaryName: 'Áo Tím Hoa Cà',
+      secondaryName: 'Cổ ngũ sắc & Quần trắng',
+      context: 'Cung phụng • Nhất phẩm Phu nhân',
+      description: 'Màu tím đặc trưng xứ Huế, biểu trưng cho sự thủy chung và trang nghiêm cổ kính.',
+      tag: 'Kinh điển'
+    },
+    {
+      id: 'xanh-ngoc-luc',
+      name: 'Thanh Ngọc Bát Bảo',
+      primaryColorHex: '#1D6246',
+      secondaryColorHex: '#DFB058',
+      primaryName: 'Áo Ngọc Lục Bảo',
+      secondaryName: 'Cổ ngũ sắc & Quần trắng',
+      context: 'Triều nghi • Nhị/Tam phẩm Cung tần',
+      description: 'Sắc ngọc bích quý tộc kết hợp cổ áo thêu thủy ba tam sơn bát bảo cát tường.',
+      tag: 'Trang nhã'
+    }
+  ],
+  'ao-tu-than': [
+    {
+      id: 'vang-hoang-cuc',
+      name: 'Vàng Tơ Cúc Yếm Đào',
+      primaryColorHex: '#C59338',
+      secondaryColorHex: '#9B1D20',
+      primaryName: 'Vạt áo Vàng Cúc',
+      secondaryName: 'Yếm đào đỏ & Váy sồi đen',
+      context: 'Hội Lim, Quan họ giao duyên',
+      description: 'Bản phối kinh điển của liền chị Quan họ Kinh Bắc: vạt vàng tơ, yếm đào son và váy đen.',
+      tag: 'Kinh điển'
+    },
+    {
+      id: 'hong-canh-sen',
+      name: 'Hồng Sen Trẩy Hội',
+      primaryColorHex: '#CA4F76',
+      secondaryColorHex: '#9B1D20',
+      primaryName: 'Vạt áo Hồng Sen',
+      secondaryName: 'Yếm đào đỏ & Váy sồi đen',
+      context: 'Trẩy hội mùa xuân, Giao duyên',
+      description: 'Sắc hồng sen ngọt ngào kết hợp yếm thắm, dải bao sáp lụa mềm mại vắt ngang lưng.',
+      tag: 'Duyên dáng'
+    },
+    {
+      id: 'xanh-cham',
+      name: 'Chàm Then Cổ Truyền',
+      primaryColorHex: '#182747',
+      secondaryColorHex: '#CA4F76',
+      primaryName: 'Vạt áo Xanh Chàm',
+      secondaryName: 'Yếm đào sen & Váy sồi đen',
+      context: 'Dân gian mộc mạc, Lễ hội làng',
+      description: 'Vạt chàm then truyền thống mộc mạc, làm bừng sáng yếm sen hồng đào bên trong.',
+      tag: 'Dân gian'
+    },
+    {
+      id: 'do-son',
+      name: 'Đỏ Son Lễ Hội',
+      primaryColorHex: '#9B1D20',
+      secondaryColorHex: '#CA4F76',
+      primaryName: 'Vạt áo Đỏ Son',
+      secondaryName: 'Yếm hoa đào & Váy sồi đen',
+      context: 'Đầu xuân hội làng, Múa dân gian',
+      description: 'Sắc đỏ son rực rỡ mang không khí hội làng rộn rã cờ hoa.',
+      tag: 'Rực rỡ'
+    }
+  ],
+  'ao-ba-ba': [
+    {
+      id: 'hong-canh-sen',
+      name: 'Hồng Sen Miệt Vườn',
+      primaryColorHex: '#CA4F76',
+      secondaryColorHex: '#1A1C20',
+      primaryName: 'Áo Hồng Sen',
+      secondaryName: 'Quần lụa phi bóng đen',
+      context: 'Dạo phố sông nước, Chợ nổi miền Tây',
+      description: 'Nét duyên mộc mạc của cô gái phương Nam với áo bà ba sen hồng và quần lụa đen bóng.',
+      tag: 'Kinh điển'
+    },
+    {
+      id: 'xanh-ngoc-luc',
+      name: 'Xanh Ngọc Phù Sa',
+      primaryColorHex: '#1D6246',
+      secondaryColorHex: '#1A1C20',
+      primaryName: 'Áo Xanh Ngọc Lục',
+      secondaryName: 'Quần lụa phi bóng đen',
+      context: 'Du lịch sinh thái, Miệt vườn',
+      description: 'Màu xanh lục mát dịu như vườn cây trái trĩu quả miền Tây, khuy ngọc trắng nổi bật.',
+      tag: 'Tươi mát'
+    },
+    {
+      id: 'trang-lua-nga',
+      name: 'Trắng Khôi Nguyên',
+      primaryColorHex: '#F4EFE6',
+      secondaryColorHex: '#1A1C20',
+      primaryName: 'Áo Trắng Ngà',
+      secondaryName: 'Quần lụa phi bóng đen',
+      context: 'Đời thường, Thanh lịch dung dị',
+      description: 'Bản phối tương phản trắng - đen thuần túy kinh điển của áo bà ba Nam Bộ.',
+      tag: 'Thuần khiết'
+    },
+    {
+      id: 'do-son',
+      name: 'Đỏ Thắm Duyên Dáng',
+      primaryColorHex: '#9B1D20',
+      secondaryColorHex: '#1A1C20',
+      primaryName: 'Áo Đỏ Son',
+      secondaryName: 'Quần lụa phi bóng đen',
+      context: 'Lễ Tết miệt vườn, Đờn ca tài tử',
+      description: 'Sắc đỏ son nổi bật tươi tắn trong ngày Tết phương Nam, rạng rỡ và tràn đầy sức sống.',
+      tag: 'Nổi bật'
+    }
+  ]
+};
+
+// Helper chuẩn hoá type
+export function normalizeGarmentTypeKey(garmentIdOrType?: string): string {
+  if (!garmentIdOrType) return 'ao-dai';
+  const clean = garmentIdOrType.replace('clothes-', '').toLowerCase();
+  if (clean.includes('nhat-binh') || clean.includes('nhat_binh')) return 'nhat-binh';
+  if (clean.includes('ngu-than') || clean.includes('ngu_than')) return 'ao-ngu-than';
+  if (clean.includes('tu-than') || clean.includes('tu_than')) return 'ao-tu-than';
+  if (clean.includes('ba-ba') || clean.includes('ba_ba')) return 'ao-ba-ba';
+  return 'ao-dai';
+}
+
+export function getCuratedPalettesForGarment(garmentIdOrType?: string): CuratedPaletteOption[] {
+  const key = normalizeGarmentTypeKey(garmentIdOrType);
+  return GARMENT_CURATED_PALETTES[key] || GARMENT_CURATED_PALETTES['ao-dai'];
+}

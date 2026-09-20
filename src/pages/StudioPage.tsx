@@ -6,7 +6,7 @@ import {
   BASE_STUDIO_MODELS,
   PRESET_CLOTHING_ITEMS
 } from '../data/modelsTryOn';
-import { COLORS } from '../data/colors';
+import { COLORS, getCuratedPalettesForGarment } from '../data/colors';
 import { GARMENTS } from '../data/garments';
 import { ACCESSORIES } from '../data/accessories';
 import { Outfit } from '../types/outfit';
@@ -94,6 +94,16 @@ export const StudioPage: React.FC<StudioPageProps> = ({
   // Selected Color details
   const chosenColor = COLORS.find((c) => c.id === selectedColorId) || COLORS[0];
   const accNames = ACCESSORIES.filter((a) => selectedAccessoryIds.includes(a.id)).map((a) => a.name);
+
+  // Handle clothes selection with auto-switch to valid curated palette
+  const handleSelectClothes = (item: ClothingItemOption) => {
+    setSelectedClothes(item);
+    const curated = getCuratedPalettesForGarment(item.garmentType);
+    const exists = curated.some((p) => p.id === selectedColorId);
+    if (!exists && curated.length > 0) {
+      setSelectedColorId(curated[0].id);
+    }
+  };
 
   // Toggle accessories
   const handleToggleAccessory = (accId: string) => {
@@ -315,7 +325,7 @@ export const StudioPage: React.FC<StudioPageProps> = ({
             <div className="bg-white rounded-3xl p-5 sm:p-6 border border-stone-200/80 shadow-xs">
               <FitRoomSelectClothes
                 selectedClothes={selectedClothes}
-                onSelectClothes={setSelectedClothes}
+                onSelectClothes={handleSelectClothes}
                 customClothesImage={customClothesImage}
                 onUploadCustomClothes={setCustomClothesImage}
                 selectedColorId={selectedColorId}

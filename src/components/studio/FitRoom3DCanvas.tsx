@@ -17,7 +17,7 @@ import {
 import confetti from 'canvas-confetti';
 import { useToast } from '../../context/ToastContext';
 
-import { POPULAR_COLORS } from '../../data/colors';
+import { POPULAR_COLORS, getCuratedPalettesForGarment } from '../../data/colors';
 
 interface FitRoom3DCanvasProps {
   selectedClothes: ClothingItemOption;
@@ -255,41 +255,64 @@ export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
         <div className="relative z-10 flex flex-col gap-2 pt-2 border-t border-stone-200/60 bg-white/70 backdrop-blur-md -mx-4 -mb-4 p-4 rounded-b-2xl">
           
           <div className="flex items-center justify-between flex-wrap gap-2">
-            {/* Color Tag & Quick Swatches */}
+            {/* Color Tag & Quick Swatches theo Bản phối kinh điển */}
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white text-stone-800 border border-stone-200 shadow-xs">
-                <span
-                  className="w-3 h-3 rounded-full shrink-0 border border-black/10 shadow-xs transition-colors duration-300"
-                  style={{ backgroundColor: selectedColorHex }}
-                />
-                <span>Sắc lụa: {selectedColorName}</span>
-              </span>
+              {(() => {
+                const curatedList = getCuratedPalettesForGarment(selectedClothes.garmentType);
+                const activePalette = curatedList.find((p) => p.id === selectedColorId);
 
-              {/* Quick Interactive Color Swatches on Canvas */}
-              {onSelectColor && !customClothesImage && (
-                <div className="flex items-center gap-1.5 bg-stone-100/90 px-2 py-0.5 rounded-full border border-stone-200 shadow-2xs">
-                  {POPULAR_COLORS.map((c) => {
-                    const isActive = selectedColorId === c.id;
-                    const isLight = c.id === 'trang-lua-nga';
-                    return (
-                      <button
-                        key={c.id}
-                        type="button"
-                        onClick={() => onSelectColor(c.id)}
-                        className={`w-4 h-4 rounded-full transition-all border ${
-                          isLight ? 'border-stone-300' : 'border-black/15'
-                        } ${
-                          isActive
-                            ? 'ring-2 ring-stone-900 scale-125 shadow-xs z-10'
-                            : 'hover:scale-110 opacity-75 hover:opacity-100'
-                        }`}
-                        style={{ backgroundColor: c.hex }}
-                        title={`${c.vietnameseName} (${c.element})`}
-                      />
-                    );
-                  })}
-                </div>
-              )}
+                return (
+                  <>
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white text-stone-800 border border-stone-200 shadow-xs">
+                      {/* Cặp chấm màu kép */}
+                      <span className="flex items-center relative pl-0.5">
+                        <span
+                          className="w-3.5 h-3.5 rounded-full border border-black/15 shadow-2xs shrink-0 z-10"
+                          style={{ backgroundColor: activePalette?.primaryColorHex || selectedColorHex }}
+                        />
+                        <span
+                          className="-ml-1.5 w-2.5 h-2.5 rounded-full border border-white shadow-2xs shrink-0 z-20"
+                          style={{ backgroundColor: activePalette?.secondaryColorHex || '#F4EFE6' }}
+                        />
+                      </span>
+                      <span>
+                        {activePalette ? `${activePalette.name} (${activePalette.tag})` : `Sắc lụa: ${selectedColorName}`}
+                      </span>
+                    </span>
+
+                    {/* Quick Interactive Dual-dot Swatches on Canvas */}
+                    {onSelectColor && !customClothesImage && (
+                      <div className="flex items-center gap-2 bg-stone-100/90 px-2.5 py-1 rounded-full border border-stone-200 shadow-2xs">
+                        {curatedList.map((p) => {
+                          const isActive = selectedColorId === p.id;
+                          return (
+                            <button
+                              key={p.id}
+                              type="button"
+                              onClick={() => onSelectColor(p.id)}
+                              className={`flex items-center relative transition-all ${
+                                isActive
+                                  ? 'scale-125 z-10 ring-2 ring-stone-900 ring-offset-1 rounded-full'
+                                  : 'hover:scale-110 opacity-75 hover:opacity-100'
+                              }`}
+                              title={`${p.name} - ${p.primaryName} & ${p.secondaryName}`}
+                            >
+                              <span
+                                className="w-4 h-4 rounded-full border border-black/20 shadow-2xs"
+                                style={{ backgroundColor: p.primaryColorHex }}
+                              />
+                              <span
+                                className="-ml-1.5 w-2.5 h-2.5 rounded-full border border-white shadow-2xs"
+                                style={{ backgroundColor: p.secondaryColorHex }}
+                              />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
 
               <span className="text-[11px] text-stone-500 font-light hidden lg:inline">
                 {selectedClothes.description}
