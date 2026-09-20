@@ -235,6 +235,9 @@ export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
                 key={garmentImageUrl}
                 src={garmentImageUrl}
                 alt={selectedClothes.name}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = selectedClothes.thumbnailUrl;
+                }}
                 className="max-h-[460px] sm:max-h-[500px] max-w-full object-contain object-center drop-shadow-2xl transition-all duration-500 animate-in fade-in zoom-in-95 group-hover:scale-[1.02] cursor-zoom-in"
                 onClick={() => setIsZoomModalOpen(true)}
               />
@@ -381,6 +384,9 @@ export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
             <img
               src={viewMode === 'ai' && aiResultImage ? aiResultImage : garmentImageUrl}
               alt={selectedClothes.name}
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = selectedClothes.thumbnailUrl;
+              }}
               className="max-h-[80vh] max-w-full object-contain rounded-2xl drop-shadow-2xl"
             />
             <div className="mt-4 text-center text-white">
