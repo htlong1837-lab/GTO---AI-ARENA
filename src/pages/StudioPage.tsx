@@ -70,7 +70,7 @@ export const StudioPage: React.FC<StudioPageProps> = ({
   const [customClothesImage, setCustomClothesImage] = useState<string | null>(null);
   const [selectedColorId, setSelectedColorId] = useState<string>(initialColorId || 'do-son');
   const [selectedAccessoryIds, setSelectedAccessoryIds] = useState<string[]>(
-    initialAccessoryIds || ['kieng-bac', 'sneaker-chunky']
+    initialAccessoryIds || []
   );
   const [isHighQuality, setIsHighQuality] = useState<boolean>(true);
 
