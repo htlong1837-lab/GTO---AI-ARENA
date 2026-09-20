@@ -132,6 +132,7 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     colorName: 'Xanh Chàm Bắc Bộ',
     thumbnailUrl: '/images/viet_phuc/ao_tu_than.jpg',
     colorVariants: {
+      'nau-gu': '/images/viet_phuc/ao_tu_than_nau-gu.jpg',
       'do-son': '/images/viet_phuc/ao_tu_than_do-son.jpg',
       'trang-lua-nga': '/images/viet_phuc/ao_tu_than_trang-lua-nga.jpg',
       'hong-canh-sen': '/images/viet_phuc/ao_tu_than_hong-canh-sen.jpg',
@@ -152,10 +153,11 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     id: 'clothes-ao-ba-ba',
     name: 'Áo Bà Ba Nam Bộ Phóng Khoáng',
     garmentType: 'ao-ba-ba',
-    colorHex: '#1A1C20',
-    colorName: 'Đen Tuyền Mực Tàu',
+    colorHex: '#664228',
+    colorName: 'Nâu Sồng Đất Phù Sa',
     thumbnailUrl: '/images/viet_phuc/ao_ba_ba.jpg',
     colorVariants: {
+      'nau-song': '/images/viet_phuc/ao_ba_ba_nau-song.jpg',
       'do-son': '/images/viet_phuc/ao_ba_ba_do-son.jpg',
       'trang-lua-nga': '/images/viet_phuc/ao_ba_ba_trang-lua-nga.jpg',
       'hong-canh-sen': '/images/viet_phuc/ao_ba_ba_hong-canh-sen.jpg',

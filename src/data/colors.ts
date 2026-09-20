@@ -144,6 +144,38 @@ export const COLORS: ColorOption[] = [
     colorType: 'gian_sac',
     elementMeaning: 'Gian sắc hòa sắc thanh tân, kế thừa mỹ cảm đồ gốm hoa lam thời Lý - Trần kết hợp phong cách đương đại.',
     isPopular: false
+  },
+  {
+    id: 'nau-gu',
+    name: 'Nâu Gụ Hạt Dẻ',
+    vietnameseName: 'Nâu Gụ Quan Họ Kinh Bắc',
+    hex: '#5C3A21',
+    hsl: { h: 26, s: 47, l: 24 },
+    secondaryHex: '#9B1D20',
+    accentHex: '#1D6246',
+    mood: 'Mộc mạc, đằm thắm, duyên dáng và đậm đà hồn quê Quan họ',
+    culturalMeaning: 'Màu nhuộm củ nâu truyền thống ngàn năm của cư dân đồng bằng Bắc Bộ, gắn liền với hình tượng liền chị nón quai thao.',
+    category: 'heritage',
+    element: 'Thổ',
+    colorType: 'gian_sac',
+    elementMeaning: 'Hành Thổ cội nguồn, chất phác, đằm thắm và son sắt.',
+    isPopular: true
+  },
+  {
+    id: 'nau-song',
+    name: 'Nâu Sồng Đất',
+    vietnameseName: 'Nâu Sồng Đất Phù Sa Nam Bộ',
+    hex: '#664228',
+    hsl: { h: 25, s: 44, l: 28 },
+    secondaryHex: '#1A1C20',
+    accentHex: '#F4EFE6',
+    mood: 'Chân chất, phóng khoáng, kiên cường và bao dung sông nước',
+    culturalMeaning: 'Màu áo bà ba nhuộm vỏ trâm bầu, mặc cùng quần lụa đen - biểu tượng bất khuất và bình dị của người Nam Bộ.',
+    category: 'heritage',
+    element: 'Thổ',
+    colorType: 'gian_sac',
+    elementMeaning: 'Hành Thổ phù sa màu mỡ, gắn liền với ruộng đồng và phù sa châu thổ Cửu Long.',
+    isPopular: true
   }
 ];
 
@@ -303,15 +335,26 @@ export const GARMENT_CURATED_PALETTES: Record<string, CuratedPaletteOption[]> = 
   ],
   'ao-tu-than': [
     {
+      id: 'nau-gu',
+      name: 'Nâu Gụ Yếm Đào',
+      primaryColorHex: '#5C3A21',
+      secondaryColorHex: '#9B1D20',
+      primaryName: 'Vạt áo Nâu Gụ',
+      secondaryName: 'Yếm đào đỏ & Váy sồi đen',
+      context: 'Hội Lim, Quan họ Kinh Bắc kinh điển',
+      description: 'Bản phối trứ danh ngàn đời của liền chị Quan họ: vạt lụa nâu gụ, yếm đào đỏ son và váy sồi đen tuyền.',
+      tag: 'Kinh điển'
+    },
+    {
       id: 'vang-hoang-cuc',
       name: 'Vàng Tơ Cúc Yếm Đào',
       primaryColorHex: '#C59338',
-      secondaryColorHex: '#9B1D20',
+      secondaryColorHex: '#CA4F76',
       primaryName: 'Vạt áo Vàng Cúc',
-      secondaryName: 'Yếm đào đỏ & Váy sồi đen',
-      context: 'Hội Lim, Quan họ giao duyên',
-      description: 'Bản phối kinh điển của liền chị Quan họ Kinh Bắc: vạt vàng tơ, yếm đào son và váy đen.',
-      tag: 'Kinh điển'
+      secondaryName: 'Yếm đào sen & Váy sồi đen',
+      context: 'Du xuân, Hội làng trẩy hội',
+      description: 'Sắc vàng tơ tằm óng ả làm bừng sáng yếm sen hồng đào và dải lụa thắt lưng xanh.',
+      tag: 'Duyên dáng'
     },
     {
       id: 'hong-canh-sen',
@@ -322,7 +365,7 @@ export const GARMENT_CURATED_PALETTES: Record<string, CuratedPaletteOption[]> = 
       secondaryName: 'Yếm đào đỏ & Váy sồi đen',
       context: 'Trẩy hội mùa xuân, Giao duyên',
       description: 'Sắc hồng sen ngọt ngào kết hợp yếm thắm, dải bao sáp lụa mềm mại vắt ngang lưng.',
-      tag: 'Duyên dáng'
+      tag: 'Phổ biến'
     },
     {
       id: 'xanh-cham',
@@ -334,20 +377,20 @@ export const GARMENT_CURATED_PALETTES: Record<string, CuratedPaletteOption[]> = 
       context: 'Dân gian mộc mạc, Lễ hội làng',
       description: 'Vạt chàm then truyền thống mộc mạc, làm bừng sáng yếm sen hồng đào bên trong.',
       tag: 'Dân gian'
-    },
-    {
-      id: 'do-son',
-      name: 'Đỏ Son Lễ Hội',
-      primaryColorHex: '#9B1D20',
-      secondaryColorHex: '#CA4F76',
-      primaryName: 'Vạt áo Đỏ Son',
-      secondaryName: 'Yếm hoa đào & Váy sồi đen',
-      context: 'Đầu xuân hội làng, Múa dân gian',
-      description: 'Sắc đỏ son rực rỡ mang không khí hội làng rộn rã cờ hoa.',
-      tag: 'Rực rỡ'
     }
   ],
   'ao-ba-ba': [
+    {
+      id: 'nau-song',
+      name: 'Nâu Sồng Đất Phù Sa',
+      primaryColorHex: '#664228',
+      secondaryColorHex: '#1A1C20',
+      primaryName: 'Áo Nâu Sồng Nam Bộ',
+      secondaryName: 'Quần lụa phi bóng đen',
+      context: 'Sông nước Cửu Long, Đời thường mộc mạc',
+      description: 'Biểu tượng kinh điển của người Nam Bộ: áo bà ba nâu sồng chân chất, khuy ngọc và quần lụa đen bóng.',
+      tag: 'Kinh điển'
+    },
     {
       id: 'hong-canh-sen',
       name: 'Hồng Sen Miệt Vườn',
@@ -357,7 +400,7 @@ export const GARMENT_CURATED_PALETTES: Record<string, CuratedPaletteOption[]> = 
       secondaryName: 'Quần lụa phi bóng đen',
       context: 'Dạo phố sông nước, Chợ nổi miền Tây',
       description: 'Nét duyên mộc mạc của cô gái phương Nam với áo bà ba sen hồng và quần lụa đen bóng.',
-      tag: 'Kinh điển'
+      tag: 'Duyên dáng'
     },
     {
       id: 'xanh-ngoc-luc',
@@ -380,19 +423,9 @@ export const GARMENT_CURATED_PALETTES: Record<string, CuratedPaletteOption[]> = 
       context: 'Đời thường, Thanh lịch dung dị',
       description: 'Bản phối tương phản trắng - đen thuần túy kinh điển của áo bà ba Nam Bộ.',
       tag: 'Thuần khiết'
-    },
-    {
-      id: 'do-son',
-      name: 'Đỏ Thắm Duyên Dáng',
-      primaryColorHex: '#9B1D20',
-      secondaryColorHex: '#1A1C20',
-      primaryName: 'Áo Đỏ Son',
-      secondaryName: 'Quần lụa phi bóng đen',
-      context: 'Lễ Tết miệt vườn, Đờn ca tài tử',
-      description: 'Sắc đỏ son nổi bật tươi tắn trong ngày Tết phương Nam, rạng rỡ và tràn đầy sức sống.',
-      tag: 'Nổi bật'
     }
   ]
+
 };
 
 // Helper chuẩn hoá type
