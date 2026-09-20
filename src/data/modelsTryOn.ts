@@ -66,7 +66,8 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
       'vang-hoang-cuc': '/images/viet_phuc/ao_dai_vang-hoang-cuc.jpg',
       'xanh-ngoc-luc': '/images/viet_phuc/ao_dai_xanh-ngoc-luc.jpg',
       'tim-hue': '/images/viet_phuc/ao_dai_tim-hue.jpg',
-      'xanh-cham': '/images/viet_phuc/ao_dai_xanh-cham.jpg'
+      'xanh-cham': '/images/viet_phuc/ao_dai_xanh-cham.jpg',
+      'den-tuyen': '/images/viet_phuc/ao_dai_den-tuyen.jpg'
     },
     defaultModelLookUrl: {
       'model-female-standard': '/images/looks/look_aodai_duxuan.jpg',
@@ -89,7 +90,8 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
       'vang-hoang-cuc': '/images/viet_phuc/ao_ngu_than_vang-hoang-cuc.jpg',
       'xanh-ngoc-luc': '/images/viet_phuc/ao_ngu_than_xanh-ngoc-luc.jpg',
       'tim-hue': '/images/viet_phuc/ao_ngu_than_tim-hue.jpg',
-      'xanh-cham': '/images/viet_phuc/ao_ngu_than_xanh-cham.jpg'
+      'xanh-cham': '/images/viet_phuc/ao_ngu_than_xanh-cham.jpg',
+      'den-tuyen': '/images/viet_phuc/ao_ngu_than_den-tuyen.jpg'
     },
     defaultModelLookUrl: {
       'model-female-standard': '/images/looks/look_nguthan_trachieu.jpg',
@@ -112,7 +114,8 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
       'vang-hoang-cuc': '/images/viet_phuc/ao_nhat_binh_vang-hoang-cuc.jpg',
       'xanh-ngoc-luc': '/images/viet_phuc/ao_nhat_binh_xanh-ngoc-luc.jpg',
       'tim-hue': '/images/viet_phuc/ao_nhat_binh_tim-hue.jpg',
-      'xanh-cham': '/images/viet_phuc/ao_nhat_binh_xanh-cham.jpg'
+      'xanh-cham': '/images/viet_phuc/ao_nhat_binh_xanh-cham.jpg',
+      'den-tuyen': '/images/viet_phuc/ao_nhat_binh_den-tuyen.jpg'
     },
     defaultModelLookUrl: {
       'model-female-standard': '/images/looks/look_nhatbinh_hoangtrieu.jpg',
@@ -135,7 +138,8 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
       'vang-hoang-cuc': '/images/viet_phuc/ao_tu_than_vang-hoang-cuc.jpg',
       'xanh-ngoc-luc': '/images/viet_phuc/ao_tu_than_xanh-ngoc-luc.jpg',
       'tim-hue': '/images/viet_phuc/ao_tu_than_tim-hue.jpg',
-      'xanh-cham': '/images/viet_phuc/ao_tu_than_xanh-cham.jpg'
+      'xanh-cham': '/images/viet_phuc/ao_tu_than_xanh-cham.jpg',
+      'den-tuyen': '/images/viet_phuc/ao_tu_than_den-tuyen.jpg'
     },
     defaultModelLookUrl: {
       'model-female-standard': '/images/looks/look_aodai_duxuan.jpg',
@@ -158,7 +162,8 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
       'vang-hoang-cuc': '/images/viet_phuc/ao_ba_ba_vang-hoang-cuc.jpg',
       'xanh-ngoc-luc': '/images/viet_phuc/ao_ba_ba_xanh-ngoc-luc.jpg',
       'tim-hue': '/images/viet_phuc/ao_ba_ba_tim-hue.jpg',
-      'xanh-cham': '/images/viet_phuc/ao_ba_ba_xanh-cham.jpg'
+      'xanh-cham': '/images/viet_phuc/ao_ba_ba_xanh-cham.jpg',
+      'den-tuyen': '/images/viet_phuc/ao_ba_ba_den-tuyen.jpg'
     },
     defaultModelLookUrl: {
       'model-female-standard': '/images/hero_model_modern.jpg',
