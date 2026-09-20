@@ -145,10 +145,11 @@ export const GeminiService = {
   // Request AI image generation
   async generateOutfitImage(
     prompt: string,
-    options?: { customKey?: string; aspectRatio?: string }
+    options?: { customKey?: string; aspectRatio?: string; baseImageBase64?: string }
   ): Promise<GenerateImageResult> {
     const customKey = options?.customKey || this.getClientApiKey();
     const aspectRatio = options?.aspectRatio || '3:4';
+    const baseImage = options?.baseImageBase64;
 
     try {
       const response = await fetch('/api/generate-ai-image', {
@@ -159,7 +160,8 @@ export const GeminiService = {
         body: JSON.stringify({
           prompt,
           apiKey: customKey || undefined,
-          aspectRatio
+          aspectRatio,
+          baseImage
         })
       });
 

@@ -110,10 +110,13 @@ export const ThreeCanvas = forwardRef<ThreeCanvasHandle, ThreeCanvasProps>(({
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
+    const width = container.clientWidth || container.offsetWidth || 600;
+    const height = container.clientHeight || container.offsetHeight || 560;
+
     // Camera
     const camera = new THREE.PerspectiveCamera(
       45,
-      container.clientWidth / container.clientHeight,
+      height > 0 ? width / height : 1,
       0.1,
       100
     );
@@ -127,7 +130,7 @@ export const ThreeCanvas = forwardRef<ThreeCanvasHandle, ThreeCanvasProps>(({
       preserveDrawingBuffer: true,
       powerPreference: 'high-performance'
     });
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
@@ -188,15 +191,32 @@ export const ThreeCanvas = forwardRef<ThreeCanvasHandle, ThreeCanvasProps>(({
 
     const handleResize = () => {
       if (!container || !renderer || !camera) return;
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
+      const w = container.clientWidth || container.offsetWidth;
+      const h = container.clientHeight || container.offsetHeight;
+      if (w > 0 && h > 0) {
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      }
     };
     window.addEventListener('resize', handleResize);
 
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width: w, height: h } = entry.contentRect;
+        if (w > 0 && h > 0 && cameraRef.current && rendererRef.current) {
+          cameraRef.current.aspect = w / h;
+          cameraRef.current.updateProjectionMatrix();
+          rendererRef.current.setSize(w, h);
+        }
+      }
+    });
+    resizeObserver.observe(container);
+
     return () => {
-      window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
       controls.dispose();
       renderer.dispose();
       if (container && renderer.domElement && container.contains(renderer.domElement)) {
@@ -299,13 +319,29 @@ export const ThreeCanvas = forwardRef<ThreeCanvasHandle, ThreeCanvasProps>(({
   useEffect(() => {
     let isCancelled = false;
 
+    const resolveModelUrl = (rawUrl: string) => {
+      if (!rawUrl) return '';
+      if (rawUrl.startsWith('http://') || rawUrl.startsWith('https://') || rawUrl.startsWith('data:') || rawUrl.startsWith('blob:')) {
+        return rawUrl;
+      }
+      const clean = rawUrl.startsWith('/') ? rawUrl.slice(1) : rawUrl;
+      const base = import.meta.env.BASE_URL || '/';
+      const prefix = base.endsWith('/') ? base : `${base}/`;
+      return `${prefix}${clean}`;
+    };
+
     const updateGarment = async () => {
       setLoading(true);
       setError(null);
-      const loader = new GLTFLoader();
-      loader.setMeshoptDecoder(MeshoptDecoder);
 
       try {
+        if (MeshoptDecoder && MeshoptDecoder.ready) {
+          await MeshoptDecoder.ready;
+        }
+
+        const loader = new GLTFLoader();
+        loader.setMeshoptDecoder(MeshoptDecoder);
+
         const baseSlot = slots.base;
         const baseGroup = slotGroupsRef.current.get('base');
         if (baseGroup) {
@@ -321,13 +357,14 @@ export const ThreeCanvas = forwardRef<ThreeCanvasHandle, ThreeCanvasProps>(({
             STARTER_3D_ITEMS.find((i) => i.id === baseSlot.itemId);
 
           if (itemConfig?.url) {
+            const modelUrl = resolveModelUrl(itemConfig.url);
             let gltfRoot: THREE.Group;
-            if (glbCacheRef.current.has(itemConfig.url)) {
-              gltfRoot = glbCacheRef.current.get(itemConfig.url)!.clone(true);
+            if (glbCacheRef.current.has(modelUrl)) {
+              gltfRoot = glbCacheRef.current.get(modelUrl)!.clone(true);
             } else {
-              const gltf = await loader.loadAsync(itemConfig.url);
+              const gltf = await loader.loadAsync(modelUrl);
               if (isCancelled) return;
-              glbCacheRef.current.set(itemConfig.url, gltf.scene);
+              glbCacheRef.current.set(modelUrl, gltf.scene);
               gltfRoot = gltf.scene.clone(true);
             }
 
@@ -469,7 +506,7 @@ export const ThreeCanvas = forwardRef<ThreeCanvasHandle, ThreeCanvasProps>(({
         setLoading(false);
       } catch (err) {
         console.error('Failed to load 3D royal garment:', err);
-        setError('Không thể nạp mô hình 3D cổ phục.');
+        setError(`Không thể nạp mô hình 3D cổ phục: ${(err as Error)?.message || ''}`);
         setLoading(false);
       }
     };
@@ -485,7 +522,7 @@ export const ThreeCanvas = forwardRef<ThreeCanvasHandle, ThreeCanvasProps>(({
     <div className="relative w-full h-full min-h-[520px] select-none">
       <div
         ref={containerRef}
-        className="w-full h-full cursor-grab active:cursor-grabbing rounded-3xl overflow-hidden shadow-inner"
+        className="w-full h-full min-h-[520px] cursor-grab active:cursor-grabbing rounded-3xl overflow-hidden shadow-inner"
       />
 
       {loading && (

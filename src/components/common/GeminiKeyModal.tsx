@@ -86,15 +86,15 @@ export const GeminiKeyModal: React.FC<GeminiKeyModalProps> = ({ isOpen, onClose,
 
         {/* Modal Header */}
         <div className="flex items-start gap-3.5 pr-8">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 flex items-center justify-center text-white shadow-md shrink-0">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-teal-600 via-amber-500 to-rose-600 flex items-center justify-center text-white shadow-md shrink-0">
             <Sparkles className="w-6 h-6 animate-pulse" />
           </div>
           <div>
             <h3 className="font-serif text-xl font-bold text-stone-900">
-              Cấu hình Google Gemini API
+              Cấu hình AI (9router & Gemini)
             </h3>
             <p className="text-xs text-stone-500 mt-0.5 font-sans">
-              Kết nối mô hình Imagen 3 để tự động sinh ảnh người mẫu thời trang Việt Phục.
+              Hỗ trợ cổng 9router (Local Gateway) và Google Gemini API trực tiếp.
             </p>
           </div>
         </div>
@@ -109,8 +109,11 @@ export const GeminiKeyModal: React.FC<GeminiKeyModalProps> = ({ isOpen, onClose,
             <>
               <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
               <div>
-                <strong className="block font-semibold">Gemini AI đang sẵn sàng!</strong>
-                <span className="text-emerald-700">Khóa hiện tại: {status.preview || 'Đã cấu hình'} (Imagen 3)</span>
+                <strong className="block font-semibold">Cổng AI đang sẵn sàng hoạt động!</strong>
+                <span className="text-emerald-700">
+                  {status.preview?.startsWith('sk-') ? '9router Gateway: ' : 'Gemini AI: '}
+                  {status.preview || 'Đã cấu hình'} (http://localhost:20128/v1)
+                </span>
               </div>
             </>
           ) : (
@@ -118,7 +121,7 @@ export const GeminiKeyModal: React.FC<GeminiKeyModalProps> = ({ isOpen, onClose,
               <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
               <div>
                 <strong className="block font-semibold">Chưa có API Key</strong>
-                <span className="text-amber-700">Vui lòng nhập API Key để các máy truy cập có thể tạo ảnh tự động.</span>
+                <span className="text-amber-700">Vui lòng nhập 9router Key (sk-...) hoặc Gemini API Key.</span>
               </div>
             </>
           )}
