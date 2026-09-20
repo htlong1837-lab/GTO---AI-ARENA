@@ -14,7 +14,7 @@ import {
   DEFAULT_ACTIVE_SLOTS,
   Transform3D
 } from '../data/models3d';
-import { COLORS } from '../data/colors';
+import { COLORS, POPULAR_COLORS } from '../data/colors';
 import {
   RotateCw,
   Upload,
@@ -588,7 +588,7 @@ export const Studio3DPage: React.FC = () => {
                   </button>
                 </div>
                 <div className="flex items-center justify-between gap-1 pt-1">
-                  {COLORS.slice(0, 6).map((col) => (
+                  {POPULAR_COLORS.map((col) => (
                     <button
                       key={col.id}
                       onClick={() => handleSlotColor('base', col.hex)}

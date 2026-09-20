@@ -51,6 +51,7 @@ export interface ColorOption {
   element: NguHanhElement;
   colorType: 'chinh_sac' | 'gian_sac';
   elementMeaning: string;
+  isPopular?: boolean;
 }
 
 export interface Accessory {

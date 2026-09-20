@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { ClothingItemOption, PRESET_CLOTHING_ITEMS } from '../../data/modelsTryOn';
 import { ACCESSORIES } from '../../data/accessories';
-import { COLORS } from '../../data/colors';
+import { COLORS, POPULAR_COLORS } from '../../data/colors';
 import { Plus, Info, Check, Sparkles, X, Layers } from 'lucide-react';
 
 interface FitRoomSelectClothesProps {
@@ -198,17 +198,22 @@ export const FitRoomSelectClothes: React.FC<FitRoomSelectClothesProps> = ({
             </div>
           </div>
 
-          {/* Bảng màu lụa & gấm truyền thống */}
+          {/* Bảng màu lụa & gấm truyền thống - Chỉ các màu sắc phổ biến */}
           <div className="pt-2 border-t border-stone-100">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-stone-700">Sắc lụa di sản</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-stone-700">Sắc lụa di sản</span>
+                <span className="text-[10px] font-semibold bg-amber-50 text-amber-800 px-2 py-0.5 rounded-full border border-amber-200/60">
+                  Phổ biến
+                </span>
+              </div>
               <span className="text-[11px] text-teal-800 font-semibold">
-                {COLORS.find((c) => c.id === selectedColorId)?.vietnameseName || 'Mặc định'}
+                {POPULAR_COLORS.find((c) => c.id === selectedColorId)?.vietnameseName || COLORS.find((c) => c.id === selectedColorId)?.vietnameseName || 'Mặc định'}
               </span>
             </div>
             {/* Flex-wrap with adequate padding to prevent clipping of outer rings */}
             <div className="flex flex-wrap items-center gap-2.5 py-2 px-1">
-              {COLORS.map((c) => {
+              {POPULAR_COLORS.map((c) => {
                 const isColorActive = selectedColorId === c.id;
                 const isLight = c.id === 'trang-lua-nga';
                 return (

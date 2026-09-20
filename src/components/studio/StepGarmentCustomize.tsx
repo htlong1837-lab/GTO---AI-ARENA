@@ -1,7 +1,7 @@
 import React from 'react';
 import { ClothingItemOption, PRESET_CLOTHING_ITEMS, TryOnModel } from '../../data/modelsTryOn';
 import { ACCESSORIES } from '../../data/accessories';
-import { COLORS } from '../../data/colors';
+import { COLORS, POPULAR_COLORS } from '../../data/colors';
 import { Check, Sparkles, ArrowLeft, Zap, ArrowRight, User } from 'lucide-react';
 
 interface StepGarmentCustomizeProps {
@@ -133,16 +133,16 @@ export const StepGarmentCustomize: React.FC<StepGarmentCustomizeProps> = ({
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold text-stone-800 flex items-center gap-1.5">
             <span className="w-3.5 h-3.5 rounded-full bg-amber-500 inline-block" />
-            <span>2. Chọn màu sắc vải lụa & gấm</span>
+            <span>2. Chọn màu sắc vải lụa & gấm (Phổ biến)</span>
           </h3>
           <span className="text-xs font-semibold text-teal-800 bg-white px-2.5 py-0.5 rounded-full border border-stone-200">
-            {COLORS.find((c) => c.id === selectedColorId)?.vietnameseName || 'Mặc định'}
+            {POPULAR_COLORS.find((c) => c.id === selectedColorId)?.vietnameseName || COLORS.find((c) => c.id === selectedColorId)?.vietnameseName || 'Mặc định'}
           </span>
         </div>
 
         {/* Swatches Grid */}
         <div className="flex flex-wrap items-center gap-2.5 py-1">
-          {COLORS.map((c) => {
+          {POPULAR_COLORS.map((c) => {
             const isColorActive = selectedColorId === c.id;
             const isLight = c.id === 'trang-lua-nga';
             return (

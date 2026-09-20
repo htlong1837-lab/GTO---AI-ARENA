@@ -14,37 +14,8 @@ export const COLORS: ColorOption[] = [
     category: 'royal',
     element: 'Hỏa',
     colorType: 'chinh_sac',
-    elementMeaning: 'Hành Hỏa phương Nam, biểu trưng cho sinh khí, nhiệt huyết, lễ nghi quang minh và hỷ sự.'
-  },
-  {
-    id: 'vang-hoang-cuc',
-    name: 'Vàng Hoàng Cúc',
-    vietnameseName: 'Vàng Hoàng Cúc Triều Nguyễn',
-    hex: '#C59338',
-    hsl: { h: 39, s: 57, l: 50 },
-    secondaryHex: '#9B1D20',
-    accentHex: '#1D6246',
-    mood: 'Ấm áp, đài các, phú quý và tươi sáng như ánh nắng phương Nam',
-    culturalMeaning: 'Màu của đất mẹ phì nhiêu, sự vương giả và trí tuệ thâm trầm theo quan niệm ngũ hành Thổ.',
-    category: 'royal',
-    element: 'Thổ',
-    colorType: 'chinh_sac',
-    elementMeaning: 'Hành Thổ vị trí trung cung, biểu trưng cho cội nguồn đất mẹ bao dung, vương giả và sự vững chãi.'
-  },
-  {
-    id: 'xanh-cham',
-    name: 'Xanh Chàm Cổ',
-    vietnameseName: 'Xanh Chàm Nhuộm Lá Tự Nhiên',
-    hex: '#182747',
-    hsl: { h: 221, s: 49, l: 19 },
-    secondaryHex: '#DFB058',
-    accentHex: '#CA4F76',
-    mood: 'Thâm trầm, bí ẩn, tri thức và chiều sâu nội tâm',
-    culturalMeaning: 'Màu nhuộm truyền thống từ cây chàm, gắn với đời sống lao động cần cù và nét mộc mạc bền bỉ.',
-    category: 'heritage',
-    element: 'Thủy',
-    colorType: 'gian_sac',
-    elementMeaning: 'Hành Thủy phương Bắc, biểu trưng cho sự thâm sâu, bền bỉ và tri thức nội tâm của người xưa.'
+    elementMeaning: 'Hành Hỏa phương Nam, biểu trưng cho sinh khí, nhiệt huyết, lễ nghi quang minh và hỷ sự.',
+    isPopular: true
   },
   {
     id: 'trang-lua-nga',
@@ -59,22 +30,8 @@ export const COLORS: ColorOption[] = [
     category: 'heritage',
     element: 'Kim',
     colorType: 'chinh_sac',
-    elementMeaning: 'Hành Kim phương Tây, biểu trưng cho đức tính chính trực, thanh khiết và vẹn nguyên sơ tâm.'
-  },
-  {
-    id: 'den-tuyen',
-    name: 'Đen Mực Tàu',
-    vietnameseName: 'Hắc Tuyền Trầm Mặc',
-    hex: '#1A1C20',
-    hsl: { h: 220, s: 10, l: 11 },
-    secondaryHex: '#C59338',
-    accentHex: '#FF4757',
-    mood: 'Bí ẩn, uy nghiêm, cá tính và sắc sảo chuẩn thời trang cao cấp',
-    culturalMeaning: 'Màu của mực tàu trên giấy điệp, tượng trưng cho nét bút Nho sinh đĩnh đạc và phong thái đĩnh đạc.',
-    category: 'modern',
-    element: 'Thủy',
-    colorType: 'chinh_sac',
-    elementMeaning: 'Hành Thủy cổ truyền (Huyền sắc), tượng trưng cho sự huyền vi, uy nghiêm đĩnh đạc của bậc sĩ phu.'
+    elementMeaning: 'Hành Kim phương Tây, biểu trưng cho đức tính chính trực, thanh khiết và vẹn nguyên sơ tâm.',
+    isPopular: true
   },
   {
     id: 'hong-canh-sen',
@@ -89,22 +46,24 @@ export const COLORS: ColorOption[] = [
     category: 'pastel',
     element: 'Hỏa',
     colorType: 'gian_sac',
-    elementMeaning: 'Gian sắc phối thuộc Hỏa, biểu trưng cho sự nhu hòa, duyên dáng thanh tao của người thiếu nữ.'
+    elementMeaning: 'Gian sắc phối thuộc Hỏa, biểu trưng cho sự nhu hòa, duyên dáng thanh tao của người thiếu nữ.',
+    isPopular: true
   },
   {
-    id: 'tim-hue',
-    name: 'Tím Cố Đô',
-    vietnameseName: 'Tím Hoa Cà Sông Hương',
-    hex: '#6B3074',
-    hsl: { h: 292, s: 42, l: 32 },
-    secondaryHex: '#C59338',
-    accentHex: '#F4EFE6',
-    mood: 'Mơ màng, e ấp, thủy chung và hoài niệm cổ kính',
-    culturalMeaning: 'Màu sắc đặc trưng của xứ Huế mộng mơ, gắn liền với hình bóng thiếu nữ bên dòng Hương giang.',
-    category: 'heritage',
-    element: 'Hỏa',
-    colorType: 'gian_sac',
-    elementMeaning: 'Gian sắc phối giữa xanh chàm và đỏ tía, biểu trưng cho lòng thủy chung son sắt và chất trữ tình Cố đô.'
+    id: 'vang-hoang-cuc',
+    name: 'Vàng Hoàng Cúc',
+    vietnameseName: 'Vàng Hoàng Cúc Triều Nguyễn',
+    hex: '#C59338',
+    hsl: { h: 39, s: 57, l: 50 },
+    secondaryHex: '#9B1D20',
+    accentHex: '#1D6246',
+    mood: 'Ấm áp, đài các, phú quý và tươi sáng như ánh nắng phương Nam',
+    culturalMeaning: 'Màu của đất mẹ phì nhiêu, sự vương giả và trí tuệ thâm trầm theo quan niệm ngũ hành Thổ.',
+    category: 'royal',
+    element: 'Thổ',
+    colorType: 'chinh_sac',
+    elementMeaning: 'Hành Thổ vị trí trung cung, biểu trưng cho cội nguồn đất mẹ bao dung, vương giả và sự vững chãi.',
+    isPopular: true
   },
   {
     id: 'xanh-ngoc-luc',
@@ -119,7 +78,56 @@ export const COLORS: ColorOption[] = [
     category: 'royal',
     element: 'Mộc',
     colorType: 'chinh_sac',
-    elementMeaning: 'Hành Mộc phương Đông, tượng trưng cho mùa xuân, đức nhân, sự sinh sôi nảy nở và tính khiêm cung.'
+    elementMeaning: 'Hành Mộc phương Đông, tượng trưng cho mùa xuân, đức nhân, sự sinh sôi nảy nở và tính khiêm cung.',
+    isPopular: true
+  },
+  {
+    id: 'tim-hue',
+    name: 'Tím Cố Đô',
+    vietnameseName: 'Tím Hoa Cà Sông Hương',
+    hex: '#6B3074',
+    hsl: { h: 292, s: 42, l: 32 },
+    secondaryHex: '#C59338',
+    accentHex: '#F4EFE6',
+    mood: 'Mơ màng, e ấp, thủy chung và hoài niệm cổ kính',
+    culturalMeaning: 'Màu sắc đặc trưng của xứ Huế mộng mơ, gắn liền với hình bóng thiếu nữ bên dòng Hương giang.',
+    category: 'heritage',
+    element: 'Hỏa',
+    colorType: 'gian_sac',
+    elementMeaning: 'Gian sắc phối giữa xanh chàm và đỏ tía, biểu trưng cho lòng thủy chung son sắt và chất trữ tình Cố đô.',
+    isPopular: true
+  },
+  {
+    id: 'xanh-cham',
+    name: 'Xanh Chàm Cổ',
+    vietnameseName: 'Xanh Chàm Nhuộm Lá Tự Nhiên',
+    hex: '#182747',
+    hsl: { h: 221, s: 49, l: 19 },
+    secondaryHex: '#DFB058',
+    accentHex: '#CA4F76',
+    mood: 'Thâm trầm, bí ẩn, tri thức và chiều sâu nội tâm',
+    culturalMeaning: 'Màu nhuộm truyền thống từ cây chàm, gắn với đời sống lao động cần cù và nét mộc mạc bền bỉ.',
+    category: 'heritage',
+    element: 'Thủy',
+    colorType: 'gian_sac',
+    elementMeaning: 'Hành Thủy phương Bắc, biểu trưng cho sự thâm sâu, bền bỉ và tri thức nội tâm của người xưa.',
+    isPopular: true
+  },
+  {
+    id: 'den-tuyen',
+    name: 'Đen Mực Tàu',
+    vietnameseName: 'Hắc Tuyền Trầm Mặc',
+    hex: '#1A1C20',
+    hsl: { h: 220, s: 10, l: 11 },
+    secondaryHex: '#C59338',
+    accentHex: '#FF4757',
+    mood: 'Bí ẩn, uy nghiêm, cá tính và sắc sảo chuẩn thời trang cao cấp',
+    culturalMeaning: 'Màu của mực tàu trên giấy điệp, tượng trưng cho nét bút Nho sinh đĩnh đạc và phong thái đĩnh đạc.',
+    category: 'modern',
+    element: 'Thủy',
+    colorType: 'chinh_sac',
+    elementMeaning: 'Hành Thủy cổ truyền (Huyền sắc), tượng trưng cho sự huyền vi, uy nghiêm đĩnh đạc của bậc sĩ phu.',
+    isPopular: false
   },
   {
     id: 'pastel-thanh-thien',
@@ -134,6 +142,10 @@ export const COLORS: ColorOption[] = [
     category: 'pastel',
     element: 'Mộc',
     colorType: 'gian_sac',
-    elementMeaning: 'Gian sắc hòa sắc thanh tân, kế thừa mỹ cảm đồ gốm hoa lam thời Lý - Trần kết hợp phong cách đương đại.'
+    elementMeaning: 'Gian sắc hòa sắc thanh tân, kế thừa mỹ cảm đồ gốm hoa lam thời Lý - Trần kết hợp phong cách đương đại.',
+    isPopular: false
   }
 ];
+
+// Danh sách các sắc lụa di sản phổ biến nhất trong trang phục truyền thống Việt Nam
+export const POPULAR_COLORS: ColorOption[] = COLORS.filter((c) => c.isPopular);
