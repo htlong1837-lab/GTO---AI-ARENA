@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   TryOnModel,
   ClothingItemOption,
@@ -21,11 +22,6 @@ import { GeminiService } from '../services/geminiService';
 import { useToast } from '../context/ToastContext';
 import {
   Sparkles,
-  Dices,
-  Key,
-  BookmarkPlus,
-  Scale,
-  Shirt,
   Wand2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -253,140 +249,81 @@ export const StudioPage: React.FC<StudioPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] text-stone-900 pb-20 sm:pb-12">
-      {/* Top Navigation Bar */}
-      <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-16 z-30 px-4 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3 shadow-xs">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-2xl bg-teal-700 text-white flex items-center justify-center font-bold text-sm shadow-sm">
-            <Shirt className="w-5 h-5" />
-          </div>
-          <div>
-            <h1 className="text-base sm:text-lg font-bold tracking-tight text-stone-900 flex items-center gap-2">
-              <span>Phòng Thử Đồ & Studio 3D</span>
-            </h1>
-            <p className="text-[11px] text-stone-500 font-light hidden sm:block">
-              Chọn trang phục & người mẫu bên trái • Xoay 360° và thử đồ trực quan bên phải
-            </p>
-          </div>
-        </div>
-
-        {/* Action Controls */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setIsKeyModalOpen(true)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium border shadow-xs flex items-center gap-1.5 transition-all ${
-              aiStatus.configured
-                ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-emerald-300'
-                : 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300'
-            }`}
-            title="Cấu hình Google Gemini API Key"
-          >
-            <Key className="w-3.5 h-3.5 text-amber-600" />
-            <span className="hidden sm:inline">{aiStatus.configured ? 'Gemini AI: Sẵn sàng' : 'Cấu hình Gemini AI'}</span>
-          </button>
-
-          <button
-            onClick={handleRandomize}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200 transition-colors shadow-xs"
-            title="Gợi ý ngẫu nhiên một bản phối mới"
-          >
-            <Dices className="w-3.5 h-3.5 text-amber-600" />
-            <span className="hidden sm:inline">Gợi ý ngẫu nhiên</span>
-          </button>
-
-          <button
-            onClick={handleSaveToWardrobe}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white hover:bg-stone-50 text-stone-800 border border-stone-200 transition-colors shadow-xs"
-            title="Lưu bản phối hiện tại vào Tủ đồ cá nhân"
-          >
-            <BookmarkPlus className="w-3.5 h-3.5 text-teal-700" />
-            <span className="hidden md:inline">Lưu tủ đồ</span>
-          </button>
-
-          <button
-            onClick={handleAddToCompare}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white hover:bg-stone-50 text-stone-800 border border-stone-200 transition-colors shadow-xs"
-            title="Thêm vào bảng so sánh"
-          >
-            <Scale className="w-3.5 h-3.5 text-stone-600" />
-            <span className="hidden md:inline">So sánh</span>
-          </button>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-[#FAF9F6] text-stone-900 pb-20 sm:pb-6">
       {/* Main 2-Column Responsive Layout */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-4 lg:h-[calc(100vh-6rem)] lg:overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start lg:h-full">
           
-          {/* LEFT COLUMN: Controls & Selections (5 Cols) */}
-          <div className="lg:col-span-5 flex flex-col gap-6 order-2 lg:order-1">
+          {/* LEFT COLUMN: Controls & Selections (5 Cols - Scrollable independently) */}
+          <div className="lg:col-span-5 flex flex-col order-2 lg:order-1 lg:h-full relative overflow-hidden">
             
-            {/* Box 1: Select Clothes, Silk Colors, Accessories */}
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-stone-200/80 shadow-xs">
-              <FitRoomSelectClothes
-                selectedClothes={selectedClothes}
-                onSelectClothes={handleSelectClothes}
-                customClothesImage={customClothesImage}
-                onUploadCustomClothes={setCustomClothesImage}
-                selectedColorId={selectedColorId}
-                onSelectColor={setSelectedColorId}
-                selectedAccessoryIds={selectedAccessoryIds}
-                onToggleAccessory={handleToggleAccessory}
-              />
-            </div>
-
-            {/* Box 2: Select Model (Nam / Nữ) */}
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-stone-200/80 shadow-xs">
-              <FitRoomSelectModel
-                selectedModel={selectedModel}
-                onSelectModel={setSelectedModel}
-                customModelImage={customModelImage}
-                onUploadCustomModel={setCustomModelImage}
-              />
-            </div>
-
-            {/* Box 3: AI Virtual Try-On Generation Action */}
-            <div className="bg-gradient-to-br from-stone-900 to-stone-800 text-white rounded-3xl p-5 sm:p-6 shadow-md border border-stone-700/60">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center">
-                    <Sparkles className="w-4 h-4" />
-                  </div>
-                  <h4 className="text-sm font-bold text-white tracking-wide">
-                    Thử Đồ Chân Thực Với AI
-                  </h4>
-                </div>
-                <label className="flex items-center gap-2 text-xs text-stone-300 cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={isHighQuality}
-                    onChange={(e) => setIsHighQuality(e.target.checked)}
-                    className="accent-teal-500 w-3.5 h-3.5 rounded"
-                  />
-                  <span>Độ nét cao (Ultra-HD)</span>
-                </label>
+            {/* Scrollable container for selecting clothes & models */}
+            <div className="flex-1 lg:overflow-y-auto pr-1 lg:pr-2.5 pb-2 space-y-5 scrollbar-thin scrollbar-thumb-stone-300 scrollbar-track-transparent">
+              {/* Box 1: Select Clothes, Silk Colors, Accessories */}
+              <div className="bg-white rounded-3xl p-5 sm:p-6 border border-stone-200/80 shadow-xs">
+                <FitRoomSelectClothes
+                  selectedClothes={selectedClothes}
+                  onSelectClothes={handleSelectClothes}
+                  customClothesImage={customClothesImage}
+                  onUploadCustomClothes={setCustomClothesImage}
+                  selectedColorId={selectedColorId}
+                  onSelectColor={setSelectedColorId}
+                  selectedAccessoryIds={selectedAccessoryIds}
+                  onToggleAccessory={handleToggleAccessory}
+                />
               </div>
 
-              <p className="text-xs text-stone-300 mb-4 font-light leading-relaxed">
-                AI sẽ tổng hợp chính xác vóc dáng của <strong className="text-white font-medium">{selectedModel.name}</strong> mặc{' '}
-                <strong className="text-teal-300 font-medium">{selectedClothes.name}</strong> với sắc lụa{' '}
-                <strong className="text-amber-300 font-medium">{chosenColor.vietnameseName}</strong> và phụ kiện đã chọn.
-              </p>
+              {/* Box 2: Select Model (Nam / Nữ) */}
+              <div className="bg-white rounded-3xl p-5 sm:p-6 border border-stone-200/80 shadow-xs">
+                <FitRoomSelectModel
+                  selectedModel={selectedModel}
+                  onSelectModel={setSelectedModel}
+                  customModelImage={customModelImage}
+                  onUploadCustomModel={setCustomModelImage}
+                />
+              </div>
+            </div>
 
-              <button
-                onClick={handleGenerate}
-                disabled={isGenerating}
-                className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-500 hover:to-teal-400 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                <Wand2 className="w-4 h-4 text-amber-300" />
-                <span>AI Thử Đồ Ngay</span>
-              </button>
+            {/* Pinned Bottom Action Bar at the base of Left Column */}
+            <div className="shrink-0 pt-3 z-20">
+              <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-4 sm:p-4.5 border border-stone-200/90 shadow-xl flex flex-col gap-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-2 cursor-pointer select-none">
+                    <div className="relative inline-flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={isHighQuality}
+                        onChange={(e) => setIsHighQuality(e.target.checked)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-8 h-4.5 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-teal-600" />
+                    </div>
+                    <span className="text-xs font-bold text-stone-700 flex items-center gap-1">
+                      <span>High quality mode</span>
+                      <span className="px-1.5 py-0.2 rounded bg-teal-500 text-white text-[9px] font-extrabold">HD</span>
+                    </span>
+                  </label>
+
+                  <span className="text-[11px] text-stone-500 font-medium">
+                    {selectedModel.gender === 'female' ? 'Mẫu Nữ' : 'Mẫu Nam'} • {chosenColor.vietnameseName}
+                  </span>
+                </div>
+
+                <button
+                  onClick={handleGenerate}
+                  disabled={isGenerating}
+                  className="w-full py-3 sm:py-3.5 px-6 rounded-2xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-500 hover:from-teal-500 hover:to-emerald-400 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-teal-500/25 hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 active:scale-[0.99] cursor-pointer"
+                >
+                  <Wand2 className="w-4 h-4 text-amber-300 animate-pulse" />
+                  <span className="tracking-wide">{isGenerating ? 'AI đang ướm thử...' : 'Generate (AI Thử Đồ)'}</span>
+                </button>
+              </div>
             </div>
 
           </div>
 
-          {/* RIGHT COLUMN: Garment Showcase & AI Viewport (7 Cols) */}
-          <div className="lg:col-span-7 sticky top-24 order-1 lg:order-2">
+          {/* RIGHT COLUMN: Garment Showcase & AI Viewport (7 Cols - Fixed / Static) */}
+          <div className="lg:col-span-7 order-1 lg:order-2 lg:h-full flex flex-col">
             <FitRoom3DCanvas
               selectedClothes={selectedClothes}
               customClothesImage={customClothesImage}
@@ -402,15 +339,16 @@ export const StudioPage: React.FC<StudioPageProps> = ({
               onSaveToWardrobe={handleSaveToWardrobe}
               onAddToCompare={handleAddToCompare}
               onToggleAccessory={handleToggleAccessory}
+              onClearAiResult={() => setCurrentResult(null)}
             />
           </div>
 
         </div>
       </main>
 
-      {/* Loading Modal Overlay during AI Generation */}
-      {isGenerating && (
-        <div className="fixed inset-0 bg-stone-950/80 backdrop-blur-md z-50 flex flex-col items-center justify-center p-6 text-white text-center animate-in fade-in">
+      {/* Loading Modal Overlay during AI Generation mounted directly to document.body */}
+      {isGenerating && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[99999] flex flex-col items-center justify-center p-6 text-white text-center animate-in fade-in duration-200 select-none">
           <div className="relative w-20 h-20 mb-5">
             <div className="absolute inset-0 rounded-full border-4 border-teal-500/20 border-t-teal-400 animate-spin" />
             <div className="absolute inset-0 flex items-center justify-center">
@@ -432,7 +370,8 @@ export const StudioPage: React.FC<StudioPageProps> = ({
             />
           </div>
           <span className="text-xs font-mono text-stone-400 mt-2">{progressPercent}%</span>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Share Modal Dialog */}

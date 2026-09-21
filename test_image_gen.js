@@ -47,8 +47,12 @@ async function testGenerate(model) {
 async function run() {
   const models = [
     'models/gemini-2.5-flash-image',
+    'models/gemini-3-pro-image-preview',
+    'models/gemini-3-pro-image',
+    'models/nano-banana-pro-preview',
+    'models/gemini-3.1-flash-image-preview',
     'models/gemini-3.1-flash-image',
-    'models/gemini-3-pro-image'
+    'models/gemini-3.1-flash-lite-image'
   ];
   for (const m of models) {
     const ok = await testGenerate(m);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Sparkles, Key, CheckCircle2, AlertCircle, ExternalLink, X, Eye, EyeOff } from 'lucide-react';
 import { GeminiService } from '../../services/geminiService';
 import { useToast } from '../../context/ToastContext';
@@ -73,8 +74,8 @@ export const GeminiKeyModal: React.FC<GeminiKeyModalProps> = ({ isOpen, onClose,
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+  return typeof document !== 'undefined' ? createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
       <div className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-stone-200 text-stone-800 space-y-5">
         {/* Close Button */}
         <button
@@ -91,10 +92,10 @@ export const GeminiKeyModal: React.FC<GeminiKeyModalProps> = ({ isOpen, onClose,
           </div>
           <div>
             <h3 className="font-serif text-xl font-bold text-stone-900">
-              Cấu hình AI (9router & Gemini)
+              Cấu hình Gemini API Key
             </h3>
             <p className="text-xs text-stone-500 mt-0.5 font-sans">
-              Hỗ trợ cổng 9router (Local Gateway) và Google Gemini API trực tiếp.
+              Nhập mã khóa Google AI Studio cá nhân để kích hoạt tính năng tạo ảnh AI.
             </p>
           </div>
         </div>
@@ -109,10 +110,9 @@ export const GeminiKeyModal: React.FC<GeminiKeyModalProps> = ({ isOpen, onClose,
             <>
               <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
               <div>
-                <strong className="block font-semibold">Cổng AI đang sẵn sàng hoạt động!</strong>
+                <strong className="block font-semibold">Cổng Gemini AI đang sẵn sàng!</strong>
                 <span className="text-emerald-700">
-                  {status.preview?.startsWith('sk-') ? '9router Gateway: ' : 'Gemini AI: '}
-                  {status.preview || 'Đã cấu hình'} (http://localhost:20128/v1)
+                  Key: {status.preview || 'Đã cấu hình'}
                 </span>
               </div>
             </>
@@ -121,96 +121,93 @@ export const GeminiKeyModal: React.FC<GeminiKeyModalProps> = ({ isOpen, onClose,
               <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
               <div>
                 <strong className="block font-semibold">Chưa có API Key</strong>
-                <span className="text-amber-700">Vui lòng nhập 9router Key (sk-...) hoặc Gemini API Key.</span>
+                <span className="text-amber-700">Vui lòng dán Gemini API Key để tạo ảnh.</span>
               </div>
             </>
           )}
         </div>
 
-        {/* Target selection */}
-        <div className="space-y-1.5">
-          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">
-            Phạm vi áp dụng
+        {/* Mode Selector Tab */}
+        <div className="space-y-2">
+          <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider">
+            Phạm vi lưu trữ
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 p-1 bg-stone-100/80 rounded-2xl border border-stone-200/60">
             <button
               type="button"
               onClick={() => setSaveTarget('server')}
-              className={`p-2.5 rounded-xl border text-left text-xs transition-all ${
+              className={`py-2 px-3 text-xs font-semibold rounded-xl transition-all ${
                 saveTarget === 'server'
-                  ? 'border-[#9B1D20] bg-rose-50/60 font-semibold text-[#9B1D20] shadow-xs'
-                  : 'border-stone-200 hover:border-stone-300 text-stone-600'
+                  ? 'bg-white text-stone-900 shadow-sm border border-stone-200/80'
+                  : 'text-stone-500 hover:text-stone-800'
               }`}
             >
-              <span className="block font-bold">Dùng chung cho cả web</span>
-              <span className="text-[10px] text-stone-500">Lưu vào .env, mọi máy khác vào web đều tạo được ảnh</span>
+              Lưu máy chủ (.env)
             </button>
             <button
               type="button"
               onClick={() => setSaveTarget('browser')}
-              className={`p-2.5 rounded-xl border text-left text-xs transition-all ${
+              className={`py-2 px-3 text-xs font-semibold rounded-xl transition-all ${
                 saveTarget === 'browser'
-                  ? 'border-[#9B1D20] bg-rose-50/60 font-semibold text-[#9B1D20] shadow-xs'
-                  : 'border-stone-200 hover:border-stone-300 text-stone-600'
+                  ? 'bg-white text-stone-900 shadow-sm border border-stone-200/80'
+                  : 'text-stone-500 hover:text-stone-800'
               }`}
             >
-              <span className="block font-bold">Chỉ máy này</span>
-              <span className="text-[10px] text-stone-500">Chỉ lưu cục bộ trên trình duyệt máy bạn</span>
+              Chỉ máy này (Browser)
             </button>
           </div>
+          <p className="text-[11px] text-stone-400 italic">
+            {saveTarget === 'server' 
+              ? 'Khuyên dùng khi chạy local/server cá nhân để chia sẻ key cho tất cả phiên người dùng.'
+              : 'Key sẽ được lưu trong bộ nhớ trình duyệt (localStorage), không gửi đi đâu khác.'}
+          </p>
         </div>
 
-        {/* API Key Input */}
+        {/* Input Field */}
         <div className="space-y-1.5">
-          <label className="text-xs font-bold uppercase tracking-wider text-stone-600 flex items-center justify-between">
-            <span>Google Gemini API Key</span>
-            <a
-              href="https://aistudio.google.com/app/apikey"
-              target="_blank"
-              rel="noreferrer"
-              className="text-amber-700 hover:underline flex items-center gap-1 normal-case font-normal"
-            >
-              <span>Lấy key miễn phí tại Google AI Studio</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
+          <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider">
+            Gemini API Key
           </label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-stone-400">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
               <Key className="w-4 h-4" />
             </div>
             <input
               type={showPassword ? 'text' : 'password'}
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              placeholder="Dán mã khóa AIzaSy..."
-              className="w-full pl-9 pr-10 py-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-mono focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 text-stone-900 transition-all"
+              placeholder="Dán AI Studio Key (AIzaSy...)"
+              className="w-full pl-10 pr-10 py-2.5 bg-stone-50 border border-stone-200 rounded-2xl text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#9B1D20]/20 focus:border-[#9B1D20] transition-all"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-stone-400 hover:text-stone-700"
+              className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-stone-400 hover:text-stone-600 transition-colors"
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
         </div>
 
-        {/* Steps guide */}
-        <div className="bg-stone-50 rounded-2xl p-3 text-[11px] text-stone-600 space-y-1">
-          <p className="font-semibold text-stone-800">💡 Hướng dẫn lấy key miễn phí trong 30 giây:</p>
-          <ol className="list-decimal list-inside space-y-0.5 text-stone-600">
-            <li>Truy cập <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-rose-700 font-medium hover:underline">Google AI Studio</a>.</li>
-            <li>Đăng nhập tài khoản Google của bạn và bấm <strong>"Create API Key"</strong>.</li>
-            <li>Sao chép mã API Key và dán vào ô bên trên, sau đó bấm <strong>Lưu cấu hình</strong>.</li>
-          </ol>
+        {/* Guide link */}
+        <div className="pt-1">
+          <a
+            href="https://aistudio.google.com/app/apikey"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs text-[#9B1D20] hover:underline font-medium"
+          >
+            <span>Lấy API Key miễn phí tại Google AI Studio</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
         </div>
 
-        {/* Footer Actions */}
-        <div className="flex items-center justify-end gap-2 pt-2 border-t border-stone-100">
+        {/* Action Buttons */}
+        <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-stone-100">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-xs font-medium text-stone-600 hover:bg-stone-100 rounded-full transition-colors"
+            className="px-4 py-2 text-xs font-semibold text-stone-600 hover:bg-stone-100 rounded-full transition-colors"
           >
             Hủy
           </button>
@@ -234,7 +231,7 @@ export const GeminiKeyModal: React.FC<GeminiKeyModalProps> = ({ isOpen, onClose,
           </button>
         </div>
       </div>
-    </div>
-  );
+    </div>,
+    document.body
+  ) : null;
 };
-

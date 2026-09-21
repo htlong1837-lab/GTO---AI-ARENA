@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Garment, ColorOption } from '../../types/outfit';
 import { X, Copy, Check, Download, Sparkles } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
@@ -56,8 +57,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, outfit 
     }, 1000);
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-sm animate-in fade-in duration-200">
+  return typeof document !== 'undefined' ? createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
       <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-heritage-border relative overflow-hidden">
         {/* Close button */}
         <button
@@ -73,77 +74,59 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, outfit 
           <span className="text-[11px] font-bold uppercase tracking-widest text-heritage-red font-mono">
             Việt Phục Remix • Sharing
           </span>
-          <h3 className="font-serif text-xl sm:text-2xl font-bold text-stone-900 mt-1">
+          <h3 className="text-xl font-serif font-bold text-heritage-ink mt-0.5">
             Chia sẻ Việt phục của bạn
           </h3>
-          <p className="text-xs text-stone-500 mt-1">
-            Lan tỏa nét đẹp tà áo Việt phối chất Gen Z đến cộng đồng
-          </p>
         </div>
 
-        {/* Look Card Mini Preview */}
-        <div className="p-4 rounded-2xl bg-gradient-to-br from-heritage-ivory to-amber-50 border border-amber-200/60 shadow-inner mb-5">
+        {/* Look Card Mockup */}
+        <div className="rounded-2xl bg-gradient-to-br from-[#FAF7F2] to-[#EFEAE1] border border-heritage-border p-4 mb-5 shadow-xs">
           <div className="flex items-center gap-3">
             <div
-              className="w-12 h-16 rounded-xl overflow-hidden shrink-0 shadow-sm border border-stone-300 flex items-center justify-center text-white"
+              className="w-12 h-12 rounded-xl border border-white/60 shadow-xs shrink-0"
               style={{ backgroundColor: outfit.color.hex }}
-            >
-              <Sparkles className="w-6 h-6 text-amber-200" />
-            </div>
-
-            <div className="flex-1 min-w-0">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-900 text-white inline-block mb-1">
-                {outfit.garment.name} • {outfit.styleName}
-              </span>
-              <h4 className="font-bold text-sm text-stone-900 truncate leading-snug">
+            />
+            <div className="min-w-0 flex-1">
+              <h4 className="font-serif font-bold text-sm text-heritage-ink truncate">
                 {outfit.name}
               </h4>
-              <p className="text-xs text-stone-500 mt-0.5">
-                Dịp: <strong>{outfit.occasionName}</strong> | Sắc màu:{' '}
-                <span className="inline-block w-2 h-2 rounded-full align-middle mx-1" style={{ backgroundColor: outfit.color.hex }} />
-                {outfit.color.vietnameseName}
+              <p className="text-[11px] text-stone-500 truncate">
+                {outfit.garment.name} • Sắc {outfit.color.vietnameseName}
               </p>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-[#E5DCC9] text-heritage-ink font-medium">
+                  <Sparkles className="w-2.5 h-2.5 text-heritage-red" />
+                  {outfit.styleName}
+                </span>
+                <span className="text-[10px] text-stone-400">• {outfit.occasionName}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Share Link Input Box */}
+        {/* Direct Link Share */}
         <div className="mb-5">
-          <label className="text-[11px] font-bold text-stone-600 block mb-1.5 uppercase tracking-wider">
-            Đường dẫn liên kết look
+          <label className="block text-xs font-bold text-heritage-ink mb-1.5 uppercase tracking-wider">
+            Liên kết trực tiếp
           </label>
           <div className="flex items-center gap-2">
             <input
               type="text"
               readOnly
               value={mockShareUrl}
-              className="flex-1 text-xs bg-stone-100 text-stone-700 px-3.5 py-2.5 rounded-xl border border-stone-200 focus:outline-hidden font-mono select-all"
+              className="flex-1 px-3.5 py-2.5 rounded-xl border border-heritage-border bg-stone-50 text-xs text-stone-600 font-mono truncate focus:outline-none"
             />
             <button
               onClick={handleCopyLink}
-              className="px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs flex items-center gap-1.5 shrink-0 transition-colors shadow-sm"
+              className={`p-2.5 rounded-xl border text-xs font-bold transition-all shrink-0 flex items-center justify-center ${
+                copied
+                  ? 'bg-emerald-600 border-emerald-600 text-white'
+                  : 'bg-white border-heritage-border text-heritage-ink hover:bg-stone-50'
+              }`}
+              title="Sao chép liên kết"
             >
-              {copied ? <Check className="w-4 h-4 text-heritage-gold" /> : <Copy className="w-4 h-4" />}
-              <span>{copied ? 'Đã chép' : 'Copy link'}</span>
+              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             </button>
-          </div>
-        </div>
-
-        {/* Social Share Badges */}
-        <div className="mb-6">
-          <span className="text-[11px] font-medium text-stone-400 block mb-2 text-center">
-            Hoặc chia sẻ nhanh qua:
-          </span>
-          <div className="flex items-center justify-center gap-2">
-            {['Facebook', 'TikTok', 'Instagram', 'Threads', 'Zalo'].map((platform) => (
-              <button
-                key={platform}
-                onClick={handleCopyLink}
-                className="px-3 py-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold transition-colors"
-              >
-                {platform}
-              </button>
-            ))}
           </div>
         </div>
 
@@ -165,6 +148,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, outfit 
           </button>
         </div>
       </div>
-    </div>
-  );
+    </div>,
+    document.body
+  ) : null;
 };

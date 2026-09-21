@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Garment, ColorOption, StyleGenZ, Occasion, WeatherCondition } from '../../types/outfit';
 import { ACCESSORIES } from '../../data/accessories';
 import { GeminiService } from '../../services/geminiService';
@@ -1661,35 +1662,36 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
         </div>
       )}
 
-      {/* Fullscreen Zoom Modal */}
-      {isZoomOpen && currentAiImage && (
+      {/* Fullscreen Zoom Modal mounted directly to document.body */}
+      {isZoomOpen && currentAiImage && typeof document !== 'undefined' && createPortal(
         <div
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
+          className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-4 animate-in fade-in duration-200"
           onClick={() => setIsZoomOpen(false)}
         >
           <div className="relative max-w-3xl max-h-[90vh] flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
             <img
               src={currentAiImage}
               alt="Zoomed AI Outfit"
-              className="max-h-[80vh] w-auto rounded-2xl shadow-2xl object-contain border border-stone-700"
+              className="max-h-[80vh] w-auto rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9)] object-contain border border-stone-700"
             />
-            <div className="flex items-center gap-3 mt-3">
+            <div className="flex items-center gap-3 mt-4">
               <button
                 onClick={handleDownloadAiImage}
-                className="px-4 py-2 bg-stone-800 hover:bg-stone-700 text-white text-xs font-bold rounded-full flex items-center gap-1.5 border border-stone-600 shadow-md"
+                className="px-4 py-2 bg-stone-800 hover:bg-stone-700 text-white text-xs font-bold rounded-full flex items-center gap-1.5 border border-stone-600 shadow-md transition-all hover:scale-105 active:scale-95"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Tải ảnh gốc</span>
               </button>
               <button
                 onClick={() => setIsZoomOpen(false)}
-                className="px-4 py-2 bg-white text-stone-900 hover:bg-stone-100 text-xs font-bold rounded-full shadow-md"
+                className="px-4 py-2 bg-white text-stone-900 hover:bg-stone-100 text-xs font-bold rounded-full shadow-md transition-all hover:scale-105 active:scale-95"
               >
-                Đóng
+                Đóng (Esc)
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
