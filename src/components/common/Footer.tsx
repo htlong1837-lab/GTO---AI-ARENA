@@ -1,5 +1,6 @@
 import React from 'react';
 import { Sparkles, Heart, ShieldCheck, ArrowUpRight } from 'lucide-react';
+import { BrandLogo } from './BrandLogo';
 
 interface FooterProps {
   onSelectTab: (tab: string) => void;
@@ -20,17 +21,14 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTab }) => {
           {/* Brand & Manifesto */}
           <div className="md:col-span-5 space-y-5">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-b from-[#A8282B] to-[#741416] text-[#FAF7F0] flex items-center justify-center font-serif text-sm font-bold border border-[#D4AF37]/50 shadow-md">
-                VP
-              </div>
-              <div>
-                <span className="font-serif text-xl sm:text-2xl font-bold tracking-wider text-white">
-                  VIỆT PHỤC REMIX
-                </span>
-                <span className="ml-2 text-[9px] font-sans font-semibold tracking-widest text-[#DFB058] uppercase">
-                  ATELIER
-                </span>
-              </div>
+              <BrandLogo
+                onClick={() => onSelectTab('home')}
+                size="lg"
+                textColor="light"
+              />
+              <span className="text-[9px] font-sans font-semibold tracking-widest text-[#DFB058] uppercase px-2 py-0.5 rounded-full border border-[#DFB058]/30 bg-[#DFB058]/10">
+                ATELIER
+              </span>
             </div>
             <p className="text-neutral-400 text-xs sm:text-sm max-w-md leading-relaxed font-sans font-light">
               Nền tảng styling cổ phục tương tác giao thoa giữa điển chế hoàng triều, tơ lụa ba miền và tinh thần thẩm mỹ đương đại của thế hệ Gen Z. Không gian số tôn vinh chiều sâu di sản Việt Nam.

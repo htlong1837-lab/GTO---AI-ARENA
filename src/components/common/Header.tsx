@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sparkles, Scale, Compass, BookOpen, User, Menu, X, Box } from 'lucide-react';
+import { BrandLogo } from './BrandLogo';
 
 interface HeaderProps {
   currentTab: string;
@@ -32,28 +33,12 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab, compare
   return (
     <header className="fixed top-3 sm:top-5 inset-x-0 z-50 flex justify-center px-3 sm:px-6 pointer-events-none transition-all duration-300">
       <div className="pointer-events-auto w-full max-w-6xl flex items-center justify-between gap-2 sm:gap-4 rounded-full border border-stone-200/70 bg-white/80 backdrop-blur-2xl px-3.5 sm:px-5 py-2 shadow-[0_12px_40px_-10px_rgba(24,39,71,0.08),0_1px_3px_rgba(0,0,0,0.04)] ring-1 ring-white/70 transition-all duration-300 hover:border-stone-300/80 hover:shadow-[0_16px_48px_-10px_rgba(24,39,71,0.12)]">
-        {/* Brand Monogram & Typography */}
-        <button
+        {/* Brand Insignia & Monogram */}
+        <BrandLogo
           onClick={() => onSelectTab('home')}
-          className="flex items-center gap-2.5 sm:gap-3 group focus:outline-none shrink-0"
-        >
-          {/* Classical Royal Lacquer Seal */}
-          <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-[#A8282B] via-[#8E1A1D] to-[#5C1012] text-[#FAF7F0] flex items-center justify-center font-serif text-xs sm:text-sm font-bold shadow-sm ring-1 ring-[#DFB058]/60 group-hover:ring-[#DFB058] group-hover:scale-105 transition-all duration-300">
-            <span className="font-serif tracking-tight drop-shadow-xs">VP</span>
-            <div className="absolute inset-0 rounded-full bg-radial from-white/25 to-transparent pointer-events-none" />
-          </div>
-
-          <div className="text-left leading-none">
-            <div className="flex items-center gap-1.5">
-              <span className="font-serif text-sm sm:text-base font-bold tracking-wider text-stone-900 group-hover:text-heritage-red transition-colors duration-200">
-                VIỆT PHỤC
-              </span>
-              <span className="font-sans text-[9px] font-extrabold tracking-[0.22em] text-[#C59338] uppercase">
-                REMIX
-              </span>
-            </div>
-          </div>
-        </button>
+          size="md"
+          textColor="dark"
+        />
 
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-1 bg-stone-100/70 p-1 rounded-full border border-stone-200/50">
