@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Scale, Compass, BookOpen, User, Menu, X, PlusCircle, Box } from 'lucide-react';
+import { Sparkles, Scale, Compass, BookOpen, User, Menu, X, Box } from 'lucide-react';
 
 interface HeaderProps {
   currentTab: string;
@@ -11,18 +11,17 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab, compare
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { id: 'home', label: 'Trang chủ', icon: Sparkles },
-    { id: 'studio', label: 'Studio', icon: PlusCircle, highlight: true },
-    { id: 'studio3d', label: 'Xưởng 3D', icon: Box, tag: '3D' },
-    { id: 'lookbook', label: 'Lookbook', icon: Compass },
+    { id: 'home', label: 'Trang chủ' },
+    { id: 'studio', label: 'Studio Phối Đồ' },
+    { id: 'studio3d', label: 'Xưởng 3D', tag: '3D' },
+    { id: 'lookbook', label: 'Lookbook' },
     {
       id: 'compare',
       label: 'So sánh',
-      icon: Scale,
       badge: compareCount > 0 ? compareCount : undefined
     },
-    { id: 'culture', label: 'Văn hóa', icon: BookOpen },
-    { id: 'profile', label: 'Tủ đồ', icon: User }
+    { id: 'culture', label: 'Văn hóa' },
+    { id: 'profile', label: 'Tủ đồ' }
   ];
 
   const handleNavClick = (tabId: string) => {
@@ -31,23 +30,25 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab, compare
   };
 
   return (
-    <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4 pointer-events-none">
-      <div className="pointer-events-auto w-full max-w-6xl flex items-center justify-between gap-3 md:gap-6 rounded-full border border-[#E2D8C7] bg-[#FAF7F2]/90 px-4 sm:px-6 py-2.5 backdrop-blur-2xl shadow-editorial">
-        {/* Brand Logo & Monogram */}
+    <header className="fixed top-3 sm:top-5 inset-x-0 z-50 flex justify-center px-3 sm:px-6 pointer-events-none transition-all duration-300">
+      <div className="pointer-events-auto w-full max-w-6xl flex items-center justify-between gap-2 sm:gap-4 rounded-full border border-stone-200/70 bg-white/80 backdrop-blur-2xl px-3.5 sm:px-5 py-2 shadow-[0_12px_40px_-10px_rgba(24,39,71,0.08),0_1px_3px_rgba(0,0,0,0.04)] ring-1 ring-white/70 transition-all duration-300 hover:border-stone-300/80 hover:shadow-[0_16px_48px_-10px_rgba(24,39,71,0.12)]">
+        {/* Brand Monogram & Typography */}
         <button
           onClick={() => onSelectTab('home')}
-          className="flex items-center gap-3 group focus:outline-none shrink-0"
+          className="flex items-center gap-2.5 sm:gap-3 group focus:outline-none shrink-0"
         >
-          <div className="relative w-9 h-9 rounded-full bg-gradient-to-b from-[#A8282B] to-[#741416] text-[#FAF7F0] flex items-center justify-center font-serif text-sm font-bold shadow-md border border-[#D4AF37]/50 group-hover:border-[#D4AF37] transition-all">
-            <span className="font-serif tracking-tighter">VP</span>
-            <div className="absolute -inset-0.5 rounded-full border border-[#D4AF37]/30 pointer-events-none group-hover:scale-110 transition-transform" />
+          {/* Classical Royal Lacquer Seal */}
+          <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-[#A8282B] via-[#8E1A1D] to-[#5C1012] text-[#FAF7F0] flex items-center justify-center font-serif text-xs sm:text-sm font-bold shadow-sm ring-1 ring-[#DFB058]/60 group-hover:ring-[#DFB058] group-hover:scale-105 transition-all duration-300">
+            <span className="font-serif tracking-tight drop-shadow-xs">VP</span>
+            <div className="absolute inset-0 rounded-full bg-radial from-white/25 to-transparent pointer-events-none" />
           </div>
-          <div className="text-left">
+
+          <div className="text-left leading-none">
             <div className="flex items-center gap-1.5">
-              <span className="font-serif text-base sm:text-lg font-bold tracking-wider text-heritage-ink group-hover:text-heritage-red transition-colors">
+              <span className="font-serif text-sm sm:text-base font-bold tracking-wider text-stone-900 group-hover:text-heritage-red transition-colors duration-200">
                 VIỆT PHỤC
               </span>
-              <span className="font-sans text-[10px] font-bold tracking-widest text-heritage-red uppercase">
+              <span className="font-sans text-[9px] font-extrabold tracking-[0.22em] text-[#C59338] uppercase">
                 REMIX
               </span>
             </div>
@@ -55,29 +56,39 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab, compare
         </button>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-1 bg-stone-100/70 p-1 rounded-full border border-stone-200/50">
           {navItems.map((item) => {
             const isActive = currentTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`relative px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all flex items-center gap-1.5 ${
+                className={`relative px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-200 flex items-center gap-1.5 select-none ${
                   isActive
-                    ? 'bg-[#18181B] text-[#FAF7F2] font-semibold shadow-xs'
-                    : item.highlight
-                    ? 'text-heritage-red hover:bg-white/80 font-semibold'
-                    : 'text-stone-700 hover:text-heritage-ink hover:bg-white/80'
+                    ? 'bg-stone-900 text-stone-50 font-semibold shadow-xs'
+                    : 'text-stone-600 hover:text-stone-950 hover:bg-white/80'
                 }`}
               >
                 <span>{item.label}</span>
                 {item.tag && (
-                  <span className="px-1.5 py-0.2 text-[8px] font-bold tracking-widest uppercase rounded-full bg-[#C59338] text-white">
+                  <span
+                    className={`px-1.5 py-0.2 text-[8px] font-extrabold tracking-wider rounded-full transition-colors ${
+                      isActive
+                        ? 'bg-[#C59338] text-white'
+                        : 'bg-amber-100/80 text-amber-900 border border-amber-300/40'
+                    }`}
+                  >
                     {item.tag}
                   </span>
                 )}
                 {item.badge !== undefined && (
-                  <span className="w-4 h-4 rounded-full bg-heritage-red text-white text-[9px] font-bold flex items-center justify-center">
+                  <span
+                    className={`min-w-4 h-4 px-1 rounded-full text-[9px] font-bold flex items-center justify-center transition-colors ${
+                      isActive
+                        ? 'bg-[#C59338] text-white'
+                        : 'bg-heritage-red text-white shadow-2xs'
+                    }`}
+                  >
                     {item.badge}
                   </span>
                 )}
@@ -86,56 +97,46 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab, compare
           })}
         </nav>
 
-        {/* Quick Action CTAs (Floria Pill Styling with Heritage Colors) */}
+        {/* Singular Luxury Action CTA (No Duplication) */}
         <div className="hidden sm:flex items-center gap-2 shrink-0">
           <button
-            onClick={() => onSelectTab('studio3d')}
-            className="px-3.5 py-1.5 rounded-full bg-white/70 hover:bg-[#F4EFE6] text-stone-800 font-medium text-xs border border-[#D4AF37]/50 hover:border-[#D4AF37] transition-all flex items-center gap-1.5 shadow-xs"
-          >
-            <Box className="w-3.5 h-3.5 text-[#C59338]" />
-            <span>Xưởng 3D</span>
-          </button>
-
-          <button
             onClick={() => onSelectTab('studio')}
-            className="px-4 py-1.5 rounded-full bg-gradient-to-r from-heritage-red to-heritage-red-dark hover:from-heritage-red-dark hover:to-heritage-red text-white font-semibold text-xs tracking-wide shadow-silk hover:shadow-gold-fine transition-all flex items-center gap-1.5"
+            className="group relative px-4 sm:px-5 py-2 rounded-full bg-gradient-to-r from-[#9B1D20] to-[#741416] hover:from-[#A8282B] hover:to-[#8E1A1D] text-white font-semibold text-xs tracking-wide shadow-[0_4px_16px_rgba(155,29,32,0.28)] hover:shadow-[0_6px_22px_rgba(155,29,32,0.38)] active:scale-95 transition-all duration-300 flex items-center gap-2 border border-[#DFB058]/30 hover:border-[#DFB058]/60"
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#DFB058]" />
-            <span>Phối Đồ Ngay</span>
+            <Sparkles className="w-3.5 h-3.5 text-[#DFB058] group-hover:rotate-12 transition-transform duration-300" />
+            <span className="drop-shadow-2xs">Phối Đồ Ngay</span>
           </button>
         </div>
 
-        {/* Mobile menu toggle */}
+        {/* Mobile Menu Toggle Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 rounded-full text-stone-700 hover:text-stone-950 hover:bg-stone-200/50 transition-colors"
-          aria-label="Mở menu"
+          className="lg:hidden p-2 rounded-full text-stone-700 hover:text-stone-950 hover:bg-stone-100 transition-colors focus:outline-none"
+          aria-label="Mở danh mục điều hướng"
         >
           {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
-      {/* Mobile Floating Drawer Dropdown */}
+      {/* Mobile Glassmorphism Dropdown Drawer */}
       {mobileMenuOpen && (
-        <div className="pointer-events-auto absolute top-16 inset-x-4 max-w-md mx-auto rounded-3xl bg-[#FAF7F2]/98 border border-[#E2D8C7] p-4 shadow-editorial-xl backdrop-blur-2xl space-y-1 animate-in fade-in slide-in-from-top-3 duration-200 lg:hidden">
+        <div className="pointer-events-auto absolute top-16 inset-x-4 max-w-md mx-auto rounded-3xl bg-white/95 border border-stone-200/80 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-2xl space-y-1 animate-in fade-in slide-in-from-top-3 duration-200 lg:hidden">
           {navItems.map((item) => {
             const isActive = currentTab === item.id;
-            const Icon = item.icon;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`w-full p-3 rounded-2xl text-xs tracking-wide font-medium flex items-center justify-between transition-colors ${
+                className={`w-full px-3.5 py-3 rounded-2xl text-xs tracking-wide font-medium flex items-center justify-between transition-all duration-150 ${
                   isActive
-                    ? 'bg-[#18181B] text-[#FAF7F2] font-semibold'
-                    : 'text-stone-700 hover:bg-white/80'
+                    ? 'bg-stone-900 text-stone-50 font-semibold shadow-xs'
+                    : 'text-stone-700 hover:bg-stone-100/80 hover:text-stone-950'
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#DFB058]' : 'text-stone-500'}`} />
+                <div className="flex items-center gap-2.5">
                   <span>{item.label}</span>
                   {item.tag && (
-                    <span className="px-1.5 py-0.5 text-[8px] font-bold tracking-wider rounded-full bg-[#C59338] text-white">
+                    <span className="px-1.5 py-0.5 text-[8px] font-extrabold tracking-wider rounded-full bg-[#C59338] text-white">
                       {item.tag}
                     </span>
                   )}
@@ -149,20 +150,13 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab, compare
             );
           })}
 
-          <div className="pt-2 mt-2 border-t border-[#E2D8C7] grid grid-cols-2 gap-2">
-            <button
-              onClick={() => handleNavClick('studio3d')}
-              className="w-full py-2.5 px-3 rounded-xl bg-white text-stone-800 text-xs font-medium border border-[#D4AF37]/50 flex items-center justify-center gap-1.5"
-            >
-              <Box className="w-3.5 h-3.5 text-[#C59338]" />
-              <span>Xưởng 3D</span>
-            </button>
+          <div className="pt-2.5 mt-2 border-t border-stone-100">
             <button
               onClick={() => handleNavClick('studio')}
-              className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-heritage-red to-heritage-red-dark text-white text-xs font-semibold flex items-center justify-center gap-1.5"
+              className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#9B1D20] to-[#741416] text-white text-xs font-semibold tracking-wide flex items-center justify-center gap-2 shadow-sm active:scale-98 transition-all"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#DFB058]" />
-              <span>Phối Đồ</span>
+              <Sparkles className="w-4 h-4 text-[#DFB058]" />
+              <span>Phối Đồ Ngay</span>
             </button>
           </div>
         </div>
@@ -170,3 +164,4 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab, compare
     </header>
   );
 };
+
