@@ -75,12 +75,12 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
                 }`}
               >
                 {isTaboo
-                  ? 'Cảnh báo sai lệch di sản (Taboo)'
+                  ? 'Cảnh báo sai lệch văn hóa'
                   : isCaution
                   ? 'Lưu ý bối cảnh & phụ kiện'
                   : isInnovative
-                  ? 'Giao thoa Đương đại (Creative Fusion)'
-                  : 'Chuẩn mực di sản (Heritage Preserved)'}
+                  ? 'Cách tân hợp lệ'
+                  : 'Giữ nét nguyên bản'}
               </span>
             </div>
             <h4 className="font-serif font-bold text-base leading-snug mt-1 text-stone-900">{advice.title}</h4>
@@ -93,8 +93,8 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
             advice.heritageScore
           )}`}
         >
-          <span className="text-[9px] font-bold uppercase tracking-wider">Độ chuẩn di sản</span>
-          <span className="text-base font-extrabold leading-none mt-0.5">{advice.heritageScore}%</span>
+          <span className="text-[9px] font-bold uppercase tracking-wider">Mức giữ nguyên bản</span>
+          <span className="text-base font-extrabold leading-none mt-0.5">{advice.heritageScore}/100</span>
         </div>
       </div>
 
@@ -109,12 +109,47 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
       {/* Description */}
       <p className="text-xs leading-relaxed text-stone-700 font-light">{advice.description}</p>
 
+      {/* All triggered rules, each with its own reason, fix and source */}
+      {advice.findings && advice.findings.length > 0 && (
+        <ul className="mt-3 space-y-2">
+          {advice.findings.map((f, i) => (
+            <li key={i} className="p-2.5 rounded-xl bg-white/80 border border-[#E2D8C7] text-xs">
+              <div className="flex items-center gap-1.5 font-semibold text-stone-900">
+                <span
+                  className={`text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full ${
+                    f.severity === 'taboo'
+                      ? 'bg-rose-600 text-white'
+                      : f.severity === 'caution'
+                      ? 'bg-amber-400 text-stone-950'
+                      : f.severity === 'creative'
+                      ? 'bg-purple-500 text-white'
+                      : 'bg-stone-300 text-stone-800'
+                  }`}
+                >
+                  {f.severity === 'taboo' ? 'Nghiêm trọng' : f.severity === 'caution' ? 'Lưu ý' : f.severity === 'creative' ? 'Cách tân' : 'Thông tin'}
+                </span>
+                <span>{f.title}</span>
+              </div>
+              <p className="mt-1 text-stone-700 font-light leading-relaxed">{f.detail}</p>
+              {f.fix && <p className="mt-1 text-emerald-800"><strong>Gợi ý sửa:</strong> {f.fix}</p>}
+              <p className="mt-1 text-[10px] text-stone-500 italic">Nguồn: {f.source}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {advice.scoreFormula && (
+        <p className="mt-2 text-[10px] text-stone-500">
+          <strong>Cách tính điểm:</strong> {advice.scoreFormula}. Trừ 40 cho mỗi lỗi nghiêm trọng, 12 cho mỗi lưu ý, 4 cho mỗi điểm cách tân.
+        </p>
+      )}
+
       {/* Taboo Violation Alert Callout (If taboo) */}
       {advice.tabooAlert && (
         <div className="mt-3 p-3 rounded-xl bg-rose-100 border border-rose-300 text-rose-900 text-xs">
           <div className="flex items-center gap-1.5 font-bold mb-1 text-rose-950">
             <AlertOctagon className="w-4 h-4 text-rose-600 shrink-0" />
-            <span>Quy tắc di sản bất khả xâm phạm:</span>
+            <span>Điểm lệch nghiêm trọng:</span>
           </div>
           <p className="leading-relaxed">{advice.tabooAlert}</p>
         </div>
@@ -126,7 +161,7 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
           <Compass className="w-4 h-4 text-[#C59338] shrink-0 mt-0.5" />
           <div>
             <span className="font-bold text-[10px] uppercase tracking-wider text-stone-900 block mb-0.5">
-              Triết lý Ngũ Sắc & Ngũ Hành:
+              Màu sắc & Ngũ hành (tham khảo):
             </span>
             <p className="leading-relaxed text-[11px] font-light">{advice.nguHanhNote}</p>
           </div>
@@ -137,7 +172,7 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-3 border-t border-[#E2D8C7] mt-3 text-xs">
         <div className="bg-white/80 p-3 rounded-xl border border-[#E2D8C7] shadow-2xs">
           <span className="font-bold text-[10px] uppercase tracking-wider text-stone-900 block mb-1.5">
-            🧵 Yếu tố Cổ truyền Giữ gìn
+            🧵 Đặc điểm không được làm mất
           </span>
           <ul className="space-y-1.5 text-stone-700">
             {advice.traditionalFeatures.map((feat, i) => (
@@ -182,7 +217,7 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
           </div>
           <div className="bg-rose-100/70 p-2.5 rounded-xl border border-rose-300/60">
             <span className="font-bold text-[10px] uppercase tracking-wider text-rose-800 block mb-1">
-              ✕ Tuyệt đối tránh (Don't)
+              ✕ Nên tránh (Don't)
             </span>
             <ul className="space-y-1 text-rose-900 text-[11px]">
               {advice.boundaryGuide.dontList.map((d, i) => (
@@ -200,7 +235,7 @@ export const CulturalWarningCard: React.FC<CulturalWarningCardProps> = ({ advice
       {advice.sourceCitation && (
         <div className="mt-3 pt-2 border-t border-stone-200 flex items-center gap-1.5 text-[10px] text-stone-500">
           <BookOpen className="w-3 h-3 text-[#C59338]" />
-          <span>Căn cứ lịch sử: <strong className="font-semibold text-stone-800">{advice.sourceCitation}</strong></span>
+          <span>Nguồn tham khảo: <strong className="font-semibold text-stone-800">{advice.sourceCitation}</strong></span>
         </div>
       )}
     </div>

@@ -171,6 +171,9 @@ export const FitRoomResultCanvas: React.FC<FitRoomResultCanvasProps> = ({
               <span className="text-[11px] text-white/90 drop-shadow font-serif italic pl-1">
                 Người mẫu: {currentLook.modelName}
               </span>
+              <span className="text-[10px] text-amber-100/90 drop-shadow pl-1">
+                Ảnh minh họa AI — chi tiết trang phục có thể chưa chính xác
+              </span>
             </div>
 
             {/* Brand Watermark (Bottom Right) */}

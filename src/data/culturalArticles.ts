@@ -26,7 +26,7 @@ export const CULTURAL_ARTICLES: CulturalArticle[] = [
       },
       {
         heading: 'Ý nghĩa 5 chiếc cúc',
-        body: 'Năm hạt cúc cài bên sườn phải tượng trưng cho Ngũ thường của Nho giáo: Nhân - Lễ - Nghĩa - Trí - Tín, nhắc nhở người mặc luôn giữ gìn cốt cách đạo đức và cách ứng xử hòa nhã.'
+        body: 'Theo cách diễn giải phổ biến (chưa thấy ghi trong văn bản triều Nguyễn), năm hạt cúc cài bên sườn phải tượng trưng cho Ngũ thường của Nho giáo: Nhân - Lễ - Nghĩa - Trí - Tín, nhắc nhở người mặc luôn giữ gìn cốt cách đạo đức và cách ứng xử hòa nhã.'
       },
       {
         heading: 'Gợi ý Gen Z Remix',
@@ -62,7 +62,7 @@ export const CULTURAL_ARTICLES: CulturalArticle[] = [
     content: [
       {
         heading: 'Cấu trúc 4 tà và dải thắt lưng xanh',
-        body: 'Bốn vạt áo tượng trưng cho tứ thân phụ mẫu. Hai vạt trước không cài cúc mà để buộc vạt trước bụng, tạo hình ảnh chiếc nơ thắm đượm tình nghĩa vợ chồng son sắt.'
+        body: 'Theo quan niệm dân gian, bốn vạt áo tượng trưng cho tứ thân phụ mẫu. Hai vạt trước không cài cúc mà để buộc vạt trước bụng, tạo hình ảnh chiếc nơ thắm đượm tình nghĩa vợ chồng son sắt.'
       },
       {
         heading: 'Cách tân thế hệ mới',

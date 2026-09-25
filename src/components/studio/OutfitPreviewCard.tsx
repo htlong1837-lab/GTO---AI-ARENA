@@ -272,7 +272,7 @@ export const OutfitPreviewCard: React.FC<OutfitPreviewCardProps> = ({
           : advice.status === 'caution'
           ? 'LƯU Ý HOÀN CẢNH'
           : 'CẢNH BÁO SAI LỆCH';
-      ctx.fillText(`✦ CHỨNG CHỈ DI SẢN: ${statusLabel} (${advice.heritageScore}%) ✦`, 375, 915);
+      ctx.fillText(`✦ GỢI Ý VĂN HÓA: ${statusLabel} (${advice.heritageScore}/100) ✦`, 375, 915);
 
       ctx.fillStyle = '#9CA3AF';
       ctx.font = '10px monospace';

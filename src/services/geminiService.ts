@@ -21,6 +21,7 @@ export interface GenerateImageResult {
   imageUrl?: string;
   error?: string;
   promptUsed?: string;
+  cached?: boolean;
 }
 
 const LOCAL_KEY_STORAGE = 'vietphuc_remix_custom_gemini_key';
@@ -97,7 +98,7 @@ export const GeminiService = {
       garmentDetails = 'authentic traditional Vietnamese Ao Dai made of premium flowing silk fabric with two long fluttering split panels extending gracefully over loose wide-leg silk trousers, featuring an iconic mandarin collar with diagonal buttoning';
     } else if (garment.id === 'ao-ngu-than') {
       garmentDetails = 'historical Vietnamese Ao Ngu Than (five-panel aristocratic tunic from the Nguyen Dynasty) tailored from rich brocade with tight-fitting sleeves (Tay Chen), pristine five-panel construction, upright standing collar with refined brass buttons';
-    } else if (garment.id === 'ao-nhat-binh') {
+    } else if (garment.id === 'nhat-binh') {
       garmentDetails = 'luxurious Vietnamese Ao Nhat Binh (Nguyen Dynasty royal court gown) with iconic large rectangular embroidered collar displaying auspicious multi-color rainbow banded stripes (Ngu Sac) and intricate golden phoenix embroidery motifs';
     } else if (garment.id === 'ao-tu-than') {
       garmentDetails = 'traditional northern Vietnamese Ao Tu Than (four-panel tunic from Kinh Bac) featuring flowing draped panels layered over a delicate silk halter bodice (Ao Yem) and tied waist sash in romantic folk silhouette';
@@ -120,12 +121,18 @@ export const GeminiService = {
 
     // Setting & Atmosphere based on Occasion & Weather
     let settingDesc = `Atmospheric setting: Editorial background evoking ${occasion.name} (${occasion.description})`;
-    if (occasion.id === 'tet') {
-      settingDesc = 'Atmospheric setting: Vietnamese Lunar New Year spring ambiance, subtle cherry blossom petals, historic ancient courtyard with vintage tiled roofs';
-    } else if (occasion.id === 'da-tiec' || occasion.id === 'fashion-show') {
-      settingDesc = 'Atmospheric setting: High-fashion runway studio stage, sleek reflective floor, dramatic museum lighting, contemporary Vietnamese architectural elements';
-    } else if (occasion.id === 'dao-pho') {
-      settingDesc = 'Atmospheric setting: Sunlit Hanoi Old Quarter or Saigon heritage street corner with French colonial arches and golden natural afternoon light';
+    const OCCASION_SETTINGS: Record<string, string> = {
+      'tet': 'Vietnamese Lunar New Year ambiance, peach blossom (hoa dao) and apricot blossom (hoa mai) branches, old courtyard with terracotta tiled roofs and red parallel sentences',
+      'le-hoi': 'Vietnamese village festival, communal house (dinh lang) courtyard, colorful festival flags',
+      'di-hoc': 'Vietnamese university campus courtyard with trees and classic yellow colonial buildings, natural daylight',
+      'chup-anh': 'Editorial street photoshoot on a Hanoi Old Quarter street with French colonial facades',
+      'tot-nghiep': 'University graduation ceremony, campus lawn, celebratory atmosphere',
+      'cuoi-hoi': 'Vietnamese engagement ceremony (le an hoi) at a family home, red and gold decorations, betel and areca trays',
+      'su-kien-van-hoa': 'International cultural exchange event hall with Vietnamese heritage decor, elegant lighting',
+      'di-choi': 'Cozy Vietnamese sidewalk cafe on a leafy street, relaxed weekend afternoon light'
+    };
+    if (OCCASION_SETTINGS[occasion.id]) {
+      settingDesc = `Atmospheric setting: ${OCCASION_SETTINGS[occasion.id]}`;
     }
 
     const weatherNote = weather ? `, during ${weather.name} (${weather.season}, ${weather.temperature}) with soft natural ambient light` : '';
@@ -138,6 +145,7 @@ export const GeminiService = {
       styleDesc + '.',
       accessoriesDesc + '.',
       settingDesc + weatherNote + '.',
+      `The garment MUST keep these defining features (described in Vietnamese): ${garment.inviolableFeatures.join('; ')}. Do not invent Chinese, Korean or Japanese costume elements.`,
       `Shot on Hasselblad H6D-100c, 85mm f/1.8 portrait lens, crisp fabric embroidery details, 8k resolution, photorealistic, cinematic color grading, authentic Vietnamese cultural respect, masterwork quality.`
     ].join(' ');
   },
@@ -145,9 +153,10 @@ export const GeminiService = {
   // Request AI image generation
   async generateOutfitImage(
     prompt: string,
-    options?: { customKey?: string; aspectRatio?: string; baseImageBase64?: string }
+    options?: { customKey?: string; aspectRatio?: string; baseImageBase64?: string; force?: boolean }
   ): Promise<GenerateImageResult> {
     const customKey = options?.customKey || this.getClientApiKey();
+    const force = options?.force || false;
     const aspectRatio = options?.aspectRatio || '3:4';
     const baseImage = options?.baseImageBase64;
 
@@ -161,7 +170,8 @@ export const GeminiService = {
           prompt,
           apiKey: customKey || undefined,
           aspectRatio,
-          baseImage
+          baseImage,
+          force
         })
       });
 
@@ -178,7 +188,8 @@ export const GeminiService = {
       return {
         success: true,
         imageUrl: data.imageUrl,
-        promptUsed: data.promptUsed || prompt
+        promptUsed: data.promptUsed || prompt,
+        cached: !!data.cached
       };
     } catch (err: any) {
       // Fallback: If Vite middleware is not reachable (e.g. static production without proxy), try direct Google API if customKey is present

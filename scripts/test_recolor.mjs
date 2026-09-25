@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 const routerUrl = 'https://my-9router-service-s2ia.onrender.com/v1';
-const routerKey = 'sk-f28a6d1a3484f1d8-3n2ph3-d4150af7';
+const routerKey = process.env.ROUTER_API_KEY || (fs.readFileSync('.env', 'utf-8').match(/^ROUTER_API_KEY=(.+)$/m) || [])[1]?.trim();
 const model = 'ag/gemini-3.1-flash-image';
 
 // Read reference image (white Ao Dai)

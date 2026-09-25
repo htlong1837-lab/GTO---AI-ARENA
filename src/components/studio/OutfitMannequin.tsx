@@ -57,7 +57,7 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
     if (onToggleGender) onToggleGender(newGender);
   };
 
-  const handleGenerateAi = async () => {
+  const handleGenerateAi = async (force = false) => {
     setIsGenerating(true);
     setViewMode('ai');
     setGenerationStep('Đang chuẩn bị thông số Việt phục di sản...');
@@ -74,8 +74,8 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
         weather
       });
 
-      setGenerationStep('Gemini Imagen 3 đang kết xuất người mẫu thời trang...');
-      const result = await GeminiService.generateOutfitImage(prompt);
+      setGenerationStep('AI đang tạo ảnh minh họa bản phối...');
+      const result = await GeminiService.generateOutfitImage(prompt, { force });
 
       if (result.success && result.imageUrl) {
         setCurrentAiImage(result.imageUrl);
@@ -84,7 +84,7 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
         }
         showToast({
           type: 'success',
-          title: 'Tạo ảnh Gemini thành công!',
+          title: result.cached ? 'Đã tải ảnh từ bộ nhớ đệm' : 'Tạo ảnh Gemini thành công!',
           message: `Đã kết xuất ảnh người mẫu ${garment.name} phong cách ${style.name} (${currentGender === 'male' ? 'Nam' : 'Nữ'}).`
         });
       } else {
@@ -177,7 +177,7 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
         {/* Right Controls: Quick AI Button + Gender Toggle */}
         <div className="flex items-center gap-2 pointer-events-auto">
           <button
-            onClick={handleGenerateAi}
+            onClick={() => handleGenerateAi()}
             disabled={isGenerating}
             className="px-3 py-1 rounded-full bg-gradient-to-r from-[#9B1D20] via-rose-600 to-amber-600 hover:opacity-95 text-white text-[11px] font-bold shadow-md flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95 disabled:opacity-50"
             title="Tạo ảnh người mẫu thực tế bằng Gemini Imagen 3"
@@ -1617,7 +1617,7 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
                   <Download className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={handleGenerateAi}
+                  onClick={() => handleGenerateAi(true)}
                   className="p-2 bg-rose-900/80 hover:bg-rose-900 text-white rounded-full backdrop-blur-md shadow-md hover:scale-110 transition-all"
                   title="Tạo lại bản phối khác"
                 >
@@ -1629,13 +1629,16 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
               <div className="absolute bottom-4 left-4 right-36 sm:right-44 text-white z-10">
                 <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider font-bold text-amber-300 bg-amber-950/70 px-2 py-0.5 rounded-full border border-amber-500/30 backdrop-blur-xs mb-1">
                   <Sparkles className="w-3 h-3 text-amber-300" />
-                  Gemini Imagen 3 Editorial
+                  Ảnh minh họa AI
                 </span>
                 <p className="font-serif text-lg font-bold drop-shadow-md">
                   {garment.name} × {style.name} • {isMale ? 'Nam' : 'Nữ'}
                 </p>
                 <p className="text-[11px] text-stone-300 line-clamp-1">
                   {color.vietnameseName} • Phụ kiện: {accessoryIds.length} món
+                </p>
+                <p className="text-[10px] text-amber-200/90 mt-1 leading-snug">
+                  AI có thể vẽ sai chi tiết (cổ áo, số thân, hoa văn). Hãy đối chiếu với: {garment.inviolableFeatures.join(' · ')}
                 </p>
               </div>
             </div>
@@ -1651,7 +1654,7 @@ export const OutfitMannequin: React.FC<OutfitMannequinProps> = ({
                 Tái hiện chân thực <strong>{garment.name}</strong> ({color.name}) phong cách <strong>{style.name}</strong> trên vóc dáng {isMale ? 'Nam' : 'Nữ'}.
               </p>
               <button
-                onClick={handleGenerateAi}
+                onClick={() => handleGenerateAi()}
                 className="mt-4 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#9B1D20] to-[#C59338] hover:opacity-95 text-white font-bold text-xs shadow-lg shadow-rose-900/40 flex items-center gap-2 transition-all hover:scale-105 active:scale-95"
               >
                 <Sparkles className="w-4 h-4 text-amber-200" />

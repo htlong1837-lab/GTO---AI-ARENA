@@ -65,7 +65,7 @@ export const STARTER_3D_ITEMS: Item3D[] = [
     dynasty: 'Thời Chúa Nguyễn & Triều Nguyễn',
     heritageEra: 'Toàn Quốc (Đại Nam)',
     description: 'Mô hình 3D Áo Ngũ Thân truyền thống Việt Nam chuẩn PBR, phom dáng cổ đứng, 5 khuy cài chuẩn mực, tôn nghiêm và thanh tao.',
-    culturalNote: 'Y phục truyền thống với 5 thân áo biểu trưng cho ngũ thường (Nhân - Lễ - Nghĩa - Trí - Tín), 4 thân ngoài tượng trưng cho tứ thân phụ mẫu và 1 thân con bên trong biểu trưng cho sự chở che hiếu đạo.',
+    culturalNote: 'Y phục truyền thống với 5 thân áo (theo cách diễn giải phổ biến) biểu trưng cho ngũ thường (Nhân - Lễ - Nghĩa - Trí - Tín), 4 thân ngoài tượng trưng cho tứ thân phụ mẫu và 1 thân con bên trong biểu trưng cho sự chở che hiếu đạo.',
     tags: ['Áo Ngũ Thân', 'Cổ Phục', 'Di Sản Dân Tộc', '3D PBR'],
     colorable: true,
     defaultTransform: { position: [0, 0, 0], rotation: [0, 0, 0], scale: [1, 1, 1] }

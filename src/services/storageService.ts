@@ -16,7 +16,7 @@ const DEFAULT_PROFILE: UserProfile = {
   customLookbooks: [
     {
       id: 'lookbook-tet',
-      title: 'Tết Giáp Thìn 2026',
+      title: 'Tết Bính Ngọ 2026',
       description: 'Các bản phối du xuân năng động cùng bạn bè',
       outfitIds: []
     }

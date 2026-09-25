@@ -26,3 +26,6 @@ dist-ssr
 *.sw?
 deploy-9router/
 
+
+# Cached AI-generated images
+.ai-cache/

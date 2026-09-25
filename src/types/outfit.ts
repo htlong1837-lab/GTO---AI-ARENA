@@ -133,6 +133,16 @@ export interface CulturalAdvice {
     dontList: string[];
   };
   sourceCitation?: string; // Thư tịch / Căn cứ lịch sử
+  findings?: CulturalFinding[]; // Toàn bộ luật văn hóa đã bật cho bản phối
+  scoreFormula?: string; // Cách tính điểm hiển thị công khai
+}
+
+export interface CulturalFinding {
+  severity: 'taboo' | 'caution' | 'creative' | 'info';
+  title: string;
+  detail: string;
+  fix?: string;
+  source: string;
 }
 
 export interface CuratedLook {

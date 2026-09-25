@@ -1,6 +1,262 @@
-import { CulturalAdvice } from '../types/outfit';
+import { CulturalAdvice, CulturalFinding } from '../types/outfit';
 import { GARMENTS } from '../data/garments';
 import { COLORS } from '../data/colors';
+
+// -------------------------------------------------------------
+// Nguồn tham khảo dùng chung. Chỉ ghi nguồn có thật, cụ thể;
+// nhận định xu hướng được ghi rõ là nhận định của nhóm phát triển.
+// -------------------------------------------------------------
+export const SOURCES = {
+  nganNamAoMu: 'Trần Quang Đức, "Ngàn năm áo mũ", NXB Thế Giới (2013)',
+  hoiDien: 'Quốc sử quán triều Nguyễn, "Khâm định Đại Nam hội điển sự lệ" (phần Lễ bộ – Quan phục)',
+  danGian: 'Quan niệm dân gian, được lưu truyền rộng rãi (chưa có văn bản gốc thống nhất)',
+  nhomPhatTrien: 'Nhận định thẩm mỹ của nhóm phát triển, không phải tư liệu lịch sử'
+} as const;
+
+const MODERN_ACCESSORIES = ['sneaker-chunky', 'kinh-mat-y2k', 'boots-da', 'blazer-oversize', 'tote-typography'];
+const TRADITIONAL_ACCESSORIES = ['khan-dong', 'kieng-bac', 'non-quai-thao', 'guoc-moc', 'tram-cai-toc', 'quat-lua-xep', 'tui-coi-theu'];
+
+// Điểm trừ theo mức độ. Công thức: 100 − tổng điểm trừ (tối thiểu 0).
+// Hiển thị công khai cho người dùng để điểm số không phải "hộp đen".
+export const SEVERITY_PENALTY: Record<CulturalFinding['severity'], number> = {
+  taboo: 40,
+  caution: 12,
+  creative: 4,
+  info: 0
+};
+
+interface RuleContext {
+  garmentId: string;
+  styleId: string;
+  occasionId: string;
+  colorId: string;
+  accessoryIds: string[];
+  has: (id: string) => boolean;
+  modernCount: number;
+  traditionalCount: number;
+}
+
+interface CulturalRule {
+  id: string;
+  when: (c: RuleContext) => boolean;
+  finding: CulturalFinding;
+}
+
+// -------------------------------------------------------------
+// BẢNG LUẬT VĂN HÓA — mỗi luật độc lập, nhiều luật có thể cùng bật
+// -------------------------------------------------------------
+const RULES: CulturalRule[] = [
+  // ---------- Áo Nhật Bình (lễ/thường phục cung đình) ----------
+  {
+    id: 'nhat-binh-street-overload',
+    when: (c) => c.garmentId === 'nhat-binh' && c.styleId === 'street' && c.modernCount >= 2,
+    finding: {
+      severity: 'taboo',
+      title: 'Nhật Bình bị "đường phố hóa" quá mức',
+      detail:
+        'Áo Nhật Bình là trang phục của nữ giới hoàng tộc triều Nguyễn, nhận diện bởi cổ đối khâm hình chữ nhật và dải viền thêu. Phong cách Street Hypebeast cộng từ 2 phụ kiện hiện đại trở lên khiến bộ trang phục mất tính trang trọng vốn là cốt lõi của áo.',
+      fix: 'Giữ tối đa 1 phụ kiện hiện đại, hoặc chuyển sang phong cách Elegant / Vintage.',
+      source: SOURCES.nganNamAoMu
+    }
+  },
+  {
+    id: 'nhat-binh-street',
+    when: (c) => c.garmentId === 'nhat-binh' && c.styleId === 'street' && c.modernCount < 2,
+    finding: {
+      severity: 'caution',
+      title: 'Nhật Bình với phong cách Street',
+      detail: 'Street Hypebeast đối lập với tính trang trọng của trang phục cung đình. Một phụ kiện hiện đại vẫn chấp nhận được, nhưng cần giữ nguyên cổ đối khâm, tay áo và chiều dài áo.',
+      fix: 'Cân nhắc phong cách Elegant hoặc Vintage để bản phối nhất quán hơn.',
+      source: SOURCES.nhomPhatTrien
+    }
+  },
+  {
+    id: 'nhat-binh-cyber',
+    when: (c) => c.garmentId === 'nhat-binh' && c.has('kinh-mat-y2k'),
+    finding: {
+      severity: 'caution',
+      title: 'Kính Cyber Y2K đặt cạnh phẩm phục cung đình',
+      detail: 'Kính râm cyber tạo tương phản quá gắt với cổ đối khâm và dải thêu — người xem dễ đọc thành trang phục hóa trang.',
+      fix: 'Thay bằng trâm cài tóc hoặc quạt lụa để giữ sự đồng bộ.',
+      source: SOURCES.nhomPhatTrien
+    }
+  },
+  {
+    id: 'nhat-binh-blazer',
+    when: (c) => c.garmentId === 'nhat-binh' && c.has('blazer-oversize'),
+    finding: {
+      severity: 'caution',
+      title: 'Blazer che mất cổ đối khâm',
+      detail: 'Cổ áo hình chữ nhật trước ngực là đặc điểm nhận diện của Nhật Bình. Khoác blazer bên ngoài che mất chi tiết này.',
+      fix: 'Bỏ blazer; nếu cần lớp khoác, chọn áo choàng mỏng mở phía trước.',
+      source: SOURCES.nganNamAoMu
+    }
+  },
+  {
+    id: 'nhat-binh-school',
+    when: (c) => c.garmentId === 'nhat-binh' && c.occasionId === 'di-hoc',
+    finding: {
+      severity: 'caution',
+      title: 'Nhật Bình không hợp sinh hoạt học đường hằng ngày',
+      detail: 'Tay áo rộng, nhiều lớp và mức trang trọng cao gây bất tiện khi học. Phù hợp hơn cho ngày hội văn hóa, thuyết trình lịch sử, diễn kịch.',
+      fix: 'Chọn Áo Dài hoặc Ngũ Thân tay chẽn cho ngày học bình thường.',
+      source: SOURCES.nhomPhatTrien
+    }
+  },
+  {
+    id: 'nhat-binh-non-quai-thao',
+    when: (c) => c.garmentId === 'nhat-binh' && c.has('non-quai-thao'),
+    finding: {
+      severity: 'caution',
+      title: 'Lệch tầng lớp & vùng miền: Nón quai thao với Nhật Bình',
+      detail: 'Nón quai thao gắn với phụ nữ bình dân Bắc Bộ (Kinh Bắc, quan họ), còn Nhật Bình là trang phục cung đình Huế. Kết hợp hai thứ tạo ra hình ảnh không có trong lịch sử.',
+      fix: 'Dùng trâm cài tóc hoặc khăn vấn cho Nhật Bình; để nón quai thao cho Áo Tứ Thân.',
+      source: SOURCES.nganNamAoMu
+    }
+  },
+
+  // ---------- Áo Tứ Thân ----------
+  {
+    id: 'tu-than-khan-ran',
+    when: (c) => c.garmentId === 'ao-tu-than' && c.has('khan-ran-nam-bo'),
+    finding: {
+      severity: 'info',
+      title: 'Pha trộn vùng miền: Khăn rằn Nam Bộ với Tứ Thân Bắc Bộ',
+      detail: 'Không sai, nhưng nên biết đây là phối "liên vùng" — khi giới thiệu bản phối, hãy nói rõ để tránh hiểu nhầm nguồn gốc.',
+      source: SOURCES.nhomPhatTrien
+    }
+  },
+  {
+    id: 'tu-than-street',
+    when: (c) => c.garmentId === 'ao-tu-than' && (c.styleId === 'street' || c.styleId === 'modern-genz' || c.has('boots-da')),
+    finding: {
+      severity: 'creative',
+      title: 'Biến tấu Kinh Bắc đương đại',
+      detail: 'Thả buông hai vạt trước như áo khoác mỏng, yếm được giữ làm lớp trong. Hợp lệ khi yếm kín đáo và vẫn nhận ra bốn thân áo.',
+      fix: 'Đảm bảo yếm lót vừa vặn, không dùng chất liệu xuyên thấu.',
+      source: SOURCES.nhomPhatTrien
+    }
+  },
+
+  // ---------- Dân gian ở bối cảnh trang trọng ----------
+  {
+    id: 'folk-formal-event',
+    when: (c) =>
+      (c.garmentId === 'ao-ba-ba' || c.garmentId === 'ao-tu-than') &&
+      (c.occasionId === 'su-kien-van-hoa' || c.occasionId === 'tot-nghiep') &&
+      c.traditionalCount === 0 &&
+      !c.has('blazer-oversize'),
+    finding: {
+      severity: 'caution',
+      title: 'Trang phục dân gian ở sự kiện trang trọng cần nâng chất liệu',
+      detail: 'Áo Bà Ba và Tứ Thân vốn là trang phục thường ngày của người lao động. Ở sự kiện giao lưu / lễ tốt nghiệp, bản phối dễ trông xuề xòa nếu không có điểm nhấn.',
+      fix: 'Chọn lụa tơ tằm hoặc gấm, thêm kiềng bạc / ngọc trai, hoặc khoác blazer.',
+      source: SOURCES.nhomPhatTrien
+    }
+  },
+
+  // ---------- Áo Ngũ Thân ----------
+  {
+    id: 'ngu-than-fusion',
+    when: (c) =>
+      c.garmentId === 'ao-ngu-than' &&
+      (c.has('boots-da') || c.has('blazer-oversize') || c.styleId === 'street' || c.styleId === 'modern-genz'),
+    finding: {
+      severity: 'creative',
+      title: 'Giao thoa Đông – Tây với Ngũ Thân',
+      detail: 'Ngũ Thân tay chẽn có phom đứng, dễ kết hợp với boots hoặc blazer mà không mất cấu trúc cổ đứng và vạt con.',
+      fix: 'Cài kín khuy cổ khi dự nghi lễ; chọn tay chẽn khi phối đồ hiện đại.',
+      source: SOURCES.nhomPhatTrien
+    }
+  },
+
+  // ---------- Áo Dài ----------
+  {
+    id: 'ao-dai-genz',
+    when: (c) => c.garmentId === 'ao-dai' && (c.has('sneaker-chunky') || c.has('tote-typography') || c.styleId === 'modern-genz'),
+    finding: {
+      severity: 'creative',
+      title: 'Áo Dài phối sneaker / phụ kiện Gen Z',
+      detail: 'Phối phổ biến trong giới trẻ dịp Tết và chụp ảnh ngoài trời. Hợp lệ khi giữ tà áo dài qua gối và quần dài.',
+      fix: 'Không mặc áo dài với quần soóc hoặc váy ngắn.',
+      source: SOURCES.nhomPhatTrien
+    }
+  },
+
+  // ---------- Áo Bà Ba ----------
+  {
+    id: 'ba-ba-modern',
+    when: (c) => c.garmentId === 'ao-ba-ba' && (c.has('boots-da') || c.has('sneaker-chunky') || c.styleId === 'modern-genz'),
+    finding: {
+      severity: 'creative',
+      title: 'Bà Ba phong cách đương đại',
+      detail: 'Áo Bà Ba thân ngắn, xẻ hông vốn đã tiện vận động nên phối giày hiện đại khá tự nhiên.',
+      fix: 'Khăn rằn vắt vai giúp giữ nhận diện Nam Bộ.',
+      source: SOURCES.nhomPhatTrien
+    }
+  },
+
+  // ---------- Màu sắc theo dịp (phong tục) ----------
+  {
+    id: 'tet-dark-color',
+    when: (c) => c.occasionId === 'tet' && (c.colorId === 'den-tuyen' || c.colorId === 'trang-lua-nga'),
+    finding: {
+      severity: 'caution',
+      title: 'Màu đen / trắng trong dịp Tết',
+      detail: 'Nhiều gia đình Việt kiêng mặc toàn đen hoặc toàn trắng ngày đầu năm vì gắn với tang lễ. Không phải quy tắc tuyệt đối nhưng dễ gây phật ý khi đi chúc Tết.',
+      fix: 'Thêm phụ kiện đỏ, vàng hoặc chọn màu ấm như Đỏ Son, Vàng Hoàng Cúc.',
+      source: SOURCES.danGian
+    }
+  },
+  {
+    id: 'wedding-black',
+    when: (c) => c.occasionId === 'cuoi-hoi' && c.colorId === 'den-tuyen',
+    finding: {
+      severity: 'caution',
+      title: 'Màu đen trong đám cưới / ăn hỏi',
+      detail: 'Trong phong tục cưới hỏi Việt, khách thường tránh màu đen tuyền vì gợi không khí tang.',
+      fix: 'Chọn Hồng Cánh Sen, Đỏ Son hoặc màu pastel.',
+      source: SOURCES.danGian
+    }
+  },
+
+  // ---------- Mâu thuẫn phong cách ----------
+  {
+    id: 'traditional-style-modern-overload',
+    when: (c) => c.styleId === 'traditional' && c.modernCount >= 2,
+    finding: {
+      severity: 'caution',
+      title: 'Phong cách "Traditional Authentic" nhưng phụ kiện hiện đại',
+      detail: 'Bạn chọn phong cách nguyên bản nhưng dùng từ 2 phụ kiện hiện đại trở lên — thông điệp của bản phối bị mâu thuẫn.',
+      fix: 'Đổi phong cách sang Modern Gen Z, hoặc thay bằng phụ kiện truyền thống.',
+      source: SOURCES.nhomPhatTrien
+    }
+  },
+  {
+    id: 'modern-overload',
+    when: (c) => c.modernCount >= 4,
+    finding: {
+      severity: 'caution',
+      title: 'Quá nhiều phụ kiện hiện đại',
+      detail: 'Khi 4 món hiện đại cùng xuất hiện, trang phục truyền thống trở thành phông nền thay vì nhân vật chính.',
+      fix: 'Giữ 1–2 điểm nhấn hiện đại là đủ.',
+      source: SOURCES.nhomPhatTrien
+    }
+  }
+];
+
+const SEVERITY_ORDER: CulturalFinding['severity'][] = ['taboo', 'caution', 'creative', 'info'];
+
+function buildNguHanhNote(colorId: string, occasionId: string): string {
+  const color = COLORS.find((c) => c.id === colorId) || COLORS[0];
+  let note = `${color.name}: ${color.elementMeaning}`;
+  if (color.element === 'Hỏa' && (occasionId === 'tet' || occasionId === 'cuoi-hoi')) {
+    note += ' Trong dịp Tết và cưới hỏi, sắc đỏ/hồng được xem là màu may mắn, hỷ sự.';
+  } else if (color.element === 'Thủy' && occasionId === 'tet') {
+    note += ' Dịp Tết nên điểm thêm phụ kiện màu ấm để bớt trầm.';
+  }
+  return note + ' (Liên hệ Ngũ hành mang tính tham khảo văn hóa, không phải quy tắc bắt buộc.)';
+}
 
 export function evaluateCulturalOutfit(
   garmentId: string,
@@ -10,242 +266,84 @@ export function evaluateCulturalOutfit(
   colorId?: string
 ): CulturalAdvice {
   const garment = GARMENTS.find((g) => g.id === garmentId) || GARMENTS[0];
-  const color = COLORS.find((c) => c.id === colorId) || COLORS[0];
+  const resolvedColorId = colorId || COLORS[0].id;
 
-  const hasModernSneaker = accessoryIds.includes('sneaker-chunky');
-  const hasCyberGlasses = accessoryIds.includes('kinh-mat-y2k');
-  const hasBoots = accessoryIds.includes('boots-da');
-  const hasBlazer = accessoryIds.includes('blazer-oversize');
-  const hasTote = accessoryIds.includes('tote-typography');
-  const hasKhanDong = accessoryIds.includes('khan-dong');
-  const hasKiengBac = accessoryIds.includes('kieng-bac');
-  const hasNonQuaiThao = accessoryIds.includes('non-quai-thao');
-  const hasGuocMoc = accessoryIds.includes('guoc-moc');
+  const ctx: RuleContext = {
+    garmentId: garment.id,
+    styleId,
+    occasionId,
+    colorId: resolvedColorId,
+    accessoryIds,
+    has: (id) => accessoryIds.includes(id),
+    modernCount: accessoryIds.filter((id) => MODERN_ACCESSORIES.includes(id)).length,
+    traditionalCount: accessoryIds.filter((id) => TRADITIONAL_ACCESSORIES.includes(id)).length
+  };
 
-  // Multi-accessory modern intensity check
-  const modernCount = [hasModernSneaker, hasCyberGlasses, hasBoots, hasBlazer, hasTote].filter(Boolean).length;
-  const traditionalCount = [hasKhanDong, hasKiengBac, hasNonQuaiThao, hasGuocMoc].filter(Boolean).length;
+  const matched = RULES.filter((r) => r.when(ctx)).map((r) => r.finding);
 
-  // -------------------------------------------------------------
-  // NGŨ HÀNH & TRIẾT LÝ MÀU SẮC
-  // -------------------------------------------------------------
-  let nguHanhNote = `Màu sắc ${color.name} mang năng lượng ${color.elementMeaning}`;
-  if (color.element === 'Hỏa' && (occasionId === 'du-xuan-tet' || occasionId === 'dam-cuoi')) {
-    nguHanhNote += ' Trong hỷ sự và ngày đầu xuân, sắc Đỏ/Hồng thuộc Hỏa mang lại vượng khí may mắn, xua đuổi điều xui rủi theo quan niệm phương Đông.';
-  } else if (color.element === 'Thổ') {
-    nguHanhNote += ' Sắc Hoàng Cúc tượng trưng cho thổ nhưỡng trung tâm, sự ổn định phú quý và đĩnh đạc.';
-  } else if (color.element === 'Thủy' && occasionId === 'du-xuan-tet') {
-    nguHanhNote += ' Sắc Chàm/Đen thuộc Thủy trầm mặc; vào dịp Tết truyền thống nên điểm xuyết phụ kiện ánh kim hoặc hoa văn tươi sáng để tăng sinh khí.';
+  // Bản phối có yếu tố hiện đại nhưng không khớp luật cụ thể nào vẫn là cách tân, không phải "nguyên bản"
+  const hasModernTouch = ctx.modernCount > 0 || ['street', 'modern-genz', 'cute'].includes(styleId);
+  if (hasModernTouch && !matched.some((f) => f.severity !== 'info')) {
+    matched.push({
+      severity: 'creative',
+      title: `${garment.name} có yếu tố cách tân`,
+      detail: 'Bản phối có phụ kiện hoặc phong cách hiện đại. Không phát hiện điểm lệch nghiêm trọng, miễn là giữ các đặc điểm nhận diện của áo.',
+      fix: `Giữ nguyên: ${garment.inviolableFeatures[0]}.`,
+      source: SOURCES.nhomPhatTrien
+    });
   }
 
-  // -------------------------------------------------------------
-  // CASE 1: CẢNH BÁO SAI LỆCH / ĐẠI KỴ VĂN HÓA (TABOO - Cực kỳ nghiêm trọng)
-  // -------------------------------------------------------------
+  const findings = matched
+    .sort((a, b) => SEVERITY_ORDER.indexOf(a.severity) - SEVERITY_ORDER.indexOf(b.severity));
 
-  // Áo Nhật Bình: Phẩm phục hoàng cung bị biến tướng theo phong cách đường phố nổi loạn kết hợp phụ kiện cyber/quá hầm hố
-  if (garment.id === 'nhat-binh' && styleId === 'street' && (hasCyberGlasses || hasModernSneaker) && modernCount >= 2) {
-    return {
-      status: 'taboo',
-      heritageScore: 35,
-      title: 'Cảnh báo nghiêm trọng: Sai lệch phẩm thức Áo Nhật Bình triều Nguyễn',
-      description:
-        'Áo Nhật Bình là phẩm phục cao quý của bậc Hoàng thái hậu, Hoàng hậu, Phi tần và Công chúa triều Nguyễn với điển chế thêu hoa văn ngũ hành vô cùng nghiêm cẩn. Việc kết hợp phong cách đường phố nổi loạn (Hypebeast) cùng kính Cyberpunk và giày hầm hố phá vỡ hoàn toàn sự trang nghiêm, tao nhã của lễ phục cung đình.',
-      tabooAlert:
-        'Quy chế Y quan triều Nguyễn (Đại Nam Thực Lục) nghiêm cấm biến dạng phẩm phục cung đình. Dải đối khâm hình chữ nhật trên ngực là biểu trưng tôn nghiêm, không được phép cắt ngắn, xé rách hay mặc hở hang.',
-      traditionalFeatures: [
-        'Cổ áo chữ nhật đối xứng (đối khâm) cài cúc ngọc',
-        'Dải ngũ sắc tượng trưng Ngũ hành cung đình',
-        'Tay thụng quý phái dài che kín cổ tay'
-      ],
-      modernTwistNotes: [
-        'Nếu muốn cách tân, chỉ nên mặc như áo khoác ngoài (Haori/Duster)',
-        'Giữ nguyên cấu trúc dải đối khâm trước ngực và vạt áo dài'
-      ],
-      boundaryGuide: {
-        doList: [
-          'Giữ nguyên vẹn độ dài tà áo và dải thêu đối khâm nguyên bản',
-          'Tiết chế màu sắc bên trong, dùng tông đơn sắc tôn vinh áo chính'
-        ],
-        dontList: [
-          'Không cắt ngắn tà áo hoặc mặc hở ngực làm mất vẻ tôn nghiêm',
-          'Không kết hợp phụ kiện đinh tán gồ ghề hay kính cyberpunk quá dị biệt'
-        ]
-      },
-      nguHanhNote,
-      sourceCitation: 'Khâm Định Đại Nam Hội Điển Sự Lệ & Ngàn Năm Áo Mũ (Trần Quang Đức)'
-    };
-  }
+  const penalty = findings.reduce((sum, f) => sum + SEVERITY_PENALTY[f.severity], 0);
+  const heritageScore = Math.max(0, 100 - penalty);
 
-  // -------------------------------------------------------------
-  // CASE 2: LƯU Ý HOÀN CẢNH & PHỤ KIỆN (CAUTION)
-  // -------------------------------------------------------------
+  const worst = findings[0]?.severity;
+  const status: CulturalAdvice['status'] =
+    worst === 'taboo' ? 'taboo' : worst === 'caution' ? 'caution' : worst === 'creative' ? 'innovative' : 'respectful';
 
-  // Áo Nhật Bình mặc ở bối cảnh học đường thường nhật
-  if (garment.id === 'nhat-binh' && occasionId === 'di-hoc') {
-    return {
-      status: 'caution',
-      heritageScore: 65,
-      title: 'Lưu ý hoàn cảnh: Phẩm phục hoàng cung nơi giảng đường',
-      description:
-        'Áo Nhật Bình có độ trang trọng tột bậc và tay áo thụng lớn. Trong sinh hoạt học đường thường nhật, dáng áo cồng kềnh có thể gây bất tiện khi viết bài, di chuyển. Nếu bạn tham gia ngày hội văn hóa, thuyết trình lịch sử hoặc diễn kịch thì đây lại là lựa chọn xuất sắc!',
-      traditionalFeatures: ['Cổ đối khâm hình chữ nhật trang trọng', 'Tay thụng quý phái'],
-      modernTwistNotes: ['Tiết chế phụ kiện rườm rà', 'Nên mặc trong sự kiện văn hóa thay vì lớp học hàng ngày'],
-      boundaryGuide: {
-        doList: ['Chọn phiên bản chất liệu lụa nhẹ nếu mặc thuyết trình văn hóa', 'Kết hợp giày đế bệt êm ái'],
-        dontList: ['Tránh mặc vào giờ học thể dục hoặc các tiết thực hành thí nghiệm']
-      },
-      nguHanhNote,
-      sourceCitation: 'Quy chế Thường phục Nội đình thời Nguyễn'
-    };
-  }
+  const issues = findings.filter((f) => f.severity === 'taboo' || f.severity === 'caution');
+  const creatives = findings.filter((f) => f.severity === 'creative');
 
-  // Áo Bà Ba hoặc Tứ Thân trong dạ tiệc ngoại giao / sự kiện sang trọng bậc nhất
-  if ((garment.id === 'ao-ba-ba' || garment.id === 'ao-tu-than') && occasionId === 'tiec-toi' && traditionalCount === 0 && !hasBlazer) {
-    return {
-      status: 'caution',
-      heritageScore: 70,
-      title: 'Cần nâng tầm chất liệu: Trang phục dân gian nơi dạ tiệc sang trọng',
-      description:
-        `Chiếc ${garment.name} mang vẻ đẹp mộc mạc của đời sống lao động. Để tỏa sáng trong không gian dạ tiệc sang trọng, hãy nâng cấp chất liệu bằng lụa tơ tằm thượng hạng, gấm dệt bóng hoặc phối thêm trang sức ngọc trai/kiềng bạc để tạo thần thái quý phái.`,
-      traditionalFeatures: garment.keyFeatures.slice(0, 2),
-      modernTwistNotes: ['Sử dụng chất liệu lụa satin cao cấp', 'Điểm xuyết trang sức ngọc trai thanh lịch'],
-      boundaryGuide: {
-        doList: ['Chọn tông màu hoàng gia hoặc đơn sắc sang trọng', 'Phối cùng clutch cầm tay hoặc giày gót thanh mảnh'],
-        dontList: ['Tránh mặc chất liệu vải thô đũi xơ cứng trong tiệc tối cao cấp']
-      },
-      nguHanhNote,
-      sourceCitation: 'Mỹ thuật Thời trang Ứng dụng Việt Nam'
-    };
-  }
+  const title =
+    status === 'respectful'
+      ? `Bản phối giữ nét nguyên bản của ${garment.name}`
+      : issues.length > 1
+      ? `${issues.length} điểm cần lưu ý: ${issues[0].title}`
+      : findings[0].title;
 
-  // -------------------------------------------------------------
-  // CASE 3: GIAO THOA GEN Z HỢP LỆ (INNOVATIVE - Điểm sáng sáng tạo)
-  // -------------------------------------------------------------
+  const description =
+    status === 'respectful'
+      ? `Không phát hiện điểm lệch nào so với các đặc trưng của ${garment.name} trong bộ luật hiện có.`
+      : findings[0].detail;
 
-  // Áo Dài + Sneaker / Phụ kiện Gen Z
-  if (garment.id === 'ao-dai' && (hasModernSneaker || hasTote || styleId === 'modern-genz')) {
-    return {
-      status: 'innovative',
-      heritageScore: 88,
-      title: 'Cảm hứng Gen Z: Năng động du xuân & Dạo phố',
-      description:
-        'Sự kết hợp giữa tà áo dài thanh thoát và đôi sneaker năng động là trào lưu cực kỳ thịnh hành trong giới trẻ Việt Nam mỗi dịp Tết. Bản phối này giữ trọn nét duyên của tà áo đồng thời giúp bạn tự do sải bước mà không lo đau mỏi chân, thể hiện một thế hệ trẻ vừa yêu di sản vừa tràn đầy năng lượng.',
-      traditionalFeatures: [
-        'Cổ áo lập lĩnh / cổ thìa thanh nhã',
-        'Hai tà áo bay bổng thướt tha xẻ eo tinh tế',
-        'Quần dài lụa suông giữ trọn nét kín đáo'
-      ],
-      modernTwistNotes: [
-        'Đôi sneaker chunky trắng giải phóng đôi chân khi chụp ảnh ngoại cảnh',
-        'Túi tote canvas in typographic tôn vinh ngôn ngữ Việt'
-      ],
-      boundaryGuide: {
-        doList: ['Giữ nguyên chiều dài tà áo qua đầu gối', 'Luôn mặc kèm quần dài ống suông lịch sự'],
-        dontList: ['Tuyệt đối không mặc áo dài với quần soóc ngắn hoặc váy hở cũn cỡn']
-      },
-      nguHanhNote,
-      sourceCitation: 'Xu hướng Thời trang Giới trẻ & Việt phục Đương đại'
-    };
-  }
+  const tabooFinding = findings.find((f) => f.severity === 'taboo');
 
-  // Áo Ngũ Thân + Bốt da / Blazer
-  if (garment.id === 'ao-ngu-than' && (hasBoots || hasBlazer || styleId === 'street' || styleId === 'modern-genz')) {
-    return {
-      status: 'innovative',
-      heritageScore: 90,
-      title: 'Giao thoa Đông - Tây: Bản sắc Cổ phong thời thượng',
-      description:
-        'Áo ngũ thân lập lĩnh tay chẽn phối cùng bốt da mũi vuông hoặc áo blazer oversize là một trong những thử nghiệm thời trang thú vị nhất của giới trẻ. Kết cấu 5 thân vững chãi tượng trưng cho đạo lý ngũ thường kết hợp hoàn hảo cùng cấu trúc tailoring phương Tây, tạo nên diện mạo vừa đĩnh đạc vừa phong cách.',
-      traditionalFeatures: [
-        'Cổ đứng lập lĩnh ôm khít cổ mực thước',
-        'Năm thân áo tượng trưng Ngũ thường (Nhân - Lễ - Nghĩa - Trí - Tín)',
-        'Hàng khuy cài nách hữu kín đáo'
-      ],
-      modernTwistNotes: [
-        'Layer cùng blazer oversize tạo phong thái menswear thanh lịch',
-        'Bốt da đen tôn dáng đứng thẳng thớm của áo cổ phục'
-      ],
-      boundaryGuide: {
-        doList: ['Cài kín khuy cổ khi dự các nghi lễ trang nghiêm', 'Chọn phom tay chẽn gọn gàng khi mặc với đồ hiện đại'],
-        dontList: ['Không bung toàn bộ khuy áo để lộ cơ thể luộm thuộm']
-      },
-      nguHanhNote,
-      sourceCitation: 'Sách "Ngàn Năm Áo Mũ" - Khảo cứu trang phục triều Nguyễn'
-    };
-  }
-
-  // Áo Tứ Thân + Phong cách Hiện đại
-  if (garment.id === 'ao-tu-than' && (styleId === 'street' || hasBoots || styleId === 'modern-genz')) {
-    return {
-      status: 'innovative',
-      heritageScore: 86,
-      title: 'Biến tấu Kinh Bắc đương đại',
-      description:
-        'Áo tứ thân được thả buông hai vạt tựa như một chiếc áo khoác cardigan thời thượng. Chiếc áo yếm bên trong được tôn lên như một item crop-top cao cấp, vừa giữ được nét mộc mạc dân gian miền Quan họ vừa phá cách ấn tượng giữa phố thị.',
-      traditionalFeatures: [
-        'Bốn thân áo tượng trưng tứ thân phụ mẫu',
-        'Yếm hoa đào e ấp',
-        'Dải thắt lưng mềm mại'
-      ],
-      modernTwistNotes: [
-        'Buông vạt tự do phối cùng quần ống rộng cạp cao thời thượng',
-        'Đi cùng guốc mộc đế cao hoặc bốt da cá tính'
-      ],
-      boundaryGuide: {
-        doList: ['Đảm bảo yếm lót bên trong kín đáo, vừa vặn', 'Tận dụng dải lụa thắt lưng tạo điểm nhấn eo duyên dáng'],
-        dontList: ['Tránh để áo yếm xộc xệch hoặc chất liệu quá mỏng manh xuyên thấu']
-      },
-      nguHanhNote,
-      sourceCitation: 'Văn hóa Dân gian Vùng Kinh Bắc & Lễ hội Quan họ'
-    };
-  }
-
-  // Áo Bà Ba + Phụ kiện Nam Bộ đương đại
-  if (garment.id === 'ao-ba-ba' && (hasBoots || hasModernSneaker || styleId === 'modern-genz')) {
-    return {
-      status: 'innovative',
-      heritageScore: 87,
-      title: 'Avant-Garde Phương Nam: Hào sảng & Phóng khoáng',
-      description:
-        'Chiếc áo bà ba dân dã bước vào thế giới thời trang trẻ khi được phối cùng sneaker hiện đại hoặc bốt da cá tính. Minh chứng sống động rằng trang phục truyền thống của miền Tây sông nước luôn tràn đầy hơi thở thời đại và tính ứng dụng linh hoạt.',
-      traditionalFeatures: [
-        'Thân áo ngắn xẻ hông linh hoạt cử động',
-        'Hàng cúc giữa ngay ngắn',
-        'Hai túi vuông bình dị'
-      ],
-      modernTwistNotes: [
-        'Phối cùng quần tây suông hoặc chân váy midi xếp ly',
-        'Khăn rằn vắt chéo vai như một dải khăn quàng thời trang'
-      ],
-      boundaryGuide: {
-        doList: ['Tận dụng tính phóng khoáng tự nhiên của chất liệu đũi, lụa', 'Phối thêm khăn rằn tạo chất Nam Bộ rõ rệt'],
-        dontList: ['Tránh cài lệch cúc hoặc phối đồ quá rườm rà làm mất nét thanh thoát mộc mạc']
-      },
-      nguHanhNote,
-      sourceCitation: 'Lịch sử Trang phục Nam Bộ & Văn hóa Đồng bằng Sông Cửu Long'
-    };
-  }
-
-  // -------------------------------------------------------------
-  // CASE 4: CHUẨN MỰC DI SẢN (RESPECTFUL - Giữ gìn nguyên bản)
-  // -------------------------------------------------------------
   return {
-    status: 'respectful',
-    heritageScore: 98,
-    title: `Chuẩn mực Di sản: Nét đẹp ${garment.name} nguyên bản`,
-    description: `Bản phối tôn vinh trọn vẹn vẻ đẹp thanh nhã và tinh thần của ${garment.name}. Giữ gìn chuẩn mực về phom dáng, màu sắc và đạo lý người xưa gửi gắm trong từng đường kim mũi chỉ.`,
-    traditionalFeatures: garment.keyFeatures,
-    modernTwistNotes: ['Màu sắc và phụ kiện được tiết chế tinh tế làm tôn vinh hồn cốt di sản'],
+    status,
+    heritageScore,
+    title,
+    description,
+    tabooAlert: tabooFinding ? `${tabooFinding.detail} Cách sửa: ${tabooFinding.fix}` : undefined,
+    traditionalFeatures: garment.inviolableFeatures,
+    modernTwistNotes: creatives.length
+      ? creatives.map((f) => f.title)
+      : issues.length
+      ? issues.map((f) => f.fix || f.title)
+      : ['Bản phối tiết chế, không có điểm cách điệu mạnh'],
     boundaryGuide: {
       doList: [
-        `Gìn giữ trọn vẹn phom dáng ${garment.name}`,
-        'Phối phụ kiện truyền thống (khăn vấn, kiềng bạc, guốc mộc) để đạt độ trang trọng cao nhất'
-      ],
-      dontList: [
-        'Hạn chế phối quá nhiều item phong cách Tây phương phá vỡ không gian cổ phong tĩnh tại'
-      ]
+        ...findings.map((f) => f.fix).filter((x): x is string => !!x),
+        `Giữ các đặc điểm nhận diện của ${garment.name}`
+      ].slice(0, 4),
+      dontList: garment.inviolableFeatures.map((feat) => `Không làm mất: ${feat.charAt(0).toLowerCase()}${feat.slice(1)}`).slice(0, 3)
     },
-    nguHanhNote,
-    sourceCitation: garment.historyDetails.origin
+    nguHanhNote: buildNguHanhNote(resolvedColorId, occasionId),
+    sourceCitation: findings.find((f) => f.source !== SOURCES.nhomPhatTrien)?.source || SOURCES.nganNamAoMu,
+    findings,
+    scoreFormula: findings.length
+      ? `100 − ${findings.map((f) => `${SEVERITY_PENALTY[f.severity]} (${f.title})`).join(' − ')} = ${heritageScore}`
+      : '100 − 0 = 100 (không có điểm trừ)'
   };
 }

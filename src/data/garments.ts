@@ -6,7 +6,7 @@ export const GARMENTS: Garment[] = [
     name: 'Áo Dài',
     subtitle: 'Biểu tượng quốc hồn quốc túy tôn vinh đường nét thanh thoát',
     description: 'Trang phục truyền thống phổ biến nhất của Việt Nam, với cấu trúc hai tà áo trước sau buông dài thướt tha, mặc cùng quần lụa suông rộng.',
-    era: 'Thế kỷ 18 đến nay (Phát triển qua các thời kỳ Lemur, Lê Phổ)',
+    era: 'Thế kỷ 18 đến nay (cách tân mạnh thập niên 1930 với mẫu Le Mur của họa sĩ Cát Tường và mẫu của Lê Phổ)',
     region: 'Toàn quốc',
     culturalNote: 'Áo dài mang ý nghĩa về vẻ đẹp thanh lịch, kín đáo nhưng uyển chuyển tự nhiên. Tà áo dài là sự kế thừa trực tiếp từ áo ngũ thân, được tinh giản để tạo nên dáng vóc đương đại.',
     keyFeatures: [
@@ -44,7 +44,7 @@ export const GARMENTS: Garment[] = [
     description: 'Trang phục truyền thống phụ nữ Bắc Bộ, gồm 4 thân áo (2 thân sau may liền sống lưng, 2 thân trước để buông hoặc thắt vạt duyên dáng).',
     era: 'Thế kỷ 12 - đầu thế kỷ 20',
     region: 'Bắc Bộ',
-    culturalNote: 'Bốn tà áo tượng trưng cho tứ thân phụ mẫu (cha mẹ chồng và cha mẹ đẻ). Vạt áo buộc trước bụng thể hiện tình nghĩa vợ chồng son sắt, đùm bọc yêu thương.',
+    culturalNote: 'Theo quan niệm dân gian, bốn tà áo tượng trưng cho tứ thân phụ mẫu (cha mẹ chồng và cha mẹ đẻ). Vạt áo buộc trước bụng thể hiện tình nghĩa vợ chồng son sắt, đùm bọc yêu thương.',
     keyFeatures: [
       'Bốn thân áo riêng biệt, hai vạt trước buộc nút mềm mại',
       'Mặc cùng yếm hoa đào hoặc yếm nâu bên trong',
@@ -62,12 +62,12 @@ export const GARMENTS: Garment[] = [
     defaultColorId: 'xanh-cham',
     formalityTier: 'folk_traditional',
     inviolableFeatures: [
-      'Bốn thân áo tượng trưng tứ thân phụ mẫu',
+      'Bốn thân áo (dân gian gắn với tứ thân phụ mẫu)',
       'Yếm lót che ngực kín đáo mộc mạc',
       'Dải thắt lưng buộc nơ biểu trưng nghĩa tình vợ chồng'
     ],
     historyDetails: {
-      origin: 'Trang phục phổ biến của người dân lao động và các liền chị vùng Kinh Bắc từ thời nhà Lý, Trần đến đầu thế kỷ 20.',
+      origin: 'Trang phục phổ biến của người dân lao động và các liền chị vùng Kinh Bắc phổ biến rõ nhất trong tư liệu thế kỷ 18–đầu thế kỷ 20 (niên đại xuất hiện sớm hơn chưa được xác định chắc chắn).',
       significance: 'Tượng trưng cho sự tần tảo, duyên dáng và gắn kết gia đình truyền thống làng quê Việt.',
       collarType: 'Áo không có cổ cao, cổ khoét vát để lộ bờ yếm yểu điệu bên trong.',
       flapStructure: 'Hai vạt sau may khâu kín, hai vạt trước tách rời để buộc nơ hoặc buông thõng khi hội hè.'
@@ -80,7 +80,7 @@ export const GARMENTS: Garment[] = [
     description: 'Trang phục được định hình vào thời Chúa Nguyễn Phúc Khoát và Vua Minh Mạng, gồm 5 thân áo ghép lại với hàng khuy cài kín đáo bên phải.',
     era: 'Thế kỷ 18 đến đầu thế kỷ 20 (Đặc biệt thời nhà Nguyễn)',
     region: 'Toàn quốc',
-    culturalNote: 'Năm thân áo tượng trưng cho Ngũ thường (Nhân - Lễ - Nghĩa - Trí - Tín) và bốn thân ngoài che chở cho thân thứ năm bên trong, thể hiện đạo làm người khiêm nhường.',
+    culturalNote: 'Theo cách diễn giải phổ biến, năm thân áo tượng trưng cho Ngũ thường (Nhân - Lễ - Nghĩa - Trí - Tín) và bốn thân ngoài che chở cho thân thứ năm bên trong, thể hiện đạo làm người khiêm nhường.',
     keyFeatures: [
       'Năm thân vải (4 vạt ngoài ghép 2 trước 2 sau, 1 thân con bên trong ngực)',
       'Cổ đứng vuông góc, ôm khít cổ đĩnh đạc',
@@ -99,7 +99,7 @@ export const GARMENTS: Garment[] = [
     formalityTier: 'scholarly_formal',
     inviolableFeatures: [
       'Cổ đứng lập lĩnh ôm khít cổ nghiêm trang',
-      'Hàng 5 cúc tượng trưng cho Ngũ Thường (Nhân, Lễ, Nghĩa, Trí, Tín)',
+      'Hàng cúc cài bên nách phải (thường là 5 cúc)',
       'Vạt con bên trong che chắn kín đáo trước ngực'
     ],
     historyDetails: {

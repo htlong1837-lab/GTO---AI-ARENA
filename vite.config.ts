@@ -1,7 +1,34 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv, type ViteDevServer } from 'vite'
 import fs from 'node:fs'
 import path from 'node:path'
+import crypto from 'node:crypto'
+
+// Disk cache for generated AI images, so identical requests don't burn provider quota
+const AI_CACHE_DIR = path.resolve(process.cwd(), '.ai-cache');
+
+function getImageCacheKey(prompt: string, baseImage?: string): string {
+  return crypto.createHash('sha256').update(prompt).update('|').update(baseImage || '').digest('hex');
+}
+
+function readImageCache(key: string): any | null {
+  const file = path.join(AI_CACHE_DIR, `${key}.json`);
+  if (!fs.existsSync(file)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf-8'));
+  } catch {
+    return null;
+  }
+}
+
+function writeImageCache(key: string, entry: object) {
+  try {
+    fs.mkdirSync(AI_CACHE_DIR, { recursive: true });
+    fs.writeFileSync(path.join(AI_CACHE_DIR, `${key}.json`), JSON.stringify(entry), 'utf-8');
+  } catch (e: any) {
+    console.warn('[AI Cache] Could not write cache:', e.message);
+  }
+}
 
 // Helper to get Gemini API Key from process.env, loadEnv, or directly from .env file
 function getGeminiApiKey(rootPath: string): string {
@@ -18,6 +45,12 @@ function getGeminiApiKey(rootPath: string): string {
   return '';
 }
 
+// Run the same API middlewares under `vite preview`, so the built app keeps AI features
+type MiddlewareHost = Pick<ViteDevServer, 'middlewares'>;
+function withPreviewServer<T extends { configureServer: (server: MiddlewareHost) => void }>(plugin: T) {
+  return { ...plugin, configurePreviewServer: (server: MiddlewareHost) => plugin.configureServer(server) };
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -26,9 +59,9 @@ export default defineConfig(({ mode }) => {
     base: './',
     plugins: [
       react(),
-      {
+      withPreviewServer({
         name: 'ai-and-model-middleware',
-        configureServer(server) {
+        configureServer(server: MiddlewareHost) {
           // 1. Model saving middleware
           server.middlewares.use('/api/save-model', (req, res) => {
             if (req.method === 'POST') {
@@ -71,7 +104,7 @@ function getRouterConfig(rootPath: string) {
   }
   return {
     url: url || 'http://127.0.0.1:20128/v1',
-    key: key || 'sk-f28a6d1a3484f1d8-3n2ph3-d4150af7',
+    key,
     model,
     imageModel
   };
@@ -205,6 +238,18 @@ function getRouterConfig(rootPath: string) {
                     return;
                   }
 
+                  // 0. Serve from cache unless the client explicitly asks to regenerate
+                  const cacheKey = getImageCacheKey(prompt, typeof body.baseImage === 'string' ? body.baseImage : '');
+                  if (!body.force) {
+                    const cached = readImageCache(cacheKey);
+                    if (cached?.imageUrl) {
+                      console.log(`[AI Cache] Hit ${cacheKey.slice(0, 12)}`);
+                      res.statusCode = 200;
+                      res.end(JSON.stringify({ success: true, ...cached, promptUsed: prompt, cached: true }));
+                      return;
+                    }
+                  }
+
                   let base64Image = '';
                   let mimeType = 'image/jpeg';
                   let modelUsed = router.imageModel || 'ag/gemini-3.1-flash-image';
@@ -216,11 +261,8 @@ function getRouterConfig(rootPath: string) {
                   if (router.key && router.url) {
                     candidateRouters.push({ url: router.url.replace(/\/+$/, ''), key: router.key });
                   }
-                  if (router.url && !router.url.includes('127.0.0.1') && !router.url.includes('localhost')) {
-                    candidateRouters.push({
-                      url: 'http://127.0.0.1:20128/v1',
-                      key: 'sk-f28a6d1a3484f1d8-3n2ph3-d4150af7'
-                    });
+                  if (router.key && router.url && !router.url.includes('127.0.0.1') && !router.url.includes('localhost')) {
+                    candidateRouters.push({ url: 'http://127.0.0.1:20128/v1', key: router.key });
                   }
 
                   for (const currentRouter of candidateRouters) {
@@ -426,6 +468,7 @@ Output a photorealistic, seamless full-body high fashion photograph.`;
                   // 3. Return response
                   if (base64Image) {
                     const imageUrl = `data:${mimeType};base64,${base64Image}`;
+                    writeImageCache(cacheKey, { imageUrl, model: modelUsed, stylistCritique, createdAt: new Date().toISOString() });
                     res.statusCode = 200;
                     res.end(JSON.stringify({
                       success: true,
@@ -471,7 +514,7 @@ Output a photorealistic, seamless full-body high fashion photograph.`;
             }
           });
         }
-      }
+      })
     ]
   };
 });

@@ -396,7 +396,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 Khảo Cứu Điển Chế & Phom Dáng Cổ
               </h3>
               <p className="text-stone-600 text-sm md:text-base leading-relaxed max-w-[45ch]">
-                Xác định cấu trúc vạt áo nghiêm cẩn: Lập lĩnh ngũ thân (5 thân, 5 cúc tượng trưng Ngũ Thường), Nhật bình (nẹp cổ chữ nhật ngũ sắc hoàng cung), Tứ thân (yếm đào thắt lưng Kinh Bắc). Tôn trọng tuyệt đối tỷ lệ nguyên bản.
+                Xác định cấu trúc vạt áo nghiêm cẩn: Lập lĩnh ngũ thân (5 thân, thường 5 cúc, dân gian gắn với Ngũ Thường), Nhật bình (nẹp cổ chữ nhật ngũ sắc hoàng cung), Tứ thân (yếm đào thắt lưng Kinh Bắc). Tôn trọng tuyệt đối tỷ lệ nguyên bản.
               </p>
             </div>
 
