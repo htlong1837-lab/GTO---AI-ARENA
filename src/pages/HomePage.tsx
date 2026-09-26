@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GARMENTS } from '../data/garments';
 import { OCCASIONS } from '../data/occasions';
 import {
@@ -13,6 +13,12 @@ import {
   Quote,
   Star
 } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface HomePageProps {
   onNavigate: (tab: string, params?: any) => void;
@@ -30,6 +36,295 @@ export const HomePage: React.FC<HomePageProps> = ({
 }: HomePageProps & { _onRemixLook?: any }) => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+
+  // GSAP Animation Section Refs
+  const containerRef = useRef<HTMLDivElement>(null);
+  const heroLeftRef = useRef<HTMLDivElement>(null);
+  const heroPalaceRef = useRef<HTMLDivElement>(null);
+  const heroModelRef = useRef<HTMLDivElement>(null);
+  const assemblagesRef = useRef<HTMLDivElement>(null);
+  const architectureRef = useRef<HTMLDivElement>(null);
+  const garmentsRef = useRef<HTMLDivElement>(null);
+  const testimonialsRef = useRef<HTMLDivElement>(null);
+  const occasionsRef = useRef<HTMLDivElement>(null);
+  const manifestoRef = useRef<HTMLDivElement>(null);
+  const newsletterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // 1. HERO ENTRANCE
+      if (heroLeftRef.current) {
+        const items = heroLeftRef.current.children;
+        gsap.fromTo(
+          items,
+          { y: 35, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.85,
+            stagger: 0.1,
+            ease: 'power3.out',
+            delay: 0.1
+          }
+        );
+      }
+
+      if (heroPalaceRef.current) {
+        gsap.fromTo(
+          heroPalaceRef.current,
+          { opacity: 0, scale: 1.05 },
+          { opacity: 0.4, scale: 1, duration: 1.2, ease: 'power2.out' }
+        );
+      }
+
+      if (heroModelRef.current) {
+        gsap.fromTo(
+          heroModelRef.current,
+          { opacity: 0, x: 40 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 1.1,
+            ease: 'power3.out',
+            delay: 0.2,
+            onComplete: () => {
+              gsap.to(heroModelRef.current, {
+                y: -6,
+                duration: 3.5,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+              });
+            }
+          }
+        );
+      }
+
+      // 2. CURATED ASSEMBLAGES (ScrollTrigger)
+      if (assemblagesRef.current) {
+        const header = assemblagesRef.current.querySelector('.assemblages-header');
+        const cards = assemblagesRef.current.querySelectorAll('.assemblage-card');
+
+        if (header) {
+          gsap.fromTo(
+            header,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: assemblagesRef.current,
+                start: 'top 85%'
+              }
+            }
+          );
+        }
+
+        if (cards.length > 0) {
+          gsap.fromTo(
+            cards,
+            { opacity: 0, y: 50, scale: 0.96 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.85,
+              stagger: 0.15,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: assemblagesRef.current,
+                start: 'top 75%'
+              }
+            }
+          );
+        }
+      }
+
+      // 3. ARCHITECTURE OF HERITAGE (Step reveal)
+      if (architectureRef.current) {
+        const leftCol = architectureRef.current.querySelector('.architecture-left');
+        const steps = architectureRef.current.querySelectorAll('.timeline-step');
+
+        if (leftCol) {
+          gsap.fromTo(
+            leftCol,
+            { opacity: 0, x: -30 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.8,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: architectureRef.current,
+                start: 'top 80%'
+              }
+            }
+          );
+        }
+
+        steps.forEach((step) => {
+          gsap.fromTo(
+            step,
+            { opacity: 0.35, x: 25 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.65,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: step,
+                start: 'top 82%',
+                toggleActions: 'play none none reverse'
+              }
+            }
+          );
+        });
+      }
+
+      // 4. THE ARCHIVES (5-Garment Showcase Stagger Wave)
+      if (garmentsRef.current) {
+        const header = garmentsRef.current.querySelector('.garments-header');
+        const cards = garmentsRef.current.querySelectorAll('.garment-card');
+
+        if (header) {
+          gsap.fromTo(
+            header,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: garmentsRef.current,
+                start: 'top 85%'
+              }
+            }
+          );
+        }
+
+        if (cards.length > 0) {
+          gsap.fromTo(
+            cards,
+            { opacity: 0, y: 60, scale: 0.95 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.8,
+              stagger: 0.1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: garmentsRef.current,
+                start: 'top 75%'
+              }
+            }
+          );
+        }
+      }
+
+      // 5. TESTIMONIALS (Asymmetric Parallax Scrubbing)
+      if (testimonialsRef.current) {
+        const cards = testimonialsRef.current.querySelectorAll('.testimonial-card');
+        if (cards.length >= 4) {
+          gsap.fromTo(
+            [cards[1], cards[3]],
+            { y: 25 },
+            {
+              y: -25,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: testimonialsRef.current,
+                start: 'top 85%',
+                end: 'bottom 20%',
+                scrub: 1.5
+              }
+            }
+          );
+
+          gsap.fromTo(
+            cards,
+            { opacity: 0, y: 40 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              stagger: 0.12,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: testimonialsRef.current,
+                start: 'top 80%'
+              }
+            }
+          );
+        }
+      }
+
+      // 6. MANIFESTO SECTION
+      if (manifestoRef.current) {
+        gsap.fromTo(
+          manifestoRef.current.children,
+          { opacity: 0, scale: 0.96, y: 25 },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.12,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: manifestoRef.current,
+              start: 'top 80%'
+            }
+          }
+        );
+      }
+
+      // 7. OCCASIONS GRID
+      if (occasionsRef.current) {
+        const cards = occasionsRef.current.querySelectorAll('.occasion-card');
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 20, scale: 0.97 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.5,
+            stagger: 0.04,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: occasionsRef.current,
+              start: 'top 82%'
+            }
+          }
+        );
+      }
+
+      // 8. NEWSLETTER CAPSULE
+      if (newsletterRef.current) {
+        gsap.fromTo(
+          newsletterRef.current,
+          { opacity: 0, y: 30, scale: 0.97 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: newsletterRef.current,
+              start: 'top 85%'
+            }
+          }
+        );
+      }
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,7 +394,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   ];
 
   return (
-    <div className="space-y-28 md:space-y-36 pb-24 text-stone-800">
+    <div ref={containerRef} className="space-y-28 md:space-y-36 pb-24 text-stone-800">
       {/* ========================================================================= */}
       {/* ========================================================================= */}
       {/* 1. FLORIA EDITORIAL HERO SECTION (ORIGINAL ARTWORK) */}
@@ -114,6 +409,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         {/* ═══ LAYER 1: ANCIENT IMPERIAL PALACE COLONNADE (QUÁ KHỨ • 1802) ═══ */}
         {/* Placed on the far left, dissolving softly into the cream canvas behind text */}
         <div 
+          ref={heroPalaceRef}
           className="absolute left-0 top-0 bottom-0 w-[42%] sm:w-[32%] lg:w-[26%] xl:w-[22%] pointer-events-none overflow-hidden z-0 opacity-40 transition-opacity duration-1000"
         >
           <div className="relative w-full h-full">
@@ -132,6 +428,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         {/* ═══ LAYER 2: EMBEDDED SEAMLESS MODERN HAUTE-COUTURE MODEL (HIỆN ĐẠI • 2026) ═══ */}
         {/* Only elevating when hovering directly over the female model zone */}
         <div 
+          ref={heroModelRef}
           className="absolute right-0 top-0 bottom-0 w-full lg:w-[64%] xl:w-[59%] pointer-events-auto overflow-hidden z-0 group/model cursor-pointer"
         >
           <div className="relative w-full h-full">
@@ -163,7 +460,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Column: Floria Architectural Typography & Double Pill CTAs */}
-            <div className="lg:col-span-7 xl:col-span-6 space-y-8 text-left pointer-events-auto">
+            <div ref={heroLeftRef} className="lg:col-span-7 xl:col-span-6 space-y-8 text-left pointer-events-auto">
               <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#FAF7F2]/90 backdrop-blur-md border border-[#D4AF37]/50 text-stone-800 text-xs tracking-wider shadow-xs">
                 <Sparkles className="w-3.5 h-3.5 text-[#C59338]" />
                 <span className="font-semibold">Nền tảng Styling Cổ Phục Tương Tác Đầu Tiên</span>
@@ -254,8 +551,8 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* ========================================================================= */}
       {/* 2. FLORIA CURATED ASSEMBLAGES (STAGGERED 3-COLUMN CARDS WITH SLIDE-UP PILLS) */}
       {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-20 gap-6 border-b border-[#E2D8C7] pb-6">
+      <section ref={assemblagesRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="assemblages-header flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-20 gap-6 border-b border-[#E2D8C7] pb-6">
           <div>
             <span className="text-xs font-serif font-bold tracking-[0.2em] uppercase text-[#A8282B]">
               CURATED ASSEMBLAGES
@@ -283,7 +580,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           {assemblages.map((item) => (
             <div
               key={item.id}
-              className={`group cursor-pointer ${item.staggerClass} transition-transform duration-500`}
+              className={`assemblage-card group cursor-pointer ${item.staggerClass} transition-transform duration-500`}
             >
               <div className="w-full relative overflow-hidden rounded-[2.5rem] mb-5 bg-white border border-[#E2D8C7] hover:border-[#D4AF37] p-3 shadow-xs hover:shadow-editorial floria-card-hover transition-all duration-500">
                 <div className={`relative w-full ${item.imageAspectClass} rounded-[2rem] overflow-hidden bg-[#F4EFE6]`}>
@@ -357,10 +654,10 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* ========================================================================= */}
       {/* 3. FLORIA STICKY BOTANICAL PROCESS (THE ARCHITECTURE OF HERITAGE) */}
       {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={architectureRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Sticky Process Header */}
-          <div className="lg:col-span-5 lg:sticky lg:top-40 self-start space-y-6">
+          <div className="architecture-left lg:col-span-5 lg:sticky lg:top-40 self-start space-y-6">
             <span className="text-xs font-serif font-bold tracking-[0.2em] uppercase text-[#A8282B]">
               THE ARCHITECTURE OF HERITAGE
             </span>
@@ -386,7 +683,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           {/* Right Column: Vertical Timeline matching Floria exact border-l & md:ml-24 indent */}
           <div className="lg:col-span-7 flex flex-col gap-12 md:gap-20">
             {/* Step 01 */}
-            <div className="relative pl-8 md:pl-16 border-l border-[#E2D8C7] group">
+            <div className="timeline-step relative pl-8 md:pl-16 border-l border-[#E2D8C7] group">
               <div className="absolute top-0 -left-[18px] md:-left-[24px]">
                 <div className="w-9 h-9 md:w-12 md:h-12 rounded-full bg-white border border-[#A8282B] flex items-center justify-center text-xs md:text-sm font-serif font-bold text-[#A8282B] shadow-xs">
                   01
@@ -401,7 +698,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* Step 02 with Floria Signature md:ml-24 indent */}
-            <div className="relative pl-8 md:pl-16 border-l border-[#E2D8C7] md:ml-24 group">
+            <div className="timeline-step relative pl-8 md:pl-16 border-l border-[#E2D8C7] md:ml-24 group">
               <div className="absolute top-0 -left-[18px] md:-left-[24px]">
                 <div className="w-9 h-9 md:w-12 md:h-12 rounded-full bg-white border border-[#C59338] flex items-center justify-center text-xs md:text-sm font-serif font-bold text-[#C59338] shadow-xs">
                   02
@@ -416,7 +713,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* Step 03 */}
-            <div className="relative pl-8 md:pl-16 border-l border-[#E2D8C7] group">
+            <div className="timeline-step relative pl-8 md:pl-16 border-l border-[#E2D8C7] group">
               <div className="absolute top-0 -left-[18px] md:-left-[24px]">
                 <div className="w-9 h-9 md:w-12 md:h-12 rounded-full bg-white border border-stone-800 flex items-center justify-center text-xs md:text-sm font-serif font-bold text-stone-800 shadow-xs">
                   03
@@ -436,8 +733,8 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* ========================================================================= */}
       {/* 4. FLORIA THE ARCHIVES (GAPLESS 5-GARMENT BENTO GRID WITH VERIFIED IMAGES) */}
       {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4 border-b border-[#E2D8C7] pb-6">
+      <section ref={garmentsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="garments-header flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4 border-b border-[#E2D8C7] pb-6">
           <div>
             <span className="text-xs font-serif font-bold tracking-[0.2em] uppercase text-[#A8282B]">
               THE ARCHIVE
@@ -473,7 +770,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 if (onSelectGarmentToRemix) onSelectGarmentToRemix(garment.id);
                 onNavigate('studio');
               }}
-              className="relative overflow-hidden rounded-[2rem] group cursor-pointer bg-white border border-[#E2D8C7] shadow-sm hover:border-[#D4AF37] hover:shadow-xl transition-all duration-500 min-h-[480px] lg:min-h-[530px] flex flex-col justify-between"
+              className="garment-card relative overflow-hidden rounded-[2rem] group cursor-pointer bg-white border border-[#E2D8C7] shadow-sm hover:border-[#D4AF37] hover:shadow-xl transition-all duration-500 min-h-[480px] lg:min-h-[530px] flex flex-col justify-between"
             >
               {/* Full-length Portrait Image Container */}
               <div className="absolute inset-0 bg-[#F4EFE6] overflow-hidden">
@@ -523,7 +820,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* ========================================================================= */}
       {/* 5. FLORIA CLARITY & PRAISE (ASYMMETRIC TESTIMONIALS) */}
       {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={testimonialsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-14 text-center">
           <h2 className="text-4xl sm:text-6xl font-serif italic text-[#111215] mb-4">
             Thanh Âm.
@@ -536,7 +833,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         {/* Floria Exact Staggered Asymmetric Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
           {/* Card 1: Col-span-4 md:mt-10 */}
-          <div className="relative p-8 rounded-3xl bg-white border border-[#E2D8C7] hover:border-[#D4AF37] transition-all group flex flex-col justify-between md:col-span-4 md:mt-10 shadow-xs">
+          <div className="testimonial-card relative p-8 rounded-3xl bg-white border border-[#E2D8C7] hover:border-[#D4AF37] transition-all group flex flex-col justify-between md:col-span-4 md:mt-10 shadow-xs">
             <Quote className="w-8 h-8 text-[#C59338]/30 mb-6" />
             <div className="flex flex-col h-full">
               <div className="flex gap-1 mb-4 text-[#C59338]">
@@ -560,7 +857,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
 
           {/* Card 2: Col-span-5 md:-mt-6 */}
-          <div className="relative p-8 rounded-3xl bg-white border border-[#E2D8C7] hover:border-[#D4AF37] transition-all group flex flex-col justify-between md:col-span-5 md:-mt-6 shadow-xs">
+          <div className="testimonial-card relative p-8 rounded-3xl bg-white border border-[#E2D8C7] hover:border-[#D4AF37] transition-all group flex flex-col justify-between md:col-span-5 md:-mt-6 shadow-xs">
             <Quote className="w-8 h-8 text-[#C59338]/30 mb-6" />
             <div className="flex flex-col h-full">
               <div className="flex gap-1 mb-4 text-[#C59338]">
@@ -584,7 +881,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
 
           {/* Card 3: Col-span-5 md:col-start-2 md:mt-2 */}
-          <div className="relative p-8 rounded-3xl bg-white border border-[#E2D8C7] hover:border-[#D4AF37] transition-all group flex flex-col justify-between md:col-span-5 md:col-start-2 md:mt-2 shadow-xs">
+          <div className="testimonial-card relative p-8 rounded-3xl bg-white border border-[#E2D8C7] hover:border-[#D4AF37] transition-all group flex flex-col justify-between md:col-span-5 md:col-start-2 md:mt-2 shadow-xs">
             <Quote className="w-8 h-8 text-[#C59338]/30 mb-6" />
             <div className="flex flex-col h-full">
               <div className="flex gap-1 mb-4 text-[#C59338]">
@@ -608,7 +905,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
 
           {/* Card 4: Col-span-5 md:col-start-8 md:-mt-10 */}
-          <div className="relative p-8 rounded-3xl bg-white border border-[#E2D8C7] hover:border-[#D4AF37] transition-all group flex flex-col justify-between md:col-span-5 md:col-start-8 md:-mt-10 shadow-xs">
+          <div className="testimonial-card relative p-8 rounded-3xl bg-white border border-[#E2D8C7] hover:border-[#D4AF37] transition-all group flex flex-col justify-between md:col-span-5 md:col-start-8 md:-mt-10 shadow-xs">
             <Quote className="w-8 h-8 text-[#C59338]/30 mb-6" />
             <div className="flex flex-col h-full">
               <div className="flex gap-1 mb-4 text-[#C59338]">
@@ -636,7 +933,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* ========================================================================= */}
       {/* 6. FLORIA MANIFESTO STATEMENT SECTION (JOURNAL INSPIRATION) */}
       {/* ========================================================================= */}
-      <section className="py-20 md:py-28 bg-gradient-to-b from-[#FAF7F2] via-[#F4EFE6] to-[#FAF7F2] border-y border-[#E2D8C7] relative overflow-hidden">
+      <section ref={manifestoRef} className="py-20 md:py-28 bg-gradient-to-b from-[#FAF7F2] via-[#F4EFE6] to-[#FAF7F2] border-y border-[#E2D8C7] relative overflow-hidden">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center relative z-10">
           <div className="mb-6 w-14 h-14 rounded-full bg-white border border-[#D4AF37]/40 flex items-center justify-center text-[#C59338] shadow-xs">
             <Sparkles className="w-6 h-6" />
@@ -653,7 +950,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* ========================================================================= */}
       {/* 7. OCCASIONS GRID (BỐI CẢNH LỄ HỘI - DARK SILK SALON) */}
       {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={occasionsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="rounded-[2.5rem] bg-gradient-to-br from-[#111215] via-[#1A181B] to-[#111215] text-white p-8 sm:p-12 relative overflow-hidden border border-[#D4AF37]/30 shadow-editorial-xl">
           <div className="absolute -right-16 -bottom-16 w-96 h-96 bg-[#A8282B]/15 rounded-full blur-3xl pointer-events-none" />
 
@@ -677,7 +974,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   if (onSelectOccasionToRemix) onSelectOccasionToRemix(occ.id);
                   onNavigate('studio');
                 }}
-                className="p-4 sm:p-5 rounded-2xl bg-stone-900/80 hover:bg-[#A8282B]/90 border border-stone-800 hover:border-[#D4AF37]/60 transition-all text-left flex flex-col justify-between group shadow-xs"
+                className="occasion-card p-4 sm:p-5 rounded-2xl bg-stone-900/80 hover:bg-[#A8282B]/90 border border-stone-800 hover:border-[#D4AF37]/60 transition-all text-left flex flex-col justify-between group shadow-xs cursor-pointer active:scale-95"
               >
                 <div>
                   <span className="text-[9px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-white/10 text-stone-300 mb-3 inline-block">
@@ -700,7 +997,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* ========================================================================= */}
       {/* 8. FLORIA STUDIO ARCHIVE NEWSLETTER CAPSULE */}
       {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={newsletterRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative rounded-[3rem] p-8 sm:p-16 bg-gradient-to-r from-[#111215] via-[#241416] to-[#111215] border border-[#D4AF37]/30 text-white text-center overflow-hidden shadow-editorial-xl">
           {/* Subtle Ambient Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-[#C59338]/[0.08] rounded-full blur-[90px] pointer-events-none" />
@@ -734,7 +1031,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   />
                   <button
                     type="submit"
-                    className="h-10 px-5 rounded-full bg-[#C59338] hover:bg-[#DFB058] text-stone-950 font-bold text-xs transition-all flex items-center gap-1.5 shrink-0 shadow-sm"
+                    className="h-10 px-5 rounded-full bg-[#C59338] hover:bg-[#DFB058] text-stone-950 font-bold text-xs transition-all flex items-center gap-1.5 shrink-0 shadow-sm cursor-pointer active:scale-95"
                   >
                     <span>Tham Gia</span>
                     <Send className="w-3 h-3 text-stone-950" />
