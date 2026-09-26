@@ -314,7 +314,7 @@ Output a photorealistic, seamless full-body high fashion photograph.`;
                               }
                             ]
                           }),
-                          signal: AbortSignal.timeout(35000)
+                          signal: AbortSignal.timeout(75000)
                         });
 
                         if (chatRes.ok) {
@@ -360,68 +360,107 @@ Output a photorealistic, seamless full-body high fashion photograph.`;
                       }
                     }
 
-                    // CASE B: Pure Text-to-Image if no base model photo OR fallback if VTON failed (only if quota wasn't exhausted)
+                    // CASE B: Pure Text-to-Image if no base model photo OR fallback if VTON failed
                     const isQuotaExhausted = routerErrorMessage.includes('RESOURCE_EXHAUSTED') || routerErrorMessage.includes('capacity on this model') || routerErrorMessage.includes('QUOTA_EXHAUSTED');
                     if (!base64Image && !isQuotaExhausted) {
+                      // Attempt B1: Chat completions text-to-image (primary for ag/gemini-3.1-flash-image)
                       try {
-                        const imagePayload = {
-                          model: router.imageModel || 'ag/gemini-3.1-flash-image',
-                          prompt,
-                          n: 1,
-                          size: 'auto',
-                          quality: 'auto',
-                          background: 'auto',
-                          image_detail: 'high',
-                          output_format: 'png'
-                        };
-
-                        console.log(`[AI Image] Calling 9router at ${currentRouter.url}/images/generations (${imagePayload.model})...`);
-
-                        const imgRes = await fetch(`${currentRouter.url}/images/generations`, {
+                        console.log(`[AI Image] Calling 9router at ${currentRouter.url}/chat/completions (${router.imageModel})...`);
+                        const chatTextRes = await fetch(`${currentRouter.url}/chat/completions`, {
                           method: 'POST',
                           headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${currentRouter.key}`
                           },
-                          body: JSON.stringify(imagePayload),
-                          signal: AbortSignal.timeout(35000)
+                          body: JSON.stringify({
+                            model: router.imageModel || 'ag/gemini-3.1-flash-image',
+                            stream: false,
+                            messages: [
+                              {
+                                role: 'user',
+                                content: prompt
+                              }
+                            ]
+                          }),
+                          signal: AbortSignal.timeout(75000)
                         });
 
-                        if (imgRes.ok) {
-                          const imgData = await imgRes.json() as any;
-                          const first = imgData?.data?.[0];
-                          if (first?.b64_json) {
-                            base64Image = first.b64_json;
-                            mimeType = 'image/png';
-                            modelUsed = imagePayload.model;
-                          } else if (first?.url) {
-                            if (first.url.startsWith('data:image')) {
-                              const parts = first.url.split(';base64,');
-                              mimeType = parts[0].replace('data:', '');
-                              base64Image = parts[1];
-                            } else {
-                              const r = await fetch(first.url);
-                              if (r.ok) {
-                                const ab = await r.arrayBuffer();
-                                base64Image = Buffer.from(ab).toString('base64');
-                                mimeType = r.headers.get('content-type') || 'image/png';
-                              }
-                            }
-                            modelUsed = imagePayload.model;
-                          }
-                        } else {
-                          const errText = await imgRes.text();
-                          console.warn(`[AI Image] 9router at ${currentRouter.url} failed (${imgRes.status}):`, errText.slice(0, 200));
-                          try {
-                            const parsed = JSON.parse(errText);
-                            routerErrorMessage = parsed?.error?.message || errText;
-                          } catch {
-                            routerErrorMessage = errText;
+                        if (chatTextRes.ok) {
+                          const chatData = await chatTextRes.json() as any;
+                          const content = chatData?.choices?.[0]?.message?.content || '';
+                          const dataUriMatch = content.match(/data:(image\/[a-zA-Z0-9+.-]+);base64,([A-Za-z0-9+/=]+)/);
+                          if (dataUriMatch) {
+                            mimeType = dataUriMatch[1];
+                            base64Image = dataUriMatch[2];
+                            modelUsed = router.imageModel || 'ag/gemini-3.1-flash-image';
                           }
                         }
                       } catch (e: any) {
-                        console.warn(`[AI Image] 9router at ${currentRouter.url} exception:`, e.message);
-                        routerErrorMessage = e.message;
+                        console.warn(`[AI Image] Chat text-to-image exception on ${currentRouter.url}:`, e.message);
+                      }
+
+                      // Attempt B2: /images/generations endpoint fallback
+                      if (!base64Image) {
+                        try {
+                          const imagePayload = {
+                            model: router.imageModel || 'ag/gemini-3.1-flash-image',
+                            prompt,
+                            n: 1,
+                            size: 'auto',
+                            quality: 'auto',
+                            background: 'auto',
+                            image_detail: 'high',
+                            output_format: 'png'
+                          };
+
+                          console.log(`[AI Image] Calling 9router at ${currentRouter.url}/images/generations (${imagePayload.model})...`);
+
+                          const imgRes = await fetch(`${currentRouter.url}/images/generations`, {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': `Bearer ${currentRouter.key}`
+                            },
+                            body: JSON.stringify(imagePayload),
+                            signal: AbortSignal.timeout(75000)
+                          });
+
+                          if (imgRes.ok) {
+                            const imgData = await imgRes.json() as any;
+                            const first = imgData?.data?.[0];
+                            if (first?.b64_json) {
+                              base64Image = first.b64_json;
+                              mimeType = 'image/png';
+                              modelUsed = imagePayload.model;
+                            } else if (first?.url) {
+                              if (first.url.startsWith('data:image')) {
+                                const parts = first.url.split(';base64,');
+                                mimeType = parts[0].replace('data:', '');
+                                base64Image = parts[1];
+                              } else {
+                                const r = await fetch(first.url);
+                                if (r.ok) {
+                                  const ab = await r.arrayBuffer();
+                                  base64Image = Buffer.from(ab).toString('base64');
+                                  mimeType = r.headers.get('content-type') || 'image/png';
+                                }
+                              }
+                              modelUsed = imagePayload.model;
+                            }
+                          } else {
+                            const errText = await imgRes.text();
+                            console.warn(`[AI Image] 9router at ${currentRouter.url} failed (${imgRes.status}):`, errText.slice(0, 200));
+                            try {
+                              const parsed = JSON.parse(errText);
+                              routerErrorMessage = parsed?.error?.message || errText;
+                            } catch {
+                              routerErrorMessage = errText;
+                            }
+                          }
+                        } catch (e: any) {
+                          console.warn(`[AI Image] 9router at ${currentRouter.url} exception:`, e.message);
+                          routerErrorMessage = e.message;
+                        }
                       }
                     }
                   }
