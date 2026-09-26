@@ -150,7 +150,7 @@ export const GeminiService = {
     ].join(' ');
   },
 
-  // Request AI image generation
+  // Request AI image generation (Seamlessly routes through local API or direct Render cloud gateway)
   async generateOutfitImage(
     prompt: string,
     options?: { customKey?: string; aspectRatio?: string; baseImageBase64?: string; force?: boolean }
@@ -160,6 +160,7 @@ export const GeminiService = {
     const aspectRatio = options?.aspectRatio || '3:4';
     const baseImage = options?.baseImageBase64;
 
+    // 1. First try server endpoint (Vite dev server or backend proxy)
     try {
       const response = await fetch('/api/generate-ai-image', {
         method: 'POST',
@@ -175,54 +176,123 @@ export const GeminiService = {
         })
       });
 
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        return {
-          success: false,
-          error: data.error || `Lỗi máy chủ (${response.status})`,
-          promptUsed: prompt
-        };
-      }
-
-      return {
-        success: true,
-        imageUrl: data.imageUrl,
-        promptUsed: data.promptUsed || prompt,
-        cached: !!data.cached
-      };
-    } catch (err: any) {
-      // Fallback: If Vite middleware is not reachable (e.g. static production without proxy), try direct Google API if customKey is present
-      if (customKey) {
-        try {
-          const directUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${customKey}`;
-          const directRes = await fetch(directUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              instances: [{ prompt }],
-              parameters: { sampleCount: 1, aspectRatio }
-            })
-          });
-          const directData = await directRes.json();
-          if (directData?.predictions?.[0]?.bytesBase64Encoded) {
-            const mime = directData.predictions[0].mimeType || 'image/jpeg';
-            return {
-              success: true,
-              imageUrl: `data:${mime};base64,${directData.predictions[0].bytesBase64Encoded}`,
-              promptUsed: prompt
-            };
-          }
-        } catch (clientErr: any) {
-          return { success: false, error: clientErr.message || 'Lỗi kết nối trực tiếp đến Gemini', promptUsed: prompt };
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.imageUrl) {
+          return {
+            success: true,
+            imageUrl: data.imageUrl,
+            promptUsed: data.promptUsed || prompt,
+            cached: !!data.cached
+          };
         }
       }
-      return {
-        success: false,
-        error: err.message || 'Không thể kết nối đến dịch vụ tạo ảnh Gemini.',
-        promptUsed: prompt
-      };
+    } catch {
+      // If /api/generate-ai-image is not reachable (e.g. static production deployment), fall through to direct Cloud Gateway
     }
+        }
+      }
+    } catch {
+      // If /api/generate-ai-image is not reachable (e.g. static production deployment), fall through to direct Cloud Gateway
+    }
+
+    // 2. Direct Cloud Gateway fallback (Connects directly to your Render Server 24/7)
+    const routerUrl = (import.meta.env.VITE_ROUTER_URL || 'https://my-9router-service-s2ia.onrender.com/v1').replace(/\/+$/, '');
+    const routerKey = import.meta.env.VITE_ROUTER_API_KEY || 'sk-f28a6d1a3484f1d8-3n2ph3-d4150af7';
+    const imageModel = import.meta.env.VITE_ROUTER_IMAGE_MODEL || 'ag/gemini-3.1-flash-image';
+
+    try {
+      // Build message payload
+      let userContent: any = prompt;
+      if (baseImage && typeof baseImage === 'string' && baseImage.length > 50) {
+        const cleanBase64 = baseImage.startsWith('data:') ? baseImage : `data:image/jpeg;base64,${baseImage}`;
+        userContent = [
+          {
+            type: 'text',
+            text: `You are an elite virtual try-on fashion AI. Dress the fashion model shown in this photo in the following outfit: ${prompt}`
+          },
+          {
+            type: 'image_url',
+            image_url: { url: cleanBase64 }
+          }
+        ];
+      }
+
+      const res = await fetch(`${routerUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${routerKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: imageModel,
+          messages: [
+            {
+              role: 'user',
+              content: userContent
+            }
+          ]
+        })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const content = data.choices?.[0]?.message?.content || '';
+
+        // Extract base64 image or markdown image
+        const base64Match = content.match(/data:(image\/[^;]+);base64,([A-Za-z0-9+/=]+)/);
+        if (base64Match) {
+          return {
+            success: true,
+            imageUrl: `data:${base64Match[1]};base64,${base64Match[2]}`,
+            promptUsed: prompt
+          };
+        }
+
+        const urlMatch = content.match(/!\[.*?\]\((https?:\/\/[^\s\)]+)\)/);
+        if (urlMatch) {
+          return {
+            success: true,
+            imageUrl: urlMatch[1],
+            promptUsed: prompt
+          };
+        }
+      }
+    } catch (err: any) {
+      console.warn('Direct Render Gateway request error:', err);
+    }
+
+    // 3. Last fallback: Direct Google API if custom API key is present
+    if (customKey) {
+      try {
+        const directUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${customKey}`;
+        const directRes = await fetch(directUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            instances: [{ prompt }],
+            parameters: { sampleCount: 1, aspectRatio }
+          })
+        });
+        const directData = await directRes.json();
+        if (directData?.predictions?.[0]?.bytesBase64Encoded) {
+          const mime = directData.predictions[0].mimeType || 'image/jpeg';
+          return {
+            success: true,
+            imageUrl: `data:${mime};base64,${directData.predictions[0].bytesBase64Encoded}`,
+            promptUsed: prompt
+          };
+        }
+      } catch (clientErr: any) {
+        return { success: false, error: clientErr.message || 'Lỗi kết nối đến Gemini', promptUsed: prompt };
+      }
+    }
+
+    return {
+      success: false,
+      error: 'Không thể tạo ảnh từ máy chủ AI. Vui lòng kiểm tra lại kết nối.',
+      promptUsed: prompt
+    };
   }
 };
 

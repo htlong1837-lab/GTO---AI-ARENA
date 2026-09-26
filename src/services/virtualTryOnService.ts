@@ -1,5 +1,6 @@
 import { TryOnModel, ClothingItemOption, TryOnResultRecord, BASE_STUDIO_MODELS } from '../data/modelsTryOn';
 import { GeminiService } from './geminiService';
+import { FlowBridgeService } from './flowBridgeService';
 import { GARMENTS } from '../data/garments';
 import { COLORS } from '../data/colors';
 import { OCCASIONS } from '../data/occasions';
@@ -47,46 +48,58 @@ export class VirtualTryOnService {
 
     let resultImageUrl = '';
 
-    // Check if Gemini AI is configured and ready
-    const aiStatus = await GeminiService.checkStatus();
-    if (aiStatus.configured && !customClothesImage) {
-      updateProgress(60, `Đang gọi AI Virtual Try-On để mặc ${clothes.name} lên người mẫu ${model.name}...`);
-      const matchedGarment = GARMENTS.find((g) => g.id === clothes.garmentType) || GARMENTS[0];
-      const matchedColor = COLORS.find((c) => c.vietnameseName === selectedColorName) || COLORS[0];
-      
-      const prompt = GeminiService.buildHeritageFashionPrompt({
-        garment: matchedGarment,
-        color: matchedColor,
-        occasion: OCCASIONS[0],
-        style: STYLES[1],
-        accessoryNames,
-        gender: model.gender
-      });
+    const matchedGarment = GARMENTS.find((g) => g.id === clothes.garmentType) || GARMENTS[0];
+    const matchedColor = COLORS.find((c) => c.vietnameseName === selectedColorName) || COLORS[0];
+    
+    const prompt = GeminiService.buildHeritageFashionPrompt({
+      garment: matchedGarment,
+      color: matchedColor,
+      occasion: OCCASIONS[0],
+      style: STYLES[1],
+      accessoryNames,
+      gender: model.gender
+    });
 
-      // Ensure we have the base model photo as Base64 to perform authentic Virtual Try-On
-      let baseImageToSend = customModelImage || undefined;
-      if (!baseImageToSend && model.basePhotoUrl) {
-        try {
-          const res = await fetch(model.basePhotoUrl);
-          if (res.ok) {
-            const blob = await res.blob();
-            baseImageToSend = await new Promise<string>((resolve) => {
-              const reader = new FileReader();
-              reader.onloadend = () => resolve(reader.result as string);
-              reader.onerror = () => resolve(undefined as any);
-              reader.readAsDataURL(blob);
-            });
-          }
-        } catch (e) {
-          console.warn('Could not load base model photo for VTON:', e);
-        }
+    // 1. PRIORITY 1: Check if Google Flow Bridge is connected via WebSocket
+    const flowStatus = await FlowBridgeService.checkStatus();
+    if (flowStatus.flowConnected && !customClothesImage) {
+      updateProgress(60, `Đang chuyển lệnh sang tab Google Flow để tạo ảnh cho ${model.name}...`);
+      const flowRes = await FlowBridgeService.generateImage(prompt);
+      if (flowRes.success && flowRes.imageUrl) {
+        resultImageUrl = flowRes.imageUrl;
       }
+    }
 
-      const aiRes = await GeminiService.generateOutfitImage(prompt, {
-        baseImageBase64: baseImageToSend
-      });
-      if (aiRes.success && aiRes.imageUrl) {
-        resultImageUrl = aiRes.imageUrl;
+    // 2. PRIORITY 2: If Flow Bridge is not connected, use Render Server / Gemini API
+    if (!resultImageUrl) {
+      const aiStatus = await GeminiService.checkStatus();
+      if (aiStatus.configured && !customClothesImage) {
+        updateProgress(60, `Đang gọi AI Virtual Try-On để mặc ${clothes.name} lên người mẫu ${model.name}...`);
+        
+        let baseImageToSend = customModelImage || undefined;
+        if (!baseImageToSend && model.basePhotoUrl) {
+          try {
+            const res = await fetch(model.basePhotoUrl);
+            if (res.ok) {
+              const blob = await res.blob();
+              baseImageToSend = await new Promise<string>((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result as string);
+                reader.onerror = () => resolve(undefined as any);
+                reader.readAsDataURL(blob);
+              });
+            }
+          } catch (e) {
+            console.warn('Could not load base model photo for VTON:', e);
+          }
+        }
+
+        const aiRes = await GeminiService.generateOutfitImage(prompt, {
+          baseImageBase64: baseImageToSend
+        });
+        if (aiRes.success && aiRes.imageUrl) {
+          resultImageUrl = aiRes.imageUrl;
+        }
       }
     }
 
