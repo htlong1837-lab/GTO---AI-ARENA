@@ -40,8 +40,12 @@ export const GeminiService = {
     }
   },
 
-  // Check if server or client has Gemini API Key ready
+  // Check if server or client has Gemini AI / Render Cloud Gateway ready
   async checkStatus(): Promise<AiStatusResponse> {
+    const routerUrl = (import.meta.env.VITE_ROUTER_URL || 'https://my-9router-service-s2ia.onrender.com/v1').replace(/\/+$/, '');
+    const routerKey = import.meta.env.VITE_ROUTER_API_KEY || 'sk-f28a6d1a3484f1d8-3n2ph3-d4150af7';
+    const routerModel = import.meta.env.VITE_ROUTER_IMAGE_MODEL || 'ag/gemini-3.1-flash-image';
+
     try {
       const res = await fetch('/api/ai-status');
       if (res.ok) {
@@ -54,16 +58,36 @@ export const GeminiService = {
             preview: `${clientKey.slice(0, 6)}...${clientKey.slice(-4)}`
           };
         }
-        return data;
+        if (data.configured) {
+          return data;
+        }
       }
-    } catch (e) {
-      console.warn('Cannot reach /api/ai-status, checking client key:', e);
+    } catch {
+      // Vite dev middleware not reachable (e.g. static production deployment on Vercel/Netlify/Render)
     }
+
     const clientKey = this.getClientApiKey();
+    if (clientKey && clientKey.length > 5) {
+      return {
+        configured: true,
+        model: 'imagen-3.0-generate-002',
+        preview: `${clientKey.slice(0, 6)}...${clientKey.slice(-4)}`
+      };
+    }
+
+    // Direct 24/7 Render Cloud Gateway
+    if (routerUrl && routerKey) {
+      return {
+        configured: true,
+        model: routerModel,
+        preview: `${routerKey.slice(0, 6)}...${routerKey.slice(-4)}`
+      };
+    }
+
     return {
-      configured: Boolean(clientKey && clientKey.length > 5),
-      model: 'imagen-3.0-generate-002',
-      preview: clientKey ? `${clientKey.slice(0, 6)}...${clientKey.slice(-4)}` : null
+      configured: false,
+      model: routerModel,
+      preview: null
     };
   },
 
