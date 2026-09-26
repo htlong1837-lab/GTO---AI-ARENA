@@ -190,11 +190,6 @@ export const GeminiService = {
     } catch {
       // If /api/generate-ai-image is not reachable (e.g. static production deployment), fall through to direct Cloud Gateway
     }
-        }
-      }
-    } catch {
-      // If /api/generate-ai-image is not reachable (e.g. static production deployment), fall through to direct Cloud Gateway
-    }
 
     // 2. Direct Cloud Gateway fallback (Connects directly to your Render Server 24/7)
     const routerUrl = (import.meta.env.VITE_ROUTER_URL || 'https://my-9router-service-s2ia.onrender.com/v1').replace(/\/+$/, '');
