@@ -85,28 +85,28 @@ export default defineConfig(({ mode }) => {
 
 // Helper to get 9router configuration from process.env or .env file
 function getRouterConfig(rootPath: string) {
-  let url = process.env.ROUTER_URL || '';
-  let key = process.env.ROUTER_API_KEY || '';
-  let model = process.env.ROUTER_MODEL || 'free-combo';
-  let imageModel = process.env.ROUTER_IMAGE_MODEL || 'ag/gemini-3.1-flash-image';
+  let url = process.env.ROUTER_URL || process.env.VITE_ROUTER_URL || '';
+  let key = process.env.ROUTER_API_KEY || process.env.VITE_ROUTER_API_KEY || '';
+  let model = process.env.ROUTER_MODEL || process.env.VITE_ROUTER_MODEL || 'free-combo';
+  let imageModel = process.env.ROUTER_IMAGE_MODEL || process.env.VITE_ROUTER_IMAGE_MODEL || 'ag/gemini-3.1-flash-image';
 
   const envPath = path.resolve(rootPath, '.env');
   if (fs.existsSync(envPath)) {
     const content = fs.readFileSync(envPath, 'utf-8');
-    const uMatch = content.match(/^ROUTER_URL\s*=\s*["']?([^"'\r\n]+)["']?/m);
+    const uMatch = content.match(/^(?:ROUTER_URL|VITE_ROUTER_URL)\s*=\s*["']?([^"'\r\n]+)["']?/m);
     if (uMatch) url = uMatch[1].trim();
-    const kMatch = content.match(/^ROUTER_API_KEY\s*=\s*["']?([^"'\r\n]+)["']?/m);
+    const kMatch = content.match(/^(?:ROUTER_API_KEY|VITE_ROUTER_API_KEY)\s*=\s*["']?([^"'\r\n]+)["']?/m);
     if (kMatch) key = kMatch[1].trim();
-    const mMatch = content.match(/^ROUTER_MODEL\s*=\s*["']?([^"'\r\n]+)["']?/m);
+    const mMatch = content.match(/^(?:ROUTER_MODEL|VITE_ROUTER_MODEL)\s*=\s*["']?([^"'\r\n]+)["']?/m);
     if (mMatch) model = mMatch[1].trim();
-    const imMatch = content.match(/^ROUTER_IMAGE_MODEL\s*=\s*["']?([^"'\r\n]+)["']?/m);
+    const imMatch = content.match(/^(?:ROUTER_IMAGE_MODEL|VITE_ROUTER_IMAGE_MODEL)\s*=\s*["']?([^"'\r\n]+)["']?/m);
     if (imMatch) imageModel = imMatch[1].trim();
   }
   return {
-    url: url || 'http://127.0.0.1:20128/v1',
-    key,
-    model,
-    imageModel
+    url: url || 'https://my-9router-service-s2ia.onrender.com/v1',
+    key: key || 'sk-f28a6d1a3484f1d8-3n2ph3-d4150af7',
+    model: model || 'free-combo',
+    imageModel: imageModel || 'ag/gemini-3.1-flash-image'
   };
 }
 
@@ -122,7 +122,7 @@ function getRouterConfig(rootPath: string) {
                 try {
                   const checkRes = await fetch(`${router.url}/models`, {
                     headers: { 'Authorization': `Bearer ${router.key}` },
-                    signal: AbortSignal.timeout(2500)
+                    signal: AbortSignal.timeout(4000)
                   });
                   if (checkRes.ok) routerActive = true;
                 } catch (e) {
@@ -147,6 +147,15 @@ function getRouterConfig(rootPath: string) {
                   provider: 'gemini',
                   model: 'gemini-3.6-flash',
                   preview: `${geminiKey.slice(0, 6)}...${geminiKey.slice(-4)}`
+                }));
+              } else if (router.url && router.key) {
+                // Render cloud gateway fallback (even if cold starting)
+                res.end(JSON.stringify({
+                  configured: true,
+                  provider: '9router',
+                  url: router.url,
+                  model: router.model,
+                  preview: `${router.key.slice(0, 6)}...${router.key.slice(-4)}`
                 }));
               } else {
                 res.end(JSON.stringify({
@@ -256,13 +265,10 @@ function getRouterConfig(rootPath: string) {
                   let stylistCritique = '';
                   let routerErrorMessage = '';
 
-                  // 1. Candidate 9router endpoints (configured endpoint first, then local fallback)
+                  // 1. Candidate 9router endpoints (configured endpoint first)
                   const candidateRouters: Array<{ url: string; key: string }> = [];
                   if (router.key && router.url) {
                     candidateRouters.push({ url: router.url.replace(/\/+$/, ''), key: router.key });
-                  }
-                  if (router.key && router.url && !router.url.includes('127.0.0.1') && !router.url.includes('localhost')) {
-                    candidateRouters.push({ url: 'http://127.0.0.1:20128/v1', key: router.key });
                   }
 
                   for (const currentRouter of candidateRouters) {
