@@ -18,6 +18,14 @@ export class FlowBridgeService {
    * Fast HTTP check to see if Relay server is running and Google Flow is connected
    */
   static async checkStatus(): Promise<FlowBridgeStatus> {
+    // Only check local bridge if running locally on localhost/127.0.0.1
+    if (typeof window !== 'undefined') {
+      const isLocal = ['localhost', '127.0.0.1', '0.0.0.0'].includes(window.location.hostname);
+      if (!isLocal) {
+        return { online: false, flowConnected: false };
+      }
+    }
+
     try {
       const res = await fetch(this.statusUrl, { signal: AbortSignal.timeout(1200) });
       if (res.ok) {
