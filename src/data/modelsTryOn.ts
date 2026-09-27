@@ -31,9 +31,9 @@ export const BASE_STUDIO_MODELS: TryOnModel[] = [
     gender: 'female',
     title: 'Người mẫu Nữ Studio',
     description: 'Vóc dáng thanh tân, nét mặt Á Đông trang nhã, chiều cao 1m68 chuẩn form thử đồ.',
-    avatarUrl: '/images/models/studio_model_female.jpg',
-    fullBodyUrl: '/images/models/studio_model_female.jpg',
-    basePhotoUrl: '/images/models/studio_model_female.jpg',
+    avatarUrl: 'images/models/studio_model_female.jpg',
+    fullBodyUrl: 'images/models/studio_model_female.jpg',
+    basePhotoUrl: 'images/models/studio_model_female.jpg',
     tag: 'Dáng chuẩn Nữ • 1m68'
   },
   {
@@ -42,9 +42,9 @@ export const BASE_STUDIO_MODELS: TryOnModel[] = [
     gender: 'male',
     title: 'Người mẫu Nam Studio',
     description: 'Vóc dáng đĩnh đạc, gương mặt góc cạnh nam tính, chiều cao 1m78 chuẩn form thử đồ.',
-    avatarUrl: '/images/models/studio_model_male.jpg',
-    fullBodyUrl: '/images/models/studio_model_male.jpg',
-    basePhotoUrl: '/images/models/studio_model_male.jpg',
+    avatarUrl: 'images/models/studio_model_male.jpg',
+    fullBodyUrl: 'images/models/studio_model_male.jpg',
+    basePhotoUrl: 'images/models/studio_model_male.jpg',
     tag: 'Dáng chuẩn Nam • 1m78'
   }
 ];
@@ -58,20 +58,20 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     garmentType: 'ao-dai',
     colorHex: '#9B1D20',
     colorName: 'Đỏ Son Cung Đình',
-    thumbnailUrl: '/images/viet_phuc/ao_dai.jpg',
+    thumbnailUrl: 'images/viet_phuc/ao_dai.jpg',
     colorVariants: {
-      'do-son': '/images/viet_phuc/ao_dai_do-son.jpg',
-      'trang-lua-nga': '/images/viet_phuc/ao_dai_trang-lua-nga.jpg',
-      'hong-canh-sen': '/images/viet_phuc/ao_dai_hong-canh-sen.jpg',
-      'vang-hoang-cuc': '/images/viet_phuc/ao_dai_vang-hoang-cuc.jpg',
-      'xanh-ngoc-luc': '/images/viet_phuc/ao_dai_xanh-ngoc-luc.jpg',
-      'tim-hue': '/images/viet_phuc/ao_dai_tim-hue.jpg',
-      'xanh-cham': '/images/viet_phuc/ao_dai_xanh-cham.jpg',
-      'den-tuyen': '/images/viet_phuc/ao_dai_den-tuyen.jpg'
+      'do-son': 'images/viet_phuc/ao_dai_do-son.jpg',
+      'trang-lua-nga': 'images/viet_phuc/ao_dai_trang-lua-nga.jpg',
+      'hong-canh-sen': 'images/viet_phuc/ao_dai_hong-canh-sen.jpg',
+      'vang-hoang-cuc': 'images/viet_phuc/ao_dai_vang-hoang-cuc.jpg',
+      'xanh-ngoc-luc': 'images/viet_phuc/ao_dai_xanh-ngoc-luc.jpg',
+      'tim-hue': 'images/viet_phuc/ao_dai_tim-hue.jpg',
+      'xanh-cham': 'images/viet_phuc/ao_dai_xanh-cham.jpg',
+      'den-tuyen': 'images/viet_phuc/ao_dai_den-tuyen.jpg'
     },
     defaultModelLookUrl: {
-      'model-female-standard': '/images/looks/look_aodai_duxuan.jpg',
-      'model-male-standard': '/images/hero_vietphuc.jpg'
+      'model-female-standard': 'images/looks/look_aodai_duxuan.jpg',
+      'model-male-standard': 'images/hero_vietphuc.jpg'
     },
     description: 'Hai tà áo lụa buông dài thướt tha xẻ eo cao, mặc kèm quần lụa suông thanh lịch.',
     era: 'Thế kỷ 20 - Nay'
@@ -82,20 +82,20 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     garmentType: 'ao-ngu-than',
     colorHex: '#C59338',
     colorName: 'Vàng Hoàng Cúc',
-    thumbnailUrl: '/images/viet_phuc/ao_ngu_than.jpg',
+    thumbnailUrl: 'images/viet_phuc/ao_ngu_than.jpg',
     colorVariants: {
-      'do-son': '/images/viet_phuc/ao_ngu_than_do-son.jpg',
-      'trang-lua-nga': '/images/viet_phuc/ao_ngu_than_trang-lua-nga.jpg',
-      'hong-canh-sen': '/images/viet_phuc/ao_ngu_than_hong-canh-sen.jpg',
-      'vang-hoang-cuc': '/images/viet_phuc/ao_ngu_than_vang-hoang-cuc.jpg',
-      'xanh-ngoc-luc': '/images/viet_phuc/ao_ngu_than_xanh-ngoc-luc.jpg',
-      'tim-hue': '/images/viet_phuc/ao_ngu_than_tim-hue.jpg',
-      'xanh-cham': '/images/viet_phuc/ao_ngu_than_xanh-cham.jpg',
-      'den-tuyen': '/images/viet_phuc/ao_ngu_than_den-tuyen.jpg'
+      'do-son': 'images/viet_phuc/ao_ngu_than_do-son.jpg',
+      'trang-lua-nga': 'images/viet_phuc/ao_ngu_than_trang-lua-nga.jpg',
+      'hong-canh-sen': 'images/viet_phuc/ao_ngu_than_hong-canh-sen.jpg',
+      'vang-hoang-cuc': 'images/viet_phuc/ao_ngu_than_vang-hoang-cuc.jpg',
+      'xanh-ngoc-luc': 'images/viet_phuc/ao_ngu_than_xanh-ngoc-luc.jpg',
+      'tim-hue': 'images/viet_phuc/ao_ngu_than_tim-hue.jpg',
+      'xanh-cham': 'images/viet_phuc/ao_ngu_than_xanh-cham.jpg',
+      'den-tuyen': 'images/viet_phuc/ao_ngu_than_den-tuyen.jpg'
     },
     defaultModelLookUrl: {
-      'model-female-standard': '/images/looks/look_nguthan_trachieu.jpg',
-      'model-male-standard': '/images/looks/look_nguthan_trachieu.jpg'
+      'model-female-standard': 'images/looks/look_nguthan_trachieu.jpg',
+      'model-male-standard': 'images/looks/look_nguthan_trachieu.jpg'
     },
     description: 'Năm thân áo tượng trưng ngũ thường và tứ thân phụ mẫu, cổ đứng lập lĩnh 5 khuy cài nghiêm trang.',
     era: 'Thời Chúa Nguyễn & Triều Nguyễn'
@@ -106,20 +106,20 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     garmentType: 'nhat-binh',
     colorHex: '#582C4D',
     colorName: 'Tím Hoa Cà Cố Đô',
-    thumbnailUrl: '/images/viet_phuc/ao_nhat_binh.jpg',
+    thumbnailUrl: 'images/viet_phuc/ao_nhat_binh.jpg',
     colorVariants: {
-      'do-son': '/images/viet_phuc/ao_nhat_binh_do-son.jpg',
-      'trang-lua-nga': '/images/viet_phuc/ao_nhat_binh_trang-lua-nga.jpg',
-      'hong-canh-sen': '/images/viet_phuc/ao_nhat_binh_hong-canh-sen.jpg',
-      'vang-hoang-cuc': '/images/viet_phuc/ao_nhat_binh_vang-hoang-cuc.jpg',
-      'xanh-ngoc-luc': '/images/viet_phuc/ao_nhat_binh_xanh-ngoc-luc.jpg',
-      'tim-hue': '/images/viet_phuc/ao_nhat_binh_tim-hue.jpg',
-      'xanh-cham': '/images/viet_phuc/ao_nhat_binh_xanh-cham.jpg',
-      'den-tuyen': '/images/viet_phuc/ao_nhat_binh_den-tuyen.jpg'
+      'do-son': 'images/viet_phuc/ao_nhat_binh_do-son.jpg',
+      'trang-lua-nga': 'images/viet_phuc/ao_nhat_binh_trang-lua-nga.jpg',
+      'hong-canh-sen': 'images/viet_phuc/ao_nhat_binh_hong-canh-sen.jpg',
+      'vang-hoang-cuc': 'images/viet_phuc/ao_nhat_binh_vang-hoang-cuc.jpg',
+      'xanh-ngoc-luc': 'images/viet_phuc/ao_nhat_binh_xanh-ngoc-luc.jpg',
+      'tim-hue': 'images/viet_phuc/ao_nhat_binh_tim-hue.jpg',
+      'xanh-cham': 'images/viet_phuc/ao_nhat_binh_xanh-cham.jpg',
+      'den-tuyen': 'images/viet_phuc/ao_nhat_binh_den-tuyen.jpg'
     },
     defaultModelLookUrl: {
-      'model-female-standard': '/images/looks/look_nhatbinh_hoangtrieu.jpg',
-      'model-male-standard': '/images/looks/look_nhatbinh_hoangtrieu.jpg'
+      'model-female-standard': 'images/looks/look_nhatbinh_hoangtrieu.jpg',
+      'model-male-standard': 'images/looks/look_nhatbinh_hoangtrieu.jpg'
     },
     description: 'Cổ áo hình chữ nhật viền ngũ sắc đối khâm thêu hoa văn ngũ hành tương sinh quyền quý hoàng gia.',
     era: 'Triều Nguyễn (1802 - 1945)'
@@ -130,21 +130,21 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     garmentType: 'ao-tu-than',
     colorHex: '#182747',
     colorName: 'Xanh Chàm Bắc Bộ',
-    thumbnailUrl: '/images/viet_phuc/ao_tu_than.jpg',
+    thumbnailUrl: 'images/viet_phuc/ao_tu_than.jpg',
     colorVariants: {
-      'nau-gu': '/images/viet_phuc/ao_tu_than_nau-gu.jpg',
-      'do-son': '/images/viet_phuc/ao_tu_than_do-son.jpg',
-      'trang-lua-nga': '/images/viet_phuc/ao_tu_than_trang-lua-nga.jpg',
-      'hong-canh-sen': '/images/viet_phuc/ao_tu_than_hong-canh-sen.jpg',
-      'vang-hoang-cuc': '/images/viet_phuc/ao_tu_than_vang-hoang-cuc.jpg',
-      'xanh-ngoc-luc': '/images/viet_phuc/ao_tu_than_xanh-ngoc-luc.jpg',
-      'tim-hue': '/images/viet_phuc/ao_tu_than_tim-hue.jpg',
-      'xanh-cham': '/images/viet_phuc/ao_tu_than_xanh-cham.jpg',
-      'den-tuyen': '/images/viet_phuc/ao_tu_than_den-tuyen.jpg'
+      'nau-gu': 'images/viet_phuc/ao_tu_than_nau-gu.jpg',
+      'do-son': 'images/viet_phuc/ao_tu_than_do-son.jpg',
+      'trang-lua-nga': 'images/viet_phuc/ao_tu_than_trang-lua-nga.jpg',
+      'hong-canh-sen': 'images/viet_phuc/ao_tu_than_hong-canh-sen.jpg',
+      'vang-hoang-cuc': 'images/viet_phuc/ao_tu_than_vang-hoang-cuc.jpg',
+      'xanh-ngoc-luc': 'images/viet_phuc/ao_tu_than_xanh-ngoc-luc.jpg',
+      'tim-hue': 'images/viet_phuc/ao_tu_than_tim-hue.jpg',
+      'xanh-cham': 'images/viet_phuc/ao_tu_than_xanh-cham.jpg',
+      'den-tuyen': 'images/viet_phuc/ao_tu_than_den-tuyen.jpg'
     },
     defaultModelLookUrl: {
-      'model-female-standard': '/images/looks/look_aodai_duxuan.jpg',
-      'model-male-standard': '/images/looks/look_nguthan_trachieu.jpg'
+      'model-female-standard': 'images/looks/look_aodai_duxuan.jpg',
+      'model-male-standard': 'images/looks/look_nguthan_trachieu.jpg'
     },
     description: 'Bốn vạt áo thắt nơ trước bụng, bên trong mặc yếm đào duyên dáng mộc mạc Kinh Bắc.',
     era: 'Thế kỷ 12 - 20'
@@ -155,21 +155,21 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     garmentType: 'ao-ba-ba',
     colorHex: '#664228',
     colorName: 'Nâu Sồng Đất Phù Sa',
-    thumbnailUrl: '/images/viet_phuc/ao_ba_ba.jpg',
+    thumbnailUrl: 'images/viet_phuc/ao_ba_ba.jpg',
     colorVariants: {
-      'nau-song': '/images/viet_phuc/ao_ba_ba_nau-song.jpg',
-      'do-son': '/images/viet_phuc/ao_ba_ba_do-son.jpg',
-      'trang-lua-nga': '/images/viet_phuc/ao_ba_ba_trang-lua-nga.jpg',
-      'hong-canh-sen': '/images/viet_phuc/ao_ba_ba_hong-canh-sen.jpg',
-      'vang-hoang-cuc': '/images/viet_phuc/ao_ba_ba_vang-hoang-cuc.jpg',
-      'xanh-ngoc-luc': '/images/viet_phuc/ao_ba_ba_xanh-ngoc-luc.jpg',
-      'tim-hue': '/images/viet_phuc/ao_ba_ba_tim-hue.jpg',
-      'xanh-cham': '/images/viet_phuc/ao_ba_ba_xanh-cham.jpg',
-      'den-tuyen': '/images/viet_phuc/ao_ba_ba_den-tuyen.jpg'
+      'nau-song': 'images/viet_phuc/ao_ba_ba_nau-song.jpg',
+      'do-son': 'images/viet_phuc/ao_ba_ba_do-son.jpg',
+      'trang-lua-nga': 'images/viet_phuc/ao_ba_ba_trang-lua-nga.jpg',
+      'hong-canh-sen': 'images/viet_phuc/ao_ba_ba_hong-canh-sen.jpg',
+      'vang-hoang-cuc': 'images/viet_phuc/ao_ba_ba_vang-hoang-cuc.jpg',
+      'xanh-ngoc-luc': 'images/viet_phuc/ao_ba_ba_xanh-ngoc-luc.jpg',
+      'tim-hue': 'images/viet_phuc/ao_ba_ba_tim-hue.jpg',
+      'xanh-cham': 'images/viet_phuc/ao_ba_ba_xanh-cham.jpg',
+      'den-tuyen': 'images/viet_phuc/ao_ba_ba_den-tuyen.jpg'
     },
     defaultModelLookUrl: {
-      'model-female-standard': '/images/hero_model_modern.jpg',
-      'model-male-standard': '/images/hero_vietphuc.jpg'
+      'model-female-standard': 'images/hero_model_modern.jpg',
+      'model-male-standard': 'images/hero_vietphuc.jpg'
     },
     description: 'Cổ tròn xẻ ngực, hàng khuy ngọc trai, xẻ tà hông mang đậm vẻ đẹp hồn hậu phóng khoáng phương Nam.',
     era: 'Thế kỷ 19 - Nay'

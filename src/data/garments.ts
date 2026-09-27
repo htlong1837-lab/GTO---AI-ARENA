@@ -22,7 +22,7 @@ export const GARMENTS: Garment[] = [
       'Phối cùng túi tote canvas in đồ họa typographic chữ Nôm / Quốc ngữ'
     ],
     silhouette: 'flowing',
-    image: '/images/viet_phuc/ao_dai.jpg',
+    image: 'images/viet_phuc/ao_dai.jpg',
     defaultColorId: 'do-son',
     formalityTier: 'modern_national',
     inviolableFeatures: [
@@ -58,7 +58,7 @@ export const GARMENTS: Garment[] = [
       'Kết hợp cùng chunky boots hoặc guốc sơn mài đế cao'
     ],
     silhouette: 'layered',
-    image: '/images/viet_phuc/ao_tu_than.jpg',
+    image: 'images/viet_phuc/ao_tu_than.jpg',
     defaultColorId: 'xanh-cham',
     formalityTier: 'folk_traditional',
     inviolableFeatures: [
@@ -94,7 +94,7 @@ export const GARMENTS: Garment[] = [
       'Sử dụng phụ kiện kính râm đen gọng dày và vòng bạc xích bản nhỏ'
     ],
     silhouette: 'structured',
-    image: '/images/viet_phuc/ao_ngu_than.jpg',
+    image: 'images/viet_phuc/ao_ngu_than.jpg',
     defaultColorId: 'vang-hoang-cuc',
     formalityTier: 'scholarly_formal',
     inviolableFeatures: [
@@ -130,7 +130,7 @@ export const GARMENTS: Garment[] = [
       'Tránh phối đồ quá hầm hố phá vỡ tính lễ nghi tôn nghiêm của trang phục'
     ],
     silhouette: 'regal',
-    image: '/images/viet_phuc/ao_nhat_binh.jpg',
+    image: 'images/viet_phuc/ao_nhat_binh.jpg',
     defaultColorId: 'do-son',
     formalityTier: 'court_regal',
     inviolableFeatures: [
@@ -166,7 +166,7 @@ export const GARMENTS: Garment[] = [
       'Đi cùng dép cói, sandal quai mảnh hoặc sneaker năng động'
     ],
     silhouette: 'casual',
-    image: '/images/viet_phuc/ao_ba_ba.jpg',
+    image: 'images/viet_phuc/ao_ba_ba.jpg',
     defaultColorId: 'den-tuyen',
     formalityTier: 'folk_traditional',
     inviolableFeatures: [

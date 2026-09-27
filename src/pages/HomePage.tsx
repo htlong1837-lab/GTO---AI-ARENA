@@ -353,7 +353,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       element: 'Hỏa',
       staggerClass: 'md:mt-0',
       imageAspectClass: 'aspect-[3/4]',
-      image: '/images/looks/look_aodai_duxuan.jpg',
+      image: 'images/looks/look_aodai_duxuan.jpg',
       tag: 'BẢN PHỐI #01',
       price: 'Look Tiêu Điểm',
       vibe: 'Minimal Chic',
@@ -369,7 +369,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       element: 'Thổ',
       staggerClass: 'md:mt-24',
       imageAspectClass: 'aspect-square',
-      image: '/images/looks/look_nhatbinh_hoangtrieu.jpg',
+      image: 'images/looks/look_nhatbinh_hoangtrieu.jpg',
       tag: 'BẢN PHỐI #02',
       price: 'Hoàng Cung Huế',
       vibe: 'Quý Phái',
@@ -385,7 +385,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       element: 'Thủy',
       staggerClass: 'md:mt-12',
       imageAspectClass: 'aspect-[3/4]',
-      image: '/images/looks/look_nguthan_trachieu.jpg',
+      image: 'images/looks/look_nguthan_trachieu.jpg',
       tag: 'BẢN PHỐI #03',
       price: 'Nho Nhã Đĩnh Đạc',
       vibe: 'Thư Sinh',
@@ -414,7 +414,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         >
           <div className="relative w-full h-full">
             <img
-              src="/images/hero_palace_alpha.png"
+              src="images/hero_palace_alpha.png"
               alt="Cung Điện Cổ Kính Triều Nguyễn"
               className="w-full h-full object-cover object-left filter brightness-95 contrast-95 scale-105"
             />
@@ -437,7 +437,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             {/* High-Fashion Editorial Model in Nhật Bình + Modern Accessories */}
             <img
-              src="/images/hero_floria_seamless.jpg"
+              src="images/hero_floria_seamless.jpg"
               alt="Kiệt Tác Cổ Phục Đương Đại"
               className="w-full h-full object-cover object-right-bottom sm:object-right transform scale-100 group-hover/model:scale-[1.035] group-hover/model:-translate-y-2.5 transition-transform duration-700 ease-out"
             />

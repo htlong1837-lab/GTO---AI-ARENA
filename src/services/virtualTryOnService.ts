@@ -150,8 +150,8 @@ export class VirtualTryOnService {
           {
             id: 'starter-female-aodai',
             timestamp: new Date(Date.now() - 3600000).toISOString(),
-            imageUrl: '/images/looks/look_aodai_duxuan.jpg',
-            baseModelImageUrl: '/images/hero_model_alpha.png',
+            imageUrl: 'images/looks/look_aodai_duxuan.jpg',
+            baseModelImageUrl: 'images/hero_model_alpha.png',
             modelName: 'Mẫu Nữ ♀ (Mai Anh)',
             modelGender: 'female',
             clothesName: 'Áo Dài Truyền Thống Tân Thời (Đỏ Son)',
@@ -162,8 +162,8 @@ export class VirtualTryOnService {
           {
             id: 'starter-male-nguthan',
             timestamp: new Date(Date.now() - 7200000).toISOString(),
-            imageUrl: '/images/looks/look_nguthan_trachieu.jpg',
-            baseModelImageUrl: '/images/hero_vietphuc.jpg',
+            imageUrl: 'images/looks/look_nguthan_trachieu.jpg',
+            baseModelImageUrl: 'images/hero_vietphuc.jpg',
             modelName: 'Mẫu Nam ♂ (Hoàng Long)',
             modelGender: 'male',
             clothesName: 'Áo Ngũ Thân Lập Lĩnh (Vàng Hoàng Cúc)',
