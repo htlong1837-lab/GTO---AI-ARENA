@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, PlusCircle, Compass, User, Box } from 'lucide-react';
+import { Home, PlusCircle, Users, User, Box } from 'lucide-react';
 
 interface MobileNavProps {
   currentTab: string;
@@ -20,7 +20,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ currentTab, onSelectTab })
     { id: 'home', label: 'Trang chủ', icon: Home },
     { id: 'studio', label: 'Phối 2D', icon: PlusCircle, isMain: true },
     { id: 'studio3d', label: 'Phối 3D', icon: Box },
-    { id: 'lookbook', label: 'Lookbook', icon: Compass },
+    { id: 'community', label: 'Cộng đồng', icon: Users },
     { id: 'profile', label: 'Tủ đồ', icon: User }
   ];
 

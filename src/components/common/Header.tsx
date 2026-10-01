@@ -16,6 +16,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab, compare
     { id: 'studio', label: 'Studio Phối Đồ' },
     { id: 'studio3d', label: 'Xưởng 3D', tag: '3D' },
     { id: 'lookbook', label: 'Lookbook' },
+    { id: 'community', label: 'Cộng đồng', tag: 'MỚI' },
     {
       id: 'compare',
       label: 'So sánh',

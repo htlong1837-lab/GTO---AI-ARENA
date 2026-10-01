@@ -1,4 +1,5 @@
 import { ColorOption } from '../types/outfit';
+import { EXTENDED_PALETTES } from './garmentsExtended';
 
 export const COLORS: ColorOption[] = [
   {
@@ -424,14 +425,15 @@ export const GARMENT_CURATED_PALETTES: Record<string, CuratedPaletteOption[]> = 
       description: 'Bản phối tương phản trắng - đen thuần túy kinh điển của áo bà ba Nam Bộ.',
       tag: 'Thuần khiết'
     }
-  ]
-
+  ],
+  ...EXTENDED_PALETTES
 };
 
 // Helper chuẩn hoá type
 export function normalizeGarmentTypeKey(garmentIdOrType?: string): string {
   if (!garmentIdOrType) return 'ao-dai';
   const clean = garmentIdOrType.replace('clothes-', '').toLowerCase();
+  if (clean in GARMENT_CURATED_PALETTES) return clean;
   if (clean.includes('nhat-binh') || clean.includes('nhat_binh')) return 'nhat-binh';
   if (clean.includes('ngu-than') || clean.includes('ngu_than')) return 'ao-ngu-than';
   if (clean.includes('tu-than') || clean.includes('tu_than')) return 'ao-tu-than';

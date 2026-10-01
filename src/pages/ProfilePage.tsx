@@ -7,6 +7,7 @@ import { StorageService } from '../services/storageService';
 import { GeminiService } from '../services/geminiService';
 import { GeminiKeyModal } from '../components/common/GeminiKeyModal';
 import { useToast } from '../context/ToastContext';
+import { draftFromOutfit, PostDraft } from '../services/communityDrafts';
 import {
   Bookmark,
   History,
@@ -18,19 +19,22 @@ import {
   Scale,
   Edit2,
   Check,
-  Key
+  Key,
+  Users
 } from 'lucide-react';
 
 interface ProfilePageProps {
   onNavigate: (tab: string) => void;
   onRemixOutfit: (outfit: Outfit) => void;
   onRefreshCompareCount: () => void;
+  onShareToCommunity: (draft: PostDraft) => void;
 }
 
 export const ProfilePage: React.FC<ProfilePageProps> = ({
   onNavigate,
   onRemixOutfit,
-  onRefreshCompareCount
+  onRefreshCompareCount,
+  onShareToCommunity
 }) => {
   const { showToast } = useToast();
   const [profile, setProfile] = useState<UserProfile>(() => StorageService.getProfile());
@@ -372,13 +376,21 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     </div>
 
                     {/* Card Actions */}
-                    <div className="pt-4 mt-4 border-t border-[#F4EFE6] grid grid-cols-4 gap-1.5">
+                    <div className="pt-4 mt-4 border-t border-[#F4EFE6] grid grid-cols-5 gap-1.5">
                       <button
                         onClick={() => onRemixOutfit(outfit)}
                         className="col-span-2 py-2 rounded-lg bg-[#18181B] hover:bg-[#A8282B] text-white text-xs font-medium tracking-wide transition-colors flex items-center justify-center gap-1 shadow-xs"
                       >
                         <Sparkles className="w-3 h-3 text-[#DFB058]" />
                         <span>Phối lại</span>
+                      </button>
+
+                      <button
+                        onClick={() => onShareToCommunity(draftFromOutfit(outfit))}
+                        className="py-2 rounded-lg bg-[#FAF7F2] hover:bg-[#F4EFE6] text-stone-700 text-xs font-medium transition-colors flex items-center justify-center border border-[#E2D8C7]"
+                        title="Đăng lên Cộng đồng"
+                      >
+                        <Users className="w-3.5 h-3.5 text-[#9B1D20]" />
                       </button>
 
                       <button

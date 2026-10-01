@@ -155,7 +155,7 @@ export const FitRoomSelectClothes: React.FC<FitRoomSelectClothesProps> = ({
           {/* Thư viện Cổ Phục Di Sản */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-stone-700">5 dòng Cổ phục biểu tượng</span>
+              <span className="text-xs font-bold text-stone-700">{PRESET_CLOTHING_ITEMS.length} dòng Cổ phục theo phong tục</span>
               <span className="text-[11px] text-stone-400 font-light">Bấm để đổi áo</span>
             </div>
 

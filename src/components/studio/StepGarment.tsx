@@ -14,7 +14,7 @@ export const StepGarment: React.FC<StepGarmentProps> = ({ selectedId, onSelect }
       <div>
         <h3 className="text-xl font-serif font-bold text-stone-900">Chọn dòng Việt phục</h3>
         <p className="text-xs text-stone-500 mt-1 font-light">
-          Khám phá 5 kiểu trang phục mang tính biểu tượng văn hóa qua các thời kỳ lịch sử.
+          Khám phá {GARMENTS.length} dòng trang phục gắn với phong tục Việt qua các thời kỳ lịch sử.
         </p>
       </div>
 

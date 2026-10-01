@@ -1,4 +1,5 @@
 import { Garment } from '../types/outfit';
+import { EXTENDED_GARMENTS } from './garmentsExtended';
 
 export const GARMENTS: Garment[] = [
   {
@@ -180,5 +181,6 @@ export const GARMENTS: Garment[] = [
       collarType: 'Cổ tròn khoét nông hoặc cổ thìa thoang thoảng, không dựng cổ, mặc thoáng mát phù hợp khí hậu nhiệt đới.',
       flapStructure: 'Thân trước chia hai vạt cài cúc chính giữa, xẻ hông khoảng 10-15cm giúp cử động thoải mái.'
     }
-  }
+  },
+  ...EXTENDED_GARMENTS
 ];

@@ -45,6 +45,37 @@
 
 ---
 
+## 🏮 Diễn đàn Cộng đồng "Đình Làng Việt Phục"
+
+Tab **Cộng đồng** cho phép chia sẻ trực tiếp bản phối tự tạo:
+
+- **Đăng từ Studio / Tủ đồ** bằng một cú bấm — tự đính kèm ảnh AI, công thức bản phối (trang phục, màu, phụ kiện) và hashtag.
+- **Feed masonry** với 4 chuyên mục (Phối đồ, Hỏi đáp, Tàng thư văn hóa, Sự kiện), sắp xếp Nổi bật / Mới nhất / Nhiều sen, tìm kiếm và lọc hashtag trending.
+- **Bình luận phân cấp** (trả lời, thả sen cho bình luận, xóa bình luận của mình, gợi ý trả lời nhanh).
+- **"Thử bản phối này"** mở thẳng công thức của bài viết trong Studio để remix.
+- **Tước hiệu khoa bảng** (Tân Khách → Tú Tài → Cử Nhân → Tiến Sĩ → Bảng Nhãn → Trạng Nguyên) theo số sen nhận được, huy hiệu, thử thách tuần, bảng vàng.
+- **Kiểm duyệt**: lọc từ khóa, báo cáo vi phạm, bài tự ẩn khi đủ 3 báo cáo.
+- Liên kết chia sẻ bài viết: `.../#/community/post/<id>`.
+
+### Bật chế độ trực tuyến (mọi người thấy bài của nhau)
+
+Mặc định diễn đàn chạy **chế độ demo** (lưu trong trình duyệt). Để dùng thật:
+
+1. Tạo project miễn phí tại [supabase.com](https://supabase.com).
+2. Mở **SQL Editor**, dán và chạy toàn bộ [`supabase/schema.sql`](supabase/schema.sql).
+3. Vào **Project Settings → API**, copy `Project URL` và `anon public key` vào `.env`:
+   ```
+   VITE_SUPABASE_URL=https://xxxx.supabase.co
+   VITE_SUPABASE_ANON_KEY=eyJ...
+   ```
+4. Với GitHub Pages: thêm 2 biến trên vào **Settings → Secrets → Actions**; với Vercel: thêm vào Environment Variables.
+
+> Danh tính hiện là ẩn danh theo thiết bị (tên + ảnh lấy từ Tủ đồ). Bước tiếp theo nên dùng Supabase Auth để chống mạo danh.
+
+### Dòng trang phục theo phong tục
+
+Ngoài 5 dòng gốc, Studio có thêm **Áo Tấc** (lễ gia tiên, tế đình), **Áo Giao Lĩnh** (quy tắc vạt phải đè trái), **Áo Viên Lĩnh** (bổ tử hoa sen), **Áo Dài Cưới & Khăn Vấn**, **Áo Mớ Ba Mớ Bảy** (Quan họ) và **Áo Cóm & Váy Thái** — mỗi dòng có bảng màu theo dịp, nét bất khả xâm phạm và luật cảnh báo văn hóa riêng (vd. áo cưới đen/trắng tuyền, viên lĩnh vàng dễ thành hoàng bào).
+
 ## 🛠️ Công nghệ sử dụng
 
 - **Frontend**: React 19, TypeScript

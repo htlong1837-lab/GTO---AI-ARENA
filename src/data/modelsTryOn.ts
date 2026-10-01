@@ -1,3 +1,5 @@
+import { EXTENDED_CLOTHING_ITEMS } from './garmentsExtended';
+
 export interface TryOnModel {
   id: string;
   name: string;
@@ -13,7 +15,9 @@ export interface TryOnModel {
 export interface ClothingItemOption {
   id: string;
   name: string;
-  garmentType: 'ao-dai' | 'ao-ngu-than' | 'nhat-binh' | 'ao-tu-than' | 'ao-ba-ba';
+  garmentType:
+    | 'ao-dai' | 'ao-ngu-than' | 'nhat-binh' | 'ao-tu-than' | 'ao-ba-ba'
+    | 'ao-tac' | 'ao-giao-linh' | 'ao-vien-linh' | 'ao-dai-cuoi' | 'ao-mo-ba' | 'ao-com-thai';
   colorHex: string;
   colorName: string;
   thumbnailUrl: string;
@@ -173,7 +177,8 @@ export const PRESET_CLOTHING_ITEMS: ClothingItemOption[] = [
     },
     description: 'Cổ tròn xẻ ngực, hàng khuy ngọc trai, xẻ tà hông mang đậm vẻ đẹp hồn hậu phóng khoáng phương Nam.',
     era: 'Thế kỷ 19 - Nay'
-  }
+  },
+  ...EXTENDED_CLOTHING_ITEMS
 ];
 
 export interface TryOnResultRecord {

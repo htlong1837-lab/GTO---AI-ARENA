@@ -196,6 +196,86 @@ const RULES: CulturalRule[] = [
     }
   },
 
+  // ---------- Áo Tấc (lễ phục) ----------
+  {
+    id: 'ao-tac-modern-ritual',
+    when: (c) =>
+      c.garmentId === 'ao-tac' &&
+      (c.occasionId === 'su-kien-van-hoa' || c.occasionId === 'cuoi-hoi' || c.occasionId === 'tet') &&
+      c.modernCount >= 1,
+    finding: {
+      severity: 'caution',
+      title: 'Áo Tấc trong nghi lễ phối phụ kiện hiện đại',
+      detail: 'Áo tấc là lễ phục mặc khi lễ gia tiên, tế đình, rước dâu. Sneaker, kính râm hay blazer làm giảm sự thành kính của nghi lễ.',
+      fix: 'Thay bằng khăn đóng/khăn vấn và giày vải hoặc guốc mộc khi làm lễ; phụ kiện hiện đại chỉ dùng cho buổi chụp ảnh.',
+      source: SOURCES.danGian
+    }
+  },
+
+  // ---------- Áo Giao Lĩnh ----------
+  {
+    id: 'giao-linh-huu-nham',
+    when: (c) => c.garmentId === 'ao-giao-linh',
+    finding: {
+      severity: 'info',
+      title: 'Nhớ quy tắc "vạt phải đè vạt trái"',
+      detail: 'Áo giao lĩnh phải mặc hữu nhậm (vạt phải phủ lên vạt trái). Mặc ngược (tả nhậm) theo phong tục là cách mặc áo cho người đã khuất.',
+      fix: 'Khi chụp ảnh, kiểm tra vạt áo phía bên phải người mặc nằm ngoài cùng.',
+      source: SOURCES.nganNamAoMu
+    }
+  },
+
+  // ---------- Áo Viên Lĩnh ----------
+  {
+    id: 'vien-linh-hoang-bao',
+    when: (c) => c.garmentId === 'ao-vien-linh' && c.colorId === 'vang-hoang-cuc',
+    finding: {
+      severity: 'caution',
+      title: 'Viên lĩnh màu vàng dễ bị hiểu là hoàng bào',
+      detail: 'Trong lễ chế phong kiến, sắc vàng kết hợp hình rồng thuộc về hoàng đế. Áo viên lĩnh tông vàng nên tránh họa tiết rồng.',
+      fix: 'Dùng bổ tử hoa sen, vân mây thay vì rồng; hoặc chọn tông lục bảo, đỏ son.',
+      source: SOURCES.hoiDien
+    }
+  },
+
+  // ---------- Áo Dài Cưới ----------
+  {
+    id: 'ao-dai-cuoi-mau-tang',
+    when: (c) => c.garmentId === 'ao-dai-cuoi' && (c.colorId === 'den-tuyen' || c.colorId === 'trang-lua-nga'),
+    finding: {
+      severity: 'taboo',
+      title: 'Áo cưới tông đen/trắng tuyền',
+      detail: 'Theo phong tục Việt, trắng tuyền và đen tuyền toàn thân gắn với tang lễ, không phù hợp lễ gia tiên và rước dâu.',
+      fix: 'Chọn đỏ son, vàng hoàng cúc hoặc hồng sen; trắng ngà chỉ nên làm màu quần/ áo choàng.',
+      source: SOURCES.danGian
+    }
+  },
+
+  // ---------- Áo Mớ Ba Mớ Bảy ----------
+  {
+    id: 'mo-ba-quai-thao',
+    when: (c) => c.garmentId === 'ao-mo-ba' && c.has('non-quai-thao'),
+    finding: {
+      severity: 'creative',
+      title: 'Đúng chất liền chị Quan họ',
+      detail: 'Nón quai thao đi cùng áo mớ ba mớ bảy là bộ nhận diện kinh điển của Quan họ Kinh Bắc.',
+      source: SOURCES.nganNamAoMu
+    }
+  },
+
+  // ---------- Trang phục dân tộc Thái ----------
+  {
+    id: 'com-thai-attribution',
+    when: (c) => c.garmentId === 'ao-com-thai',
+    finding: {
+      severity: 'info',
+      title: 'Ghi nhận nguồn gốc dân tộc Thái',
+      detail: 'Áo cóm, váy ống và khăn piêu là trang phục của đồng bào Thái Tây Bắc. Khăn piêu mang ý nghĩa tín vật tình yêu.',
+      fix: 'Khi đăng ảnh lên Cộng đồng, hãy ghi rõ nguồn gốc và ưu tiên thổ cẩm do nghệ nhân bản địa làm.',
+      source: SOURCES.danGian
+    }
+  },
+
   // ---------- Màu sắc theo dịp (phong tục) ----------
   {
     id: 'tet-dark-color',

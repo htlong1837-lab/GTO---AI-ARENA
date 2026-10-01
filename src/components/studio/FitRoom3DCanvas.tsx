@@ -13,7 +13,8 @@ import {
   Shirt,
   ZoomIn,
   Wand2,
-  Trash2
+  Trash2,
+  Users
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useToast } from '../../context/ToastContext';
@@ -32,6 +33,7 @@ interface FitRoom3DCanvasProps {
   selectedAccessoryNames?: string[];
   aiResultImage?: string | null;
   onOpenShareModal?: () => void;
+  onShareToCommunity?: () => void;
   onSaveToWardrobe?: () => void;
   onAddToCompare?: () => void;
   onToggleAccessory?: (id: string) => void;
@@ -54,6 +56,7 @@ export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
   selectedAccessoryNames = [],
   aiResultImage,
   onOpenShareModal,
+  onShareToCommunity,
   onSaveToWardrobe,
   onAddToCompare,
   onToggleAccessory,
@@ -166,6 +169,19 @@ export const FitRoom3DCanvas: React.FC<FitRoom3DCanvasProps> = ({
               <Maximize2 className="w-3.5 h-3.5 text-stone-700" />
               <span>Upscale</span>
             </button>
+            {onShareToCommunity && (
+              <>
+                <div className="w-[1px] h-4 bg-stone-200 mx-0.5" />
+                <button
+                  onClick={onShareToCommunity}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-heritage-red text-white hover:bg-heritage-red-dark transition-colors cursor-pointer"
+                  title="Đăng ảnh AI lên Cộng đồng"
+                >
+                  <Users className="w-3.5 h-3.5 text-heritage-gold-light" />
+                  <span>Đăng Cộng đồng</span>
+                </button>
+              </>
+            )}
             {onOpenShareModal && (
               <>
                 <div className="w-[1px] h-4 bg-stone-200 mx-0.5" />

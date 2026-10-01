@@ -79,7 +79,7 @@ export const StepGarmentCustomize: React.FC<StepGarmentCustomizeProps> = ({
             <Sparkles className="w-4 h-4 text-teal-600" />
             <span>1. Chọn dòng Cổ Phục di sản</span>
           </h3>
-          <span className="text-xs text-stone-500 font-light">5 kiểu dáng tiêu biểu</span>
+          <span className="text-xs text-stone-500 font-light">{PRESET_CLOTHING_ITEMS.length} kiểu dáng tiêu biểu</span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">

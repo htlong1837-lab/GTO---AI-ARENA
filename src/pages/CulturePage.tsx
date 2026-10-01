@@ -1,5 +1,19 @@
 import React, { useState } from 'react';
 import { GARMENTS } from '../data/garments';
+
+const GARMENT_DOT_COLORS: Record<string, string> = {
+  'ao-dai': '#A8282B',
+  'ao-ngu-than': '#C59338',
+  'nhat-binh': '#6B3074',
+  'ao-tu-than': '#182747',
+  'ao-ba-ba': '#1D6246',
+  'ao-tac': '#182747',
+  'ao-giao-linh': '#9B1D20',
+  'ao-vien-linh': '#1D6246',
+  'ao-dai-cuoi': '#C83337',
+  'ao-mo-ba': '#5C3A21',
+  'ao-com-thai': '#CA4F76'
+};
 import { CULTURAL_QUIZ_QUESTIONS } from '../data/culturalArticles';
 import { Sparkles, HelpCircle, ArrowRight, RotateCcw } from 'lucide-react';
 
@@ -73,7 +87,7 @@ export const CulturePage: React.FC<CulturePageProps> = ({
       <section className="space-y-6">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111215]">
-            Ngũ Đại Phẩm Phục & Cấu Trúc Nguyên Bản
+            Phẩm Phục Việt & Cấu Trúc Nguyên Bản
           </h2>
           <span className="text-xs font-serif text-stone-500 italic">Chọn trang phục để nghiên cứu kết cấu</span>
         </div>
@@ -95,16 +109,7 @@ export const CulturePage: React.FC<CulturePageProps> = ({
                 <span
                   className="w-2 h-2 rounded-full"
                   style={{
-                    backgroundColor:
-                      g.id === 'ao-dai'
-                        ? '#A8282B'
-                        : g.id === 'ao-ngu-than'
-                        ? '#C59338'
-                        : g.id === 'nhat-binh'
-                        ? '#6B3074'
-                        : g.id === 'ao-tu-than'
-                        ? '#182747'
-                        : '#1D6246'
+                    backgroundColor: GARMENT_DOT_COLORS[g.id] || '#1D6246'
                   }}
                 />
                 <span>{g.name}</span>

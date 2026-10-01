@@ -20,9 +20,12 @@ import { VirtualTryOnService } from '../services/virtualTryOnService';
 import { StorageService } from '../services/storageService';
 import { GeminiService } from '../services/geminiService';
 import { useToast } from '../context/ToastContext';
+import { draftFromOutfit, PostDraft } from '../services/communityDrafts';
 import {
   Sparkles,
-  Wand2
+  Wand2,
+  Bookmark,
+  Users
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -37,6 +40,7 @@ interface StudioPageProps {
   initialAiImageUrl?: string;
   onNavigate: (_tab: string) => void;
   onRefreshCompareCount: () => void;
+  onShareToCommunity: (draft: PostDraft) => void;
 }
 
 export const StudioPage: React.FC<StudioPageProps> = ({
@@ -44,7 +48,8 @@ export const StudioPage: React.FC<StudioPageProps> = ({
   initialColorId,
   initialAccessoryIds,
   initialGender = 'female',
-  onRefreshCompareCount
+  onRefreshCompareCount,
+  onShareToCommunity
 }) => {
   const { showToast } = useToast();
 
@@ -217,6 +222,24 @@ export const StudioPage: React.FC<StudioPageProps> = ({
     });
   };
 
+  // One-click share: tạo bản nháp bài viết từ bản phối hiện tại (kèm ảnh AI nếu có)
+  const handleShareToCommunity = () => {
+    const outfit: Outfit = {
+      id: `fit-${Date.now()}`,
+      name: `${selectedClothes.name} • ${chosenColor.vietnameseName}`,
+      garmentId: selectedClothes.garmentType,
+      occasionId: 'chup-anh',
+      colorId: selectedColorId,
+      accessoryIds: selectedAccessoryIds,
+      styleId: 'modern-genz',
+      gender: selectedModel.gender,
+      createdAt: new Date().toISOString(),
+      aiGeneratedImage: currentResult?.imageUrl || customClothesImage || undefined,
+      notes: accNames.length ? `Phụ kiện: ${accNames.join(', ')}.` : undefined
+    };
+    onShareToCommunity(draftFromOutfit(outfit));
+  };
+
   // Add current styling to compare
   const handleAddToCompare = () => {
     const outfitToCompare: Outfit = {
@@ -317,6 +340,21 @@ export const StudioPage: React.FC<StudioPageProps> = ({
                   <Wand2 className="w-4 h-4 text-amber-300 animate-pulse" />
                   <span className="tracking-wide">{isGenerating ? 'AI đang ướm thử...' : 'Generate (AI Thử Đồ)'}</span>
                 </button>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={handleSaveToWardrobe}
+                    className="py-2 rounded-xl border border-stone-200 bg-white hover:border-stone-400 text-[11px] font-bold text-stone-700 flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Bookmark className="w-3.5 h-3.5 text-heritage-gold" /> Lưu Tủ đồ
+                  </button>
+                  <button
+                    onClick={handleShareToCommunity}
+                    className="py-2 rounded-xl bg-heritage-red hover:bg-heritage-red-dark text-[11px] font-bold text-white flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Users className="w-3.5 h-3.5 text-heritage-gold-light" /> Đăng Cộng đồng
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -336,6 +374,7 @@ export const StudioPage: React.FC<StudioPageProps> = ({
               selectedAccessoryNames={accNames}
               aiResultImage={currentResult?.imageUrl}
               onOpenShareModal={() => setIsShareModalOpen(true)}
+              onShareToCommunity={handleShareToCommunity}
               onSaveToWardrobe={handleSaveToWardrobe}
               onAddToCompare={handleAddToCompare}
               onToggleAccessory={handleToggleAccessory}

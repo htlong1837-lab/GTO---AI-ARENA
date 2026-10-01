@@ -7,7 +7,7 @@ export const OCCASIONS: Occasion[] = [
     tag: 'Đầu năm sum vầy',
     icon: 'Sparkles',
     description: 'Du xuân chúc Tết, đi lễ chùa, tụ họp gia đình đầu năm với sắc màu may mắn, tươi vui và rạng rỡ.',
-    recommendedGarments: ['ao-dai', 'ao-ngu-than', 'nhat-binh'],
+    recommendedGarments: ['ao-tac', 'ao-dai-cuoi', 'ao-dai', 'ao-ngu-than', 'nhat-binh'],
     recommendedStyles: ['traditional', 'modern-genz', 'cute', 'elegant']
   },
   {
@@ -16,7 +16,7 @@ export const OCCASIONS: Occasion[] = [
     tag: 'Tôn vinh cội nguồn',
     icon: 'PartyPopper',
     description: 'Hội Lim, Đền Hùng, Festival Huế, diễu hành bách hoa cổ phục tôn vinh truyền thống dân tộc.',
-    recommendedGarments: ['ao-tu-than', 'nhat-binh', 'ao-ngu-than'],
+    recommendedGarments: ['ao-mo-ba', 'ao-giao-linh', 'ao-com-thai', 'ao-tu-than', 'nhat-binh', 'ao-ngu-than'],
     recommendedStyles: ['traditional', 'vintage', 'elegant']
   },
   {
@@ -34,7 +34,7 @@ export const OCCASIONS: Occasion[] = [
     tag: 'Nghệ thuật & Sáng tạo',
     icon: 'Camera',
     description: 'Sáng tạo nội dung ảnh, dạo phố phường cổ Hà Nội, phố người Hoa Chợ Lớn hay sông Hương thơ mộng.',
-    recommendedGarments: ['ao-dai', 'ao-tu-than', 'ao-ngu-than', 'nhat-binh', 'ao-ba-ba'],
+    recommendedGarments: ['ao-giao-linh', 'ao-com-thai', 'ao-mo-ba', 'ao-dai', 'ao-tu-than', 'ao-ngu-than', 'nhat-binh', 'ao-ba-ba'],
     recommendedStyles: ['street', 'vintage', 'modern-genz', 'elegant']
   },
   {
@@ -43,7 +43,7 @@ export const OCCASIONS: Occasion[] = [
     tag: 'Khoảnh khắc dấu ấn',
     icon: 'Award',
     description: 'Ngày trọng đại vinh quy bái tổ thời 4.0, kết hợp nét trang trọng tri thức với cá tính thanh xuân.',
-    recommendedGarments: ['ao-dai', 'ao-ngu-than'],
+    recommendedGarments: ['ao-vien-linh', 'ao-giao-linh', 'ao-dai', 'ao-ngu-than'],
     recommendedStyles: ['elegant', 'minimal', 'modern-genz']
   },
   {
@@ -52,7 +52,7 @@ export const OCCASIONS: Occasion[] = [
     tag: 'Hỷ sự trang trọng',
     icon: 'HeartHandshake',
     description: 'Lễ dạm ngõ, ăn hỏi, bưng quả hoặc dự tiệc cưới người thân với diện mạo tao nhã, chuẩn mực.',
-    recommendedGarments: ['ao-dai', 'nhat-binh', 'ao-ngu-than'],
+    recommendedGarments: ['ao-dai-cuoi', 'ao-tac', 'ao-dai', 'nhat-binh', 'ao-ngu-than'],
     recommendedStyles: ['traditional', 'elegant']
   },
   {
@@ -61,7 +61,7 @@ export const OCCASIONS: Occasion[] = [
     tag: 'Tự hào Việt Nam',
     icon: 'Globe',
     description: 'Đại diện giới trẻ Việt Nam tại các diễn đàn quốc tế, hội nghị thượng đỉnh thanh niên thế giới.',
-    recommendedGarments: ['ao-ngu-than', 'ao-dai', 'nhat-binh'],
+    recommendedGarments: ['ao-tac', 'ao-vien-linh', 'ao-com-thai', 'ao-ngu-than', 'ao-dai', 'nhat-binh'],
     recommendedStyles: ['elegant', 'modern-genz', 'minimal']
   },
   {

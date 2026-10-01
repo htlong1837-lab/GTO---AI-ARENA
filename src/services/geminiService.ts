@@ -128,6 +128,18 @@ export const GeminiService = {
       garmentDetails = 'traditional northern Vietnamese Ao Tu Than (four-panel tunic from Kinh Bac) featuring flowing draped panels layered over a delicate silk halter bodice (Ao Yem) and tied waist sash in romantic folk silhouette';
     } else if (garment.id === 'ao-ba-ba') {
       garmentDetails = 'elevated Vietnamese Southern Ao Ba Ba tunic crafted from smooth rustic raw linen and silk, fitted raglan sleeves, traditional front button line, paired with fluid matching trousers';
+    } else if (garment.id === 'ao-tac') {
+      garmentDetails = 'Vietnamese Ao Tac ceremonial robe (Nguyen dynasty) with very wide flowing sleeves, knee-to-ankle length, low standing collar buttoned at the right armpit, side slits, worn with a matching traditional turban (khan van / khan xep)';
+    } else if (garment.id === 'ao-giao-linh') {
+      garmentDetails = 'Vietnamese Ao Giao Linh cross-collar robe (Ly-Tran-Le dynasties) with the RIGHT panel overlapping the LEFT panel (right-over-left closure), contrasting wide collar band, wide sleeves and a tied fabric waist sash over a long skirt';
+    } else if (garment.id === 'ao-vien-linh') {
+      garmentDetails = 'Vietnamese Ao Vien Linh round-collar scholar robe (Le dynasty) with wide sleeves, ankle length, a square embroidered lotus and cloud chest badge (decorative, not a rank badge) and a rigid ornamental belt';
+    } else if (garment.id === 'ao-dai-cuoi') {
+      garmentDetails = 'Vietnamese traditional wedding Ao Dai in festive silk brocade embroidered with the Double Happiness motif and phoenix, layered under a sheer gauze overcoat, with a round wrapped bridal turban (khan van) and white silk trousers';
+    } else if (garment.id === 'ao-mo-ba') {
+      garmentDetails = 'Vietnamese Kinh Bac Ao Mo Ba Mo Bay: several layered four-panel tunics worn one over another so multiple colorful collars show in a stacked V, a colorful tied waist sash (that lung bao), black skirt and a flat palm-leaf quai thao hat, Quan Ho folk singer style';
+    } else if (garment.id === 'ao-com-thai') {
+      garmentDetails = 'traditional costume of the Thai ethnic group of Northwest Vietnam: short fitted Ao Com blouse with a vertical row of silver butterfly-shaped buttons, long black tube skirt with woven patterned hem, and a hand-embroidered Pieu headscarf, depicted respectfully';
     } else {
       garmentDetails = `traditional Vietnamese heritage garment: ${garment.name}, ${garment.description}`;
     }
