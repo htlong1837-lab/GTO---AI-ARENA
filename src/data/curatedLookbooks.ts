@@ -13,7 +13,7 @@ export const CURATED_LOOKBOOKS: CuratedLook[] = [
     region: 'Toàn quốc',
     author: 'Minh Anh (@anhm.remix)',
     likes: 342,
-    imageUrl: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'images/lookbook/look_tet_genz.jpg',
     culturalStory: 'Lấy cảm hứng từ sắc đỏ phong bao lì xì truyền thống và tà áo dài tân thời thập niên 60, set đồ được cân bằng bằng đôi sneaker chunky giúp các bạn trẻ thoải mái dạo chợ hoa từ sáng đến tối.'
   },
   {
@@ -28,7 +28,7 @@ export const CURATED_LOOKBOOKS: CuratedLook[] = [
     region: 'Bắc Bộ',
     author: 'Quỳnh Dao (@vintage.hanoi)',
     likes: 289,
-    imageUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'images/lookbook/look_hanoi_indochine.jpg',
     culturalStory: 'Tái hiện không gian văn hiến ngàn năm của phố cổ Hà Nội. Tông màu xanh chàm nhuộm lá tự nhiên tôn vinh nét đằm thắm của người phụ nữ Tràng An xưa.'
   },
   {
@@ -43,7 +43,7 @@ export const CURATED_LOOKBOOKS: CuratedLook[] = [
     region: 'Trung Bộ',
     author: 'Hoàng Long (@longcophuc)',
     likes: 512,
-    imageUrl: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'images/lookbook/look_hue_imperial.jpg',
     culturalStory: 'Nhật Bình là báu vật của hoàng triều Huế. Phối màu tím hoa cà kết hợp viền đối khâm ngũ sắc giữ nguyên nét tôn nghiêm, chỉ thêm quạt lụa và trâm bạc tối giản.'
   },
   {
@@ -58,7 +58,7 @@ export const CURATED_LOOKBOOKS: CuratedLook[] = [
     region: 'Nam Bộ',
     author: 'Bảo Trâm (@tram.hype)',
     likes: 418,
-    imageUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'images/lookbook/look_saigon_baba.jpg',
     culturalStory: 'Phá vỡ định kiến áo bà ba chỉ dành cho miền quê thôn dã. Chiếc áo bà ba đen lụa phối cùng bốt da thời thượng tạo nên diện mạo Avant-Garde phóng khoáng như chính tinh thần Sài Gòn.'
   },
   {
@@ -73,7 +73,7 @@ export const CURATED_LOOKBOOKS: CuratedLook[] = [
     region: 'Toàn quốc',
     author: 'Đức Huy (@vietphuc.huy)',
     likes: 367,
-    imageUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'images/lookbook/look_nguthan_scholar.jpg',
     culturalStory: 'Lễ tốt nghiệp của thế hệ Gen Z không còn rập khuôn áo cử nhân phương Tây. Ngũ thân tay chẽn vàng hoàng cúc thể hiện cốt cách tri thức vinh quy bái tổ thời hội nhập.'
   },
   {
@@ -88,7 +88,7 @@ export const CURATED_LOOKBOOKS: CuratedLook[] = [
     region: 'Toàn quốc',
     author: 'Thảo My (@my.sweetie)',
     likes: 475,
-    imageUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'images/lookbook/look_sen_pastel.jpg',
     culturalStory: 'Hòa quyện giữa vẻ đẹp thanh tân của nữ sinh với phụ kiện ngọc trai và túi cói thêu tay mộc mạc, tạo cảm giác nhẹ nhàng, êm ái khi bước vào giảng đường.'
   },
   {
@@ -103,7 +103,7 @@ export const CURATED_LOOKBOOKS: CuratedLook[] = [
     region: 'Toàn quốc',
     author: 'Việt Anh (@vietanh.mode)',
     likes: 620,
-    imageUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'images/lookbook/look_nguthan_blazer.jpg',
     culturalStory: 'Sự kết hợp táo bạo giữa cấu trúc áo ngũ thân lập lĩnh che chở thân tâm với phom áo vest oversize Tây phương, đại diện cho tinh thần người trẻ Việt tự tin bước ra trường quốc tế.'
   }
 ];

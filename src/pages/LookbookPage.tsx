@@ -131,7 +131,7 @@ export const LookbookPage: React.FC<LookbookPageProps> = ({
               className="inline-block w-14 sm:w-20 h-7 sm:h-10 rounded-full align-middle bg-cover bg-center mx-2.5 border border-[#DFB058]/60 shadow-xs"
               style={{
                 backgroundImage:
-                  'url("https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=400&q=80")'
+                  'url("images/lookbook/look_hue_imperial.jpg")'
               }}
             />
             cùng nhịp sống đương đại

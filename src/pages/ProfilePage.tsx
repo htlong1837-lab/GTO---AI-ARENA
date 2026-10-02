@@ -3,11 +3,32 @@ import { UserProfile, Outfit } from '../types/outfit';
 import { GARMENTS } from '../data/garments';
 import { COLORS } from '../data/colors';
 import { STYLES } from '../data/styles';
+import { PRESET_CLOTHING_ITEMS } from '../data/modelsTryOn';
 import { StorageService } from '../services/storageService';
 import { GeminiService } from '../services/geminiService';
 import { GeminiKeyModal } from '../components/common/GeminiKeyModal';
 import { useToast } from '../context/ToastContext';
 import { draftFromOutfit, PostDraft } from '../services/communityDrafts';
+
+const COLOR_ALIAS: Record<string, string> = {
+  'pastel-thanh-thien': 'xanh-cham',
+  'nau-gu': 'nau-song'
+};
+
+const getOutfitPreviewImage = (outfit: Outfit): string => {
+  if (outfit.aiGeneratedImage) return outfit.aiGeneratedImage;
+  const item = PRESET_CLOTHING_ITEMS.find((c) => c.garmentType === outfit.garmentId);
+  if (item?.colorVariants) {
+    if (item.colorVariants[outfit.colorId]) {
+      return item.colorVariants[outfit.colorId];
+    }
+    const alias = COLOR_ALIAS[outfit.colorId];
+    if (alias && item.colorVariants[alias]) {
+      return item.colorVariants[alias];
+    }
+  }
+  return item?.thumbnailUrl || GARMENTS.find((g) => g.id === outfit.garmentId)?.image || '';
+};
 import {
   Bookmark,
   History,
@@ -346,29 +367,49 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                         {outfit.name}
                       </h3>
 
-                      {/* AI Generated Image or Default Preview */}
-                      {outfit.aiGeneratedImage ? (
-                        <div className="mt-2.5 relative h-40 rounded-xl overflow-hidden group/thumb border border-stone-200">
-                          <img
-                            src={outfit.aiGeneratedImage}
-                            alt={outfit.name}
-                            className="w-full h-full object-cover object-top transition-transform duration-500 group-hover/thumb:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-stone-900/70 via-transparent to-transparent pointer-events-none" />
-                          <span className="absolute bottom-1.5 left-2 px-2 py-0.5 rounded-full text-[9px] font-bold bg-stone-900/80 text-amber-300 backdrop-blur-xs border border-amber-400/30 flex items-center gap-1">
-                            <Sparkles className="w-2.5 h-2.5 text-amber-300" />
-                            Ảnh AI Imagen 3
-                          </span>
-                        </div>
-                      ) : garment?.image ? (
-                        <div className="mt-2.5 relative h-28 rounded-xl overflow-hidden border border-stone-100 opacity-80 group/thumb">
-                          <img
-                            src={garment.image}
-                            alt={garment.name}
-                            className="w-full h-full object-cover object-center filter grayscale-20 group-hover/thumb:grayscale-0 transition-all"
-                          />
-                        </div>
-                      ) : null}
+                      {/* Outfit Preview Image */}
+                      {(() => {
+                        const previewImg = getOutfitPreviewImage(outfit);
+                        const isAi = !!outfit.aiGeneratedImage;
+                        if (!previewImg) return null;
+
+                        return (
+                          <div
+                            className={`mt-3 relative h-64 sm:h-72 w-full rounded-2xl overflow-hidden border border-[#E2D8C7] group/thumb transition-all ${
+                              isAi
+                                ? 'bg-stone-900'
+                                : 'bg-gradient-to-b from-[#FAF7F2] via-[#F4EFE6] to-[#ECE7DE] p-3 flex items-center justify-center shadow-inner'
+                            }`}
+                          >
+                            <img
+                              src={previewImg}
+                              alt={outfit.name}
+                              className={`w-full h-full transition-transform duration-700 ease-out group-hover/thumb:scale-105 ${
+                                isAi ? 'object-cover object-top' : 'object-contain drop-shadow-md'
+                              }`}
+                            />
+                            {isAi ? (
+                              <>
+                                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-transparent to-transparent pointer-events-none" />
+                                <span className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full text-[10px] font-bold bg-stone-900/85 text-amber-300 backdrop-blur-xs border border-amber-400/30 flex items-center gap-1 shadow-sm">
+                                  <Sparkles className="w-3 h-3 text-amber-300" />
+                                  Ảnh AI Imagen 3
+                                </span>
+                              </>
+                            ) : (
+                              <span className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-white/95 text-stone-800 backdrop-blur-md border border-[#E2D8C7] flex items-center gap-1.5 shadow-xs">
+                                {color?.hex && (
+                                  <span
+                                    className="w-2.5 h-2.5 rounded-full ring-1 ring-black/10 shrink-0"
+                                    style={{ backgroundColor: color.hex }}
+                                  />
+                                )}
+                                <span>{color?.vietnameseName || color?.name || 'Nguyên bản'}</span>
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })()}
 
                       <div className="text-[11px] text-stone-400 mt-2 font-mono">
                         Ngày tạo: {new Date(outfit.createdAt).toLocaleDateString('vi-VN')}
