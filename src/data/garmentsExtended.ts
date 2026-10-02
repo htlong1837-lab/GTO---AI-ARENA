@@ -27,7 +27,7 @@ export const EXTENDED_GARMENTS: Garment[] = [
       'Với buổi chụp lookbook có thể phối túi xách mây tre đan'
     ],
     silhouette: 'regal',
-    image: garmentIllustrationUrl('ao-tac', '#182747', '#F4EFE6'),
+    image: 'images/viet_phuc/ao_tac.jpg',
     defaultColorId: 'xanh-cham',
     formalityTier: 'scholarly_formal',
     inviolableFeatures: [
@@ -63,7 +63,7 @@ export const EXTENDED_GARMENTS: Garment[] = [
       'Kết hợp trâm cài gỗ hoặc tóc búi thấp'
     ],
     silhouette: 'layered',
-    image: garmentIllustrationUrl('ao-giao-linh', '#F4EFE6', '#9B1D20'),
+    image: 'images/viet_phuc/ao_giao_linh.jpg',
     defaultColorId: 'trang-lua-nga',
     formalityTier: 'folk_traditional',
     inviolableFeatures: [
@@ -99,7 +99,7 @@ export const EXTENDED_GARMENTS: Garment[] = [
       'Phối mũ cánh chuồn chỉ nên dùng trong biểu diễn, sân khấu'
     ],
     silhouette: 'structured',
-    image: garmentIllustrationUrl('ao-vien-linh', '#1D6246', '#C59338'),
+    image: 'images/viet_phuc/ao_vien_linh.jpg',
     defaultColorId: 'xanh-ngoc-luc',
     formalityTier: 'court_regal',
     inviolableFeatures: [
@@ -135,7 +135,7 @@ export const EXTENDED_GARMENTS: Garment[] = [
       'Trang sức vàng/ngọc trai thay cho phụ kiện bạc lạnh màu'
     ],
     silhouette: 'flowing',
-    image: garmentIllustrationUrl('ao-dai-cuoi', '#9B1D20', '#F4EFE6'),
+    image: 'images/viet_phuc/ao_dai_cuoi.jpg',
     defaultColorId: 'do-son',
     formalityTier: 'modern_national',
     inviolableFeatures: [
@@ -171,7 +171,7 @@ export const EXTENDED_GARMENTS: Garment[] = [
       'Giữ nón quai thao — món phụ kiện nhận diện của Quan họ'
     ],
     silhouette: 'layered',
-    image: garmentIllustrationUrl('ao-mo-ba', '#5C3A21', '#1D6246'),
+    image: 'images/viet_phuc/ao_mo_ba.jpg',
     defaultColorId: 'nau-gu',
     formalityTier: 'folk_traditional',
     inviolableFeatures: [
@@ -207,7 +207,7 @@ export const EXTENDED_GARMENTS: Garment[] = [
       'Ghi chú nguồn gốc dân tộc Thái khi đăng ảnh chia sẻ'
     ],
     silhouette: 'structured',
-    image: garmentIllustrationUrl('ao-com-thai', '#CA4F76', '#9B1D20'),
+    image: 'images/viet_phuc/ao_com_thai.jpg',
     defaultColorId: 'hong-canh-sen',
     formalityTier: 'folk_traditional',
     inviolableFeatures: [
