@@ -234,22 +234,26 @@ export const EXTENDED_PALETTES: Record<string, CuratedPaletteOption[]> = {
   'ao-giao-linh': [
     { id: 'trang-lua-nga', name: 'Bạch Ngọc Viền Son', primaryColorHex: '#F4EFE6', secondaryColorHex: '#9B1D20', primaryName: 'Áo trắng ngà', secondaryName: 'Viền cổ đỏ son', context: 'Chụp ảnh cổ phong, Lễ hội', description: 'Thân trắng ngà viền cổ đỏ son — phối kinh điển thời Trần.', tag: 'Kinh điển' },
     { id: 'xanh-cham', name: 'Chàm Viền Ngà', primaryColorHex: '#182747', secondaryColorHex: '#F4EFE6', primaryName: 'Áo chàm', secondaryName: 'Viền cổ trắng ngà', context: 'Dạo phố, Kỷ yếu', description: 'Tông chàm lạnh, viền ngà thanh nhã cho cả nam và nữ.', tag: 'Thanh lịch' },
-    { id: 'nau-gu', name: 'Nâu Gụ Đồng Quê', primaryColorHex: '#5C3A21', secondaryColorHex: '#C59338', primaryName: 'Áo nâu gụ', secondaryName: 'Viền vàng nghệ', context: 'Hội làng, Chụp đồng lúa', description: 'Mộc mạc như sắc đất phù sa đồng bằng Bắc Bộ.', tag: 'Mộc mạc' }
+    { id: 'nau-gu', name: 'Nâu Gụ Đồng Quê', primaryColorHex: '#5C3A21', secondaryColorHex: '#C59338', primaryName: 'Áo nâu gụ', secondaryName: 'Viền vàng nghệ', context: 'Hội làng, Chụp đồng lúa', description: 'Mộc mạc như sắc đất phù sa đồng bằng Bắc Bộ.', tag: 'Mộc mạc' },
+    { id: 'do-son', name: 'Đỏ Son Viền Ngà', primaryColorHex: '#9B1D20', secondaryColorHex: '#F4EFE6', primaryName: 'Áo đỏ son', secondaryName: 'Viền cổ trắng ngà', context: 'Hỷ lễ, Hội hè', description: 'Sắc đỏ son nổi bật cho các dịp lễ hội truyền thống.', tag: 'Hỷ sự' }
   ],
   'ao-vien-linh': [
     { id: 'xanh-ngoc-luc', name: 'Lục Bảo Khoa Bảng', primaryColorHex: '#1D6246', secondaryColorHex: '#C59338', primaryName: 'Áo lục bảo', secondaryName: 'Bổ tử vàng', context: 'Lễ tốt nghiệp, Vinh danh', description: 'Sắc lục bảo của bậc khoa bảng, bổ tử vàng hoa sen.', tag: 'Khoa bảng' },
     { id: 'do-son', name: 'Đỏ Son Triều Phục', primaryColorHex: '#9B1D20', secondaryColorHex: '#C59338', primaryName: 'Áo đỏ son', secondaryName: 'Bổ tử vàng', context: 'Sân khấu, Lễ hội', description: 'Đỏ son uy nghi theo phong cách triều phục.', tag: 'Uy nghi' },
-    { id: 'xanh-cham', name: 'Chàm Văn Nhân', primaryColorHex: '#182747', secondaryColorHex: '#F4EFE6', primaryName: 'Áo chàm', secondaryName: 'Bổ tử ngà', context: 'Văn miếu, Thư pháp', description: 'Tông chàm nho nhã của giới văn nhân.', tag: 'Nho nhã' }
+    { id: 'xanh-cham', name: 'Chàm Văn Nhân', primaryColorHex: '#182747', secondaryColorHex: '#F4EFE6', primaryName: 'Áo chàm', secondaryName: 'Bổ tử ngà', context: 'Văn miếu, Thư pháp', description: 'Tông chàm nho nhã của giới văn nhân.', tag: 'Nho nhã' },
+    { id: 'vang-hoang-cuc', name: 'Hoàng Kim Bổ Tử', primaryColorHex: '#C59338', secondaryColorHex: '#9B1D20', primaryName: 'Áo vàng hoàng cúc', secondaryName: 'Bổ tử thêu rồng', context: 'Lễ hội, Đại triều', description: 'Sắc vàng kim vương giả với bổ tử thêu tinh xảo.', tag: 'Vương giả' }
   ],
   'ao-dai-cuoi': [
     { id: 'do-son', name: 'Song Hỷ Đỏ Son', primaryColorHex: '#9B1D20', secondaryColorHex: '#F4EFE6', primaryName: 'Áo dài cưới đỏ son', secondaryName: 'Quần lụa trắng ngà', context: 'Rước dâu, Lễ gia tiên', description: 'Đỏ son thêu song hỷ — lựa chọn may mắn nhất cho ngày cưới.', tag: 'Hỷ sự' },
     { id: 'vang-hoang-cuc', name: 'Hoàng Cúc Phú Quý', primaryColorHex: '#C59338', secondaryColorHex: '#9B1D20', primaryName: 'Áo dài cưới vàng', secondaryName: 'Khăn vấn đỏ', context: 'Lễ ăn hỏi, Lễ cưới', description: 'Vàng hoàng cúc tượng trưng phú quý, phối khăn vấn đỏ.', tag: 'Phú quý' },
-    { id: 'hong-canh-sen', name: 'Hồng Sen Ăn Hỏi', primaryColorHex: '#CA4F76', secondaryColorHex: '#F4EFE6', primaryName: 'Áo dài hồng sen', secondaryName: 'Quần trắng ngà', context: 'Lễ dạm ngõ, Ăn hỏi', description: 'Hồng sen ngọt ngào cho cô dâu trẻ trung trong lễ ăn hỏi.', tag: 'Ngọt ngào' }
+    { id: 'hong-canh-sen', name: 'Hồng Sen Ăn Hỏi', primaryColorHex: '#CA4F76', secondaryColorHex: '#F4EFE6', primaryName: 'Áo dài hồng sen', secondaryName: 'Quần trắng ngà', context: 'Lễ dạm ngõ, Ăn hỏi', description: 'Hồng sen ngọt ngào cho cô dâu trẻ trung trong lễ ăn hỏi.', tag: 'Ngọt ngào' },
+    { id: 'trang-lua-nga', name: 'Bạch Ngọc Khăn Vấn', primaryColorHex: '#F4EFE6', secondaryColorHex: '#C59338', primaryName: 'Áo cưới trắng ngà', secondaryName: 'Khăn vấn đính ngọc', context: 'Lễ gia tiên, Thánh đường', description: 'Sắc trắng thanh khiết kết hợp khăn vấn trang nhã.', tag: 'Thanh khiết' }
   ],
   'ao-mo-ba': [
     { id: 'nau-gu', name: 'Nâu Gụ Lưng Xanh', primaryColorHex: '#5C3A21', secondaryColorHex: '#1D6246', primaryName: 'Áo ngoài nâu gụ', secondaryName: 'Lưng bao xanh lục', context: 'Hội Lim, Quan họ', description: 'Bộ kinh điển của liền chị Quan họ: áo nâu gụ, lưng bao xanh.', tag: 'Quan họ' },
     { id: 'xanh-cham', name: 'Chàm Lưng Hoa Đào', primaryColorHex: '#182747', secondaryColorHex: '#CA4F76', primaryName: 'Áo ngoài chàm', secondaryName: 'Lưng bao hoa đào', context: 'Hội xuân, Đình làng', description: 'Chàm đậm phối dải lưng hoa đào duyên dáng.', tag: 'Hội xuân' },
-    { id: 'den-tuyen', name: 'The Đen Cổ Ngũ Sắc', primaryColorHex: '#1A1C20', secondaryColorHex: '#C59338', primaryName: 'Áo the đen', secondaryName: 'Lưng bao vàng', context: 'Biểu diễn, Chụp ảnh', description: 'Nền đen làm nổi bật các lớp cổ áo nhiều màu bên trong.', tag: 'Nổi bật' }
+    { id: 'den-tuyen', name: 'The Đen Cổ Ngũ Sắc', primaryColorHex: '#1A1C20', secondaryColorHex: '#C59338', primaryName: 'Áo the đen', secondaryName: 'Lưng bao vàng', context: 'Biểu diễn, Chụp ảnh', description: 'Nền đen làm nổi bật các lớp cổ áo nhiều màu bên trong.', tag: 'Nổi bật' },
+    { id: 'do-son', name: 'Đỏ Son Lưng Vàng', primaryColorHex: '#9B1D20', secondaryColorHex: '#C59338', primaryName: 'Áo ngoài đỏ son', secondaryName: 'Lưng bao vàng nghệ', context: 'Ngày hội, Mừng xuân', description: 'Sắc đỏ rực rỡ nhiều lớp cổ áo mừng ngày xuân trẩy hội.', tag: 'Rực rỡ' }
   ],
   'ao-com-thai': [
     { id: 'hong-canh-sen', name: 'Hồng Ban Tây Bắc', primaryColorHex: '#CA4F76', secondaryColorHex: '#9B1D20', primaryName: 'Áo cóm hồng', secondaryName: 'Chân váy hoa văn đỏ', context: 'Lễ hội Xòe, Du lịch Tây Bắc', description: 'Sắc hồng tươi như hoa ban nở trên núi rừng Tây Bắc.', tag: 'Tươi tắn' },
@@ -259,10 +263,17 @@ export const EXTENDED_PALETTES: Record<string, CuratedPaletteOption[]> = {
   ]
 };
 
-const variantsFor = (id: IllustratedGarmentId): Record<string, string> =>
-  Object.fromEntries(
-    (EXTENDED_PALETTES[id] || []).map((p) => [p.id, garmentIllustrationUrl(id, p.primaryColorHex, p.secondaryColorHex)])
+const garmentFilePrefix = (id: IllustratedGarmentId): string => id.replace(/-/g, '_');
+
+const variantsFor = (id: IllustratedGarmentId): Record<string, string> => {
+  const prefix = garmentFilePrefix(id);
+  return Object.fromEntries(
+    (EXTENDED_PALETTES[id] || []).map((p) => [
+      p.id,
+      `images/viet_phuc/${prefix}_${p.id}.jpg`
+    ])
   );
+};
 
 const item = (
   id: IllustratedGarmentId,
@@ -271,7 +282,8 @@ const item = (
   era: string
 ): ClothingItemOption => {
   const first = EXTENDED_PALETTES[id][0];
-  const thumb = garmentIllustrationUrl(id, first.primaryColorHex, first.secondaryColorHex);
+  const prefix = garmentFilePrefix(id);
+  const thumb = `images/viet_phuc/${prefix}.jpg`;
   return {
     id: `clothes-${id}`,
     name,
