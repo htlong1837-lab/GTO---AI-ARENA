@@ -40,10 +40,10 @@ const HOUR = 3600_000;
 const ago = (h: number) => new Date(Date.now() - h * HOUR).toISOString();
 
 const A = {
-  linh: { id: 'seed-linhdan', name: 'Linh Đan', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80' },
-  minh: { id: 'seed-minh', name: 'Minh Khôi', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80' },
-  thao: { id: 'seed-thao', name: 'Phương Thảo', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80' },
-  nam: { id: 'seed-nam', name: 'Đức Nam', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80' },
+  linh: { id: 'seed-linhdan', name: 'Khách 101', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80' },
+  minh: { id: 'seed-minh', name: 'Khách 102', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80' },
+  thao: { id: 'seed-thao', name: 'Khách 103', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80' },
+  nam: { id: 'seed-nam', name: 'Khách 104', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80' },
   admin: { id: 'seed-admin', name: 'Ban Quản Trị Việt Phục Remix', avatar: 'favicon.svg' }
 };
 

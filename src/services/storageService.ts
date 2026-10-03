@@ -4,25 +4,63 @@ const STORAGE_KEYS = {
   PROFILE: 'vietphuc_remix_profile',
   SAVED_OUTFITS: 'vietphuc_remix_saved_outfits',
   COMPARE_LIST: 'vietphuc_remix_compare_list',
-  HISTORY: 'vietphuc_remix_history'
+  HISTORY: 'vietphuc_remix_history',
+  GUEST_NUMBER: 'vietphuc_remix_guest_number',
+  GUEST_COUNTER: 'vietphuc_remix_guest_counter'
 };
 
-const DEFAULT_PROFILE: UserProfile = {
-  name: 'Hà Linh',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
-  title: 'Nhà Sáng Tạo Cổ Phong Gen Z',
-  bio: 'Yêu di sản Việt qua lăng kính thời trang đương đại. Tự hào lan tỏa tà áo Việt đến bạn bè khắp thế giới.',
-  savedOutfits: [],
-  customLookbooks: [
-    {
-      id: 'lookbook-tet',
-      title: 'Tết Bính Ngọ 2026',
-      description: 'Các bản phối du xuân năng động cùng bạn bè',
-      outfitIds: []
-    }
-  ],
-  history: [],
-  compareList: []
+// Avatar pool cho khách — chọn theo số thứ tự
+const GUEST_AVATARS = [
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80'
+];
+
+/**
+ * Lấy số thứ tự khách cho thiết bị/trình duyệt hiện tại.
+ * Mỗi lần trình duyệt mới truy cập lần đầu → counter +1 và gán cho khách đó.
+ * Khách quay lại (đã có localStorage) → giữ nguyên số cũ.
+ */
+const getGuestNumber = (): number => {
+  // Đã có số thứ tự → trả về luôn
+  const existing = localStorage.getItem(STORAGE_KEYS.GUEST_NUMBER);
+  if (existing) return parseInt(existing, 10);
+
+  // Lấy counter hiện tại, +1
+  const currentCounter = parseInt(localStorage.getItem(STORAGE_KEYS.GUEST_COUNTER) || '0', 10);
+  const newNumber = currentCounter + 1;
+
+  // Lưu counter mới và gán số cho khách này
+  localStorage.setItem(STORAGE_KEYS.GUEST_COUNTER, String(newNumber));
+  localStorage.setItem(STORAGE_KEYS.GUEST_NUMBER, String(newNumber));
+
+  return newNumber;
+};
+
+const buildDefaultProfile = (): UserProfile => {
+  const guestNum = getGuestNumber();
+  return {
+    name: `Khách ${guestNum}`,
+    avatar: GUEST_AVATARS[(guestNum - 1) % GUEST_AVATARS.length],
+    title: 'Nhà Sáng Tạo Cổ Phong Gen Z',
+    bio: 'Yêu di sản Việt qua lăng kính thời trang đương đại. Tự hào lan tỏa tà áo Việt đến bạn bè khắp thế giới.',
+    savedOutfits: [],
+    customLookbooks: [
+      {
+        id: 'lookbook-tet',
+        title: 'Tết Bính Ngọ 2026',
+        description: 'Các bản phối du xuân năng động cùng bạn bè',
+        outfitIds: []
+      }
+    ],
+    history: [],
+    compareList: []
+  };
 };
 
 const INITIAL_SAVED_OUTFITS: Outfit[] = [
@@ -56,28 +94,30 @@ export const StorageService = {
   getProfile(): UserProfile {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.PROFILE);
+      const defaults = buildDefaultProfile();
       if (data) {
         const parsed = JSON.parse(data);
         return {
-          ...DEFAULT_PROFILE,
+          ...defaults,
           ...parsed,
           savedOutfits: Array.isArray(parsed.savedOutfits) ? parsed.savedOutfits : INITIAL_SAVED_OUTFITS,
           history: Array.isArray(parsed.history) ? parsed.history : [],
           compareList: Array.isArray(parsed.compareList) ? parsed.compareList : [],
-          customLookbooks: Array.isArray(parsed.customLookbooks) ? parsed.customLookbooks : DEFAULT_PROFILE.customLookbooks
+          customLookbooks: Array.isArray(parsed.customLookbooks) ? parsed.customLookbooks : defaults.customLookbooks
         };
       }
       // Initialize with default and initial saved outfits
       const initialProfile = {
-        ...DEFAULT_PROFILE,
+        ...defaults,
         savedOutfits: INITIAL_SAVED_OUTFITS,
         compareList: [INITIAL_SAVED_OUTFITS[0], INITIAL_SAVED_OUTFITS[1]]
       };
       this.saveProfile(initialProfile);
       return initialProfile;
     } catch {
+      const defaults = buildDefaultProfile();
       return {
-        ...DEFAULT_PROFILE,
+        ...defaults,
         savedOutfits: INITIAL_SAVED_OUTFITS,
         compareList: [INITIAL_SAVED_OUTFITS[0], INITIAL_SAVED_OUTFITS[1]]
       };
